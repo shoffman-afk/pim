@@ -63,6 +63,7 @@ shared/
 - Added dropdowns: Country (Poland/Germany), Currency (PLN/GBP/EUR/USD)
 - Moved status dropdown from "Dział Marketingu" to "Dział Produktu" tab
 - Extended Product interface with all new product department fields
+- Added "Informacje Działu Produktu" section to product preview modal displaying all new fields with proper formatting
 
 **2024-12-31**: 
 - Migrated project from Bolt to Replit

@@ -1566,6 +1566,120 @@ const Products: React.FC = () => {
               </div>
             </div>
 
+            {/* Product Department Information */}
+            {(previewProduct.postac || previewProduct.marka || previewProduct.iloscDziennychPorcji || 
+              previewProduct.iloscNetto || previewProduct.wagaNetto || previewProduct.kategoriaZywnosci || 
+              previewProduct.zalecanyWiek || previewProduct.kraj || previewProduct.ean || 
+              previewProduct.cenaSugerowana || previewProduct.waluta || previewProduct.vat || 
+              previewProduct.bloz || previewProduct.gisLink || previewProduct.gisNumer) && (
+              <div className="pt-4 border-t border-gray-200">
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Informacje Działu Produktu</h4>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {previewProduct.postac && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Postać:</span>
+                      <p className="text-gray-900">{previewProduct.postac}</p>
+                    </div>
+                  )}
+                  {previewProduct.marka && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Marka:</span>
+                      <p className="text-gray-900">{previewProduct.marka}</p>
+                    </div>
+                  )}
+                  {previewProduct.iloscDziennychPorcji && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Ilość dziennych porcji/aplikacji:</span>
+                      <p className="text-gray-900">{previewProduct.iloscDziennychPorcji}</p>
+                    </div>
+                  )}
+                  {previewProduct.iloscNetto && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Ilość netto:</span>
+                      <p className="text-gray-900">{previewProduct.iloscNetto}</p>
+                    </div>
+                  )}
+                  {previewProduct.wagaNetto && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Waga netto:</span>
+                      <p className="text-gray-900">{previewProduct.wagaNetto} gr.</p>
+                    </div>
+                  )}
+                  {previewProduct.kategoriaZywnosci && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Kategoria żywności:</span>
+                      <p className="text-gray-900">{previewProduct.kategoriaZywnosci}</p>
+                    </div>
+                  )}
+                  {previewProduct.zalecanyWiek && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Zalecany wiek:</span>
+                      <p className="text-gray-900">{previewProduct.zalecanyWiek}</p>
+                    </div>
+                  )}
+                  {previewProduct.kraj && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Kraj:</span>
+                      <p className="text-gray-900">{previewProduct.kraj}</p>
+                    </div>
+                  )}
+                  {previewProduct.ean && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">EAN:</span>
+                      <p className="text-gray-900">{previewProduct.ean}</p>
+                    </div>
+                  )}
+                  {previewProduct.cenaSugerowana && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Cena sugerowana:</span>
+                      <p className="text-gray-900">
+                        {previewProduct.cenaSugerowana} {previewProduct.waluta || ''}
+                      </p>
+                    </div>
+                  )}
+                  {previewProduct.waluta && !previewProduct.cenaSugerowana && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Waluta:</span>
+                      <p className="text-gray-900">{previewProduct.waluta}</p>
+                    </div>
+                  )}
+                  {previewProduct.vat && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">VAT:</span>
+                      <p className="text-gray-900">{previewProduct.vat}%</p>
+                    </div>
+                  )}
+                  {previewProduct.bloz && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">BLOZ:</span>
+                      <p className="text-gray-900">{previewProduct.bloz}</p>
+                    </div>
+                  )}
+                  {previewProduct.gisLink && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">GIS Link:</span>
+                      <p className="text-gray-900">
+                        <a 
+                          href={previewProduct.gisLink} 
+                          target="_blank" 
+                          rel="noopener noreferrer"
+                          className="text-blue-600 hover:text-blue-800 underline"
+                        >
+                          {previewProduct.gisLink}
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                  {previewProduct.gisNumer && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">GIS Numer:</span>
+                      <p className="text-gray-900">{previewProduct.gisNumer}</p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-4 border-t border-gray-200">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-1">Data utworzenia</label>
