@@ -760,51 +760,41 @@ const Products: React.FC = () => {
           />
         </div>
 
-        {!isEdit && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Status *
-            </label>
-            <select
-              value={newProduct.status}
-              onChange={(e) => setNewProduct({ ...newProduct, status: e.target.value as 'active' | 'inactive' | 'pending' })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="active">Aktywny</option>
-              <option value="pending">Oczekujący</option>
-              <option value="inactive">Nieaktywny</option>
-            </select>
-          </div>
-        )}
 
-        {isEdit && (
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
-              Status
-            </label>
-            <select
-              value={editingProduct?.status || 'active'}
-              onChange={(e) => setEditingProduct({ ...editingProduct!, status: e.target.value as 'active' | 'inactive' | 'pending' })}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="active">Aktywny</option>
-              <option value="pending">Oczekujący</option>
-              <option value="inactive">Nieaktywny</option>
-            </select>
-          </div>
-        )}
       </div>
     );
   };
 
-  const ProductTab = () => (
-    <div className="space-y-4">
-      <div className="text-center py-8">
-        <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-        <p className="text-gray-500">Dział Produktu - w przygotowaniu</p>
+  const ProductTab = ({ isEdit = false }: { isEdit?: boolean }) => {
+    const currentProduct = isEdit ? editingProduct : newProduct;
+    const setCurrentProduct = isEdit 
+      ? (updates: any) => setEditingProduct({ ...editingProduct!, ...updates })
+      : (updates: any) => setNewProduct({ ...newProduct, ...updates });
+
+    return (
+      <div className="space-y-4">
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Status *
+          </label>
+          <select
+            value={currentProduct?.status || 'active'}
+            onChange={(e) => setCurrentProduct({ status: e.target.value as 'active' | 'inactive' | 'pending' })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="active">Aktywny</option>
+            <option value="pending">Oczekujący</option>
+            <option value="inactive">Nieaktywny</option>
+          </select>
+        </div>
+        
+        <div className="text-center py-8">
+          <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
+          <p className="text-gray-500">Pozostałe pola działu produktu - w przygotowaniu</p>
+        </div>
       </div>
-    </div>
-  );
+    );
+  };
 
   const B2BTab = () => (
     <div className="space-y-4">
@@ -1700,7 +1690,7 @@ const Products: React.FC = () => {
 
             {/* Tab Content */}
             {activeTab === 'marketing' && <MarketingTab isEdit={true} />}
-            {activeTab === 'product' && <ProductTab />}
+            {activeTab === 'product' && <ProductTab isEdit={true} />}
             {activeTab === 'b2b' && (
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div>
