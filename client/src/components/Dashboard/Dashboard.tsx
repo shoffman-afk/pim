@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link } from 'wouter';
 import { Users, Package, TrendingUp, AlertTriangle, FileText, BarChart3, Download, ArrowRight } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { mockUsers } from '../../data/mockData';

@@ -1,5 +1,5 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, useLocation } from 'wouter';
 import { 
   LayoutDashboard, 
   Users, 
@@ -67,12 +67,14 @@ const Sidebar: React.FC = () => {
     setMaterialsExpanded(!materialsExpanded);
   };
 
+  const [location] = useLocation();
+  
   const isProductsActive = () => {
-    return window.location.pathname.startsWith('/products');
+    return location.startsWith('/products');
   };
 
   const isMaterialsActive = () => {
-    return window.location.pathname.startsWith('/materials');
+    return location.startsWith('/materials');
   };
 
   const hasPermission = (permission: string) => {
@@ -120,19 +122,17 @@ const Sidebar: React.FC = () => {
                   {productsExpanded && (
                     <div className="ml-8 mt-2 space-y-1">
                       {productsSubItems.map((subItem) => (
-                        <NavLink
+                        <Link
                           key={subItem.path}
-                          to={subItem.path}
-                          className={({ isActive }) =>
-                            `block px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
-                              isActive
-                                ? 'bg-blue-500 text-white'
-                                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                            }`
-                          }
+                          href={subItem.path}
+                          className={`block px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
+                            location === subItem.path
+                              ? 'bg-blue-500 text-white'
+                              : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                          }`}
                         >
                           • {subItem.label}
-                        </NavLink>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -164,19 +164,17 @@ const Sidebar: React.FC = () => {
                   {materialsExpanded && (
                     <div className="ml-8 mt-2 space-y-1">
                       {materialsSubItems.map((subItem) => (
-                        <NavLink
+                        <Link
                           key={subItem.path}
-                          to={subItem.path}
-                          className={({ isActive }) =>
-                            `block px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
-                              isActive
-                                ? 'bg-blue-500 text-white'
-                                : 'text-slate-400 hover:bg-slate-800 hover:text-white'
-                            }`
-                          }
+                          href={subItem.path}
+                          className={`block px-4 py-2 rounded-lg text-sm transition-colors duration-200 ${
+                            location === subItem.path
+                              ? 'bg-blue-500 text-white'
+                              : 'text-slate-400 hover:bg-slate-800 hover:text-white'
+                          }`}
                         >
                           • {subItem.label}
-                        </NavLink>
+                        </Link>
                       ))}
                     </div>
                   )}
@@ -185,20 +183,18 @@ const Sidebar: React.FC = () => {
             }
             
             return (
-              <NavLink
+              <Link
                 key={item.path}
-                to={item.path}
-                className={({ isActive }) =>
-                  `flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
-                    isActive
-                      ? 'bg-blue-600 text-white shadow-lg'
-                      : 'text-slate-300 hover:bg-slate-800 hover:text-white'
-                  }`
-                }
+                href={item.path}
+                className={`flex items-center px-4 py-3 rounded-lg transition-colors duration-200 ${
+                  location === item.path
+                    ? 'bg-blue-600 text-white shadow-lg'
+                    : 'text-slate-300 hover:bg-slate-800 hover:text-white'
+                }`}
               >
                 <Icon className="w-5 h-5 mr-3" />
                 <span className="font-medium">{item.label}</span>
-              </NavLink>
+              </Link>
             );
           })}
         </nav>

@@ -1,5 +1,4 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { Route, Switch, Redirect, useLocation } from 'wouter';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import LoginForm from './components/Auth/LoginForm';
 import Layout from './components/Layout/Layout';
@@ -17,52 +16,54 @@ import ProductCategories from './components/Products/Categories';
 import ProductUsage from './components/Products/Usage';
 import Products from './components/Products/Products';
 
-const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
   
   if (!isAuthenticated) {
-    return <Navigate to="/login" replace />;
+    return <Redirect to="/login" />;
   }
   
   return <>{children}</>;
 };
 
-const AppRoutes: React.FC = () => {
+const AppContent = () => {
+  const { isAuthenticated } = useAuth();
+  const [location] = useLocation();
+  
+  if (location === '/login') {
+    return <LoginForm />;
+  }
+  
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+  
   return (
-    <Routes>
-      <Route path="/login" element={<LoginForm />} />
-      <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route
-        path="/*"
-        element={
-          <ProtectedRoute>
-            <Layout />
-          </ProtectedRoute>
-        }
-      >
-        <Route path="dashboard" element={<Dashboard />} />
-        <Route path="users" element={<UserManagement />} />
-        <Route path="materials" element={<MaterialManagement />} />
-        <Route path="materials/standardization" element={<Standardization />} />
-        <Route path="materials/active-components" element={<ActiveComponents />} />
-        <Route path="materials/categories" element={<Categories />} />
-        <Route path="materials/components" element={<Components />} />
-        <Route path="products/products" element={<Products />} />
-        <Route path="products/brand" element={<ProductBrand />} />
-        <Route path="products/form" element={<ProductForm />} />
-        <Route path="products/categories" element={<ProductCategories />} />
-        <Route path="products/usage" element={<ProductUsage />} />
-      </Route>
-    </Routes>
+    <Layout>
+      <Switch>
+        <Route path="/" component={() => <Redirect to="/dashboard" />} />
+        <Route path="/dashboard" component={Dashboard} />
+        <Route path="/users" component={UserManagement} />
+        <Route path="/materials" component={MaterialManagement} />
+        <Route path="/materials/standardization" component={Standardization} />
+        <Route path="/materials/active-components" component={ActiveComponents} />
+        <Route path="/materials/categories" component={Categories} />
+        <Route path="/materials/components" component={Components} />
+        <Route path="/products/products" component={Products} />
+        <Route path="/products/brand" component={ProductBrand} />
+        <Route path="/products/form" component={ProductForm} />
+        <Route path="/products/categories" component={ProductCategories} />
+        <Route path="/products/usage" component={ProductUsage} />
+        <Route path="/logs" component={ActivityLogs} />
+      </Switch>
+    </Layout>
   );
 };
 
 function App() {
   return (
     <AuthProvider>
-      <Router>
-        <AppRoutes />
-      </Router>
+      <AppContent />
     </AuthProvider>
   );
 }
