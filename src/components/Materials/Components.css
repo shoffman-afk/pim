@@ -1,0 +1,21 @@
+.wysiwyg-content {
+  line-height: 1.6;
+}
+
+.wysiwyg-content p {
+  margin: 0.5em 0;
+}
+
+.wysiwyg-content strong {
+  font-weight: bold;
+}
+
+.wysiwyg-content em {
+  font-style: italic;
+}
+
+.wysiwyg-content br {
+  display: block;
+  margin: 0.5em 0;
+  content: "";
+}
