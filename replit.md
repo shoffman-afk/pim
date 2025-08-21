@@ -56,6 +56,14 @@ shared/
 - Database: PostgreSQL with Drizzle ORM
 
 ## Recent Changes
+**2025-01-21**: 
+- Enhanced "Dział Produktu" tab in product creation/editing modal
+- Added comprehensive form fields: Postać dropdown (integrated with Form.tsx data), Marka dropdown (integrated with Brand.tsx data)
+- Added input fields: Daily portions, Net quantity, Net weight, Food category, Recommended age, EAN, Suggested price, VAT, BLOZ, GIS Link, GIS Number
+- Added dropdowns: Country (Poland/Germany), Currency (PLN/GBP/EUR/USD)
+- Moved status dropdown from "Dział Marketingu" to "Dział Produktu" tab
+- Extended Product interface with all new product department fields
+
 **2024-12-31**: 
 - Migrated project from Bolt to Replit
 - Converted routing from react-router-dom to wouter

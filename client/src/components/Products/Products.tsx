@@ -38,6 +38,22 @@ interface Product {
   unitsPerLayer?: number;
   unitsPerPallet?: number;
   status: 'active' | 'inactive' | 'pending';
+  // New product department fields
+  postac?: string; // Form/Shape
+  marka?: string; // Brand
+  iloscDziennychPorcji?: string; // Daily portions/applications
+  iloscNetto?: string; // Net quantity
+  wagaNetto?: number; // Net weight in grams
+  kategoriaZywnosci?: string; // Food category
+  zalecanyWiek?: string; // Recommended age
+  kraj?: 'Polska' | 'Niemcy'; // Country
+  ean?: string; // EAN code
+  cenaSugerowana?: number; // Suggested price
+  waluta?: 'PLN' | 'GBP' | 'EUR' | 'USD'; // Currency
+  vat?: number; // VAT percentage
+  bloz?: string; // BLOZ number
+  gisLink?: string; // GIS Link
+  gisNumer?: string; // GIS Number
   createdAt: string;
   updatedAt: string;
 }
@@ -207,7 +223,7 @@ const Products: React.FC = () => {
     features: [] as string[],
     qualityGuaranteeTitle: '',
     qualityGuaranteeText: '',
-    images: [],
+    images: [] as string[],
     bulkPackageQuantity: 0,
     unitGrossWeight: 0,
     unitPackageHeight: 0,
@@ -218,7 +234,23 @@ const Products: React.FC = () => {
     bulkPackageDepth: 0,
     unitsPerLayer: 0,
     unitsPerPallet: 0,
-    status: 'active' as 'active' | 'inactive' | 'pending'
+    status: 'active' as 'active' | 'inactive' | 'pending',
+    // New product department fields
+    postac: '',
+    marka: '',
+    iloscDziennychPorcji: '',
+    iloscNetto: '',
+    wagaNetto: undefined as number | undefined,
+    kategoriaZywnosci: '',
+    zalecanyWiek: '',
+    kraj: undefined as 'Polska' | 'Niemcy' | undefined,
+    ean: '',
+    cenaSugerowana: undefined as number | undefined,
+    waluta: undefined as 'PLN' | 'GBP' | 'EUR' | 'USD' | undefined,
+    vat: undefined as number | undefined,
+    bloz: '',
+    gisLink: '',
+    gisNumer: ''
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -293,6 +325,22 @@ const Products: React.FC = () => {
       qualityGuaranteeTitle: newProduct.qualityGuaranteeTitle.trim(),
       qualityGuaranteeText: newProduct.qualityGuaranteeText.trim(),
       status: newProduct.status,
+      // New product department fields
+      postac: newProduct.postac,
+      marka: newProduct.marka,
+      iloscDziennychPorcji: newProduct.iloscDziennychPorcji,
+      iloscNetto: newProduct.iloscNetto,
+      wagaNetto: newProduct.wagaNetto,
+      kategoriaZywnosci: newProduct.kategoriaZywnosci,
+      zalecanyWiek: newProduct.zalecanyWiek,
+      kraj: newProduct.kraj,
+      ean: newProduct.ean,
+      cenaSugerowana: newProduct.cenaSugerowana,
+      waluta: newProduct.waluta,
+      vat: newProduct.vat,
+      bloz: newProduct.bloz,
+      gisLink: newProduct.gisLink,
+      gisNumer: newProduct.gisNumer,
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -309,7 +357,7 @@ const Products: React.FC = () => {
       features: [],
       qualityGuaranteeTitle: '',
       qualityGuaranteeText: '',
-      images: [],
+      images: [] as string[],
       bulkPackageQuantity: 0,
       unitGrossWeight: 0,
       unitPackageHeight: 0,
@@ -320,7 +368,23 @@ const Products: React.FC = () => {
       bulkPackageDepth: 0,
       unitsPerLayer: 0,
       unitsPerPallet: 0,
-      status: 'active'
+      status: 'active',
+      // New product department fields
+      postac: '',
+      marka: '',
+      iloscDziennychPorcji: '',
+      iloscNetto: '',
+      wagaNetto: undefined,
+      kategoriaZywnosci: '',
+      zalecanyWiek: '',
+      kraj: undefined,
+      ean: '',
+      cenaSugerowana: undefined,
+      waluta: undefined,
+      vat: undefined,
+      bloz: '',
+      gisLink: '',
+      gisNumer: ''
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -771,6 +835,26 @@ const Products: React.FC = () => {
       ? (updates: any) => setEditingProduct({ ...editingProduct!, ...updates })
       : (updates: any) => setNewProduct({ ...newProduct, ...updates });
 
+    // Available Postać options from Form.tsx
+    const availablePostac = [
+      { id: '1', name: 'Kapsułki' },
+      { id: '2', name: 'Tabletki' },
+      { id: '3', name: 'Proszek' },
+      { id: '4', name: 'Płyn' },
+      { id: '5', name: 'Żel' },
+      { id: '6', name: 'Krople' }
+    ];
+
+    // Available Marka options from Brand.tsx
+    const availableMarki = [
+      { id: '1', name: 'Aura Herbals' },
+      { id: '2', name: 'NaturalHealth' },
+      { id: '3', name: 'BioActive' },
+      { id: '4', name: 'HealthPlus' },
+      { id: '5', name: 'VitaMax' },
+      { id: '6', name: 'PureLife' }
+    ];
+
     return (
       <div className="space-y-4">
         <div>
@@ -787,10 +871,219 @@ const Products: React.FC = () => {
             <option value="inactive">Nieaktywny</option>
           </select>
         </div>
-        
-        <div className="text-center py-8">
-          <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-500">Pozostałe pola działu produktu - w przygotowaniu</p>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Postać *
+          </label>
+          <select
+            value={currentProduct?.postac || ''}
+            onChange={(e) => setCurrentProduct({ postac: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Wybierz postać</option>
+            {availablePostac.map((postac) => (
+              <option key={postac.id} value={postac.name}>
+                {postac.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Marka *
+          </label>
+          <select
+            value={currentProduct?.marka || ''}
+            onChange={(e) => setCurrentProduct({ marka: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Wybierz markę</option>
+            {availableMarki.map((marka) => (
+              <option key={marka.id} value={marka.name}>
+                {marka.name}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Ilość dziennych porcji/aplikacji
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.iloscDziennychPorcji || ''}
+            onChange={(e) => setCurrentProduct({ iloscDziennychPorcji: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 2 kapsułki dziennie"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Ilość netto
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.iloscNetto || ''}
+            onChange={(e) => setCurrentProduct({ iloscNetto: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 60 kapsułek"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Waga netto (gr.)
+          </label>
+          <input
+            type="number"
+            value={currentProduct?.wagaNetto || ''}
+            onChange={(e) => setCurrentProduct({ wagaNetto: parseFloat(e.target.value) || undefined })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 45.5"
+            step="0.1"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Kategoria żywności
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.kategoriaZywnosci || ''}
+            onChange={(e) => setCurrentProduct({ kategoriaZywnosci: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. Suplement diety"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Zalecany wiek
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.zalecanyWiek || ''}
+            onChange={(e) => setCurrentProduct({ zalecanyWiek: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. Dorośli od 18 lat"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Kraj
+          </label>
+          <select
+            value={currentProduct?.kraj || ''}
+            onChange={(e) => setCurrentProduct({ kraj: e.target.value as 'Polska' | 'Niemcy' })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Wybierz kraj</option>
+            <option value="Polska">Polska</option>
+            <option value="Niemcy">Niemcy</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            EAN
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.ean || ''}
+            onChange={(e) => setCurrentProduct({ ean: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 1234567890123"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Cena Sugerowana
+          </label>
+          <input
+            type="number"
+            value={currentProduct?.cenaSugerowana || ''}
+            onChange={(e) => setCurrentProduct({ cenaSugerowana: parseFloat(e.target.value) || undefined })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 29.99"
+            step="0.01"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Waluta
+          </label>
+          <select
+            value={currentProduct?.waluta || ''}
+            onChange={(e) => setCurrentProduct({ waluta: e.target.value as 'PLN' | 'GBP' | 'EUR' | 'USD' })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+          >
+            <option value="">Wybierz walutę</option>
+            <option value="PLN">PLN</option>
+            <option value="GBP">GBP</option>
+            <option value="EUR">EUR</option>
+            <option value="USD">USD</option>
+          </select>
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            VAT (%)
+          </label>
+          <input
+            type="number"
+            value={currentProduct?.vat || ''}
+            onChange={(e) => setCurrentProduct({ vat: parseFloat(e.target.value) || undefined })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. 23"
+            step="0.01"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            BLOZ
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.bloz || ''}
+            onChange={(e) => setCurrentProduct({ bloz: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. BLOZ-123456"
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            GIS Link
+          </label>
+          <input
+            type="url"
+            value={currentProduct?.gisLink || ''}
+            onChange={(e) => setCurrentProduct({ gisLink: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="https://..."
+          />
+        </div>
+
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            GIS Numer
+          </label>
+          <input
+            type="text"
+            value={currentProduct?.gisNumer || ''}
+            onChange={(e) => setCurrentProduct({ gisNumer: e.target.value })}
+            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            placeholder="np. GIS-789012"
+          />
         </div>
       </div>
     );
@@ -1105,7 +1398,7 @@ const Products: React.FC = () => {
                 features: [],
                 qualityGuaranteeTitle: '',
                 qualityGuaranteeText: '',
-                images: [],
+                images: [] as string[],
                 bulkPackageQuantity: 0,
                 unitGrossWeight: 0,
                 unitPackageHeight: 0,
@@ -1116,7 +1409,23 @@ const Products: React.FC = () => {
                 bulkPackageDepth: 0,
                 unitsPerLayer: 0,
                 unitsPerPallet: 0,
-                status: 'active'
+                status: 'active',
+                // New product department fields
+                postac: '',
+                marka: '',
+                iloscDziennychPorcji: '',
+                iloscNetto: '',
+                wagaNetto: undefined,
+                kategoriaZywnosci: '',
+                zalecanyWiek: '',
+                kraj: undefined,
+                ean: '',
+                cenaSugerowana: undefined,
+                waluta: undefined,
+                vat: undefined,
+                bloz: '',
+                gisLink: '',
+                gisNumer: ''
               });
               setActiveTab('marketing');
             }}
