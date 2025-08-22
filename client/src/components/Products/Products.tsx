@@ -38,7 +38,7 @@ interface Product {
   unitsPerLayer?: number;
   unitsPerPallet?: number;
   status: 'active' | 'inactive' | 'pending';
-  // New product department fields
+  // New product department fields - Ogólne Informacje
   postac?: string; // Form/Shape
   marka?: string; // Brand
   iloscDziennychPorcji?: string; // Daily portions/applications
@@ -54,6 +54,8 @@ interface Product {
   bloz?: string; // BLOZ number
   gisLink?: string; // GIS Link
   gisNumer?: string; // GIS Number
+  opakowanie?: string; // Packaging
+  receptura?: string; // Formula
   createdAt: string;
   updatedAt: string;
 }
@@ -250,7 +252,9 @@ const Products: React.FC = () => {
     vat: undefined as number | undefined,
     bloz: '',
     gisLink: '',
-    gisNumer: ''
+    gisNumer: '',
+    opakowanie: '',
+    receptura: ''
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -341,6 +345,8 @@ const Products: React.FC = () => {
       bloz: newProduct.bloz,
       gisLink: newProduct.gisLink,
       gisNumer: newProduct.gisNumer,
+      opakowanie: newProduct.opakowanie,
+      receptura: newProduct.receptura,
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -384,7 +390,9 @@ const Products: React.FC = () => {
       vat: undefined,
       bloz: '',
       gisLink: '',
-      gisNumer: ''
+      gisNumer: '',
+      opakowanie: '',
+      receptura: ''
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -856,7 +864,7 @@ const Products: React.FC = () => {
     ];
 
     return (
-      <div className="space-y-4">
+      <div className="space-y-6">
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Status *
@@ -872,7 +880,11 @@ const Products: React.FC = () => {
           </select>
         </div>
 
-        <div>
+        {/* Ogólne Informacje Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Ogólne Informacje</h4>
+          <div className="space-y-4">
+            <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
             Postać *
           </label>
@@ -888,202 +900,230 @@ const Products: React.FC = () => {
               </option>
             ))}
           </select>
-        </div>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Marka *
-          </label>
-          <select
-            value={currentProduct?.marka || ''}
-            onChange={(e) => setCurrentProduct({ marka: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Wybierz markę</option>
-            {availableMarki.map((marka) => (
-              <option key={marka.id} value={marka.name}>
-                {marka.name}
-              </option>
-            ))}
-          </select>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Marka *
+              </label>
+              <select
+                value={currentProduct?.marka || ''}
+                onChange={(e) => setCurrentProduct({ marka: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz markę</option>
+                {availableMarki.map((marka) => (
+                  <option key={marka.id} value={marka.name}>
+                    {marka.name}
+                  </option>
+                ))}
+              </select>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Ilość dziennych porcji/aplikacji
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.iloscDziennychPorcji || ''}
-            onChange={(e) => setCurrentProduct({ iloscDziennychPorcji: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 2 kapsułki dziennie"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ilość dziennych porcji/aplikacji
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.iloscDziennychPorcji || ''}
+                onChange={(e) => setCurrentProduct({ iloscDziennychPorcji: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 2 kapsułki dziennie"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Ilość netto
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.iloscNetto || ''}
-            onChange={(e) => setCurrentProduct({ iloscNetto: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 60 kapsułek"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Ilość netto
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.iloscNetto || ''}
+                onChange={(e) => setCurrentProduct({ iloscNetto: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 60 kapsułek"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Waga netto (gr.)
-          </label>
-          <input
-            type="number"
-            value={currentProduct?.wagaNetto || ''}
-            onChange={(e) => setCurrentProduct({ wagaNetto: parseFloat(e.target.value) || undefined })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 45.5"
-            step="0.1"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Waga netto (gr.)
+              </label>
+              <input
+                type="number"
+                value={currentProduct?.wagaNetto || ''}
+                onChange={(e) => setCurrentProduct({ wagaNetto: parseFloat(e.target.value) || undefined })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 45.5"
+                step="0.1"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Kategoria żywności
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.kategoriaZywnosci || ''}
-            onChange={(e) => setCurrentProduct({ kategoriaZywnosci: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. Suplement diety"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Kategoria żywności
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.kategoriaZywnosci || ''}
+                onChange={(e) => setCurrentProduct({ kategoriaZywnosci: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Suplement diety"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Zalecany wiek
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.zalecanyWiek || ''}
-            onChange={(e) => setCurrentProduct({ zalecanyWiek: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. Dorośli od 18 lat"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Zalecany wiek
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.zalecanyWiek || ''}
+                onChange={(e) => setCurrentProduct({ zalecanyWiek: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Dorośli od 18 lat"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Kraj
-          </label>
-          <select
-            value={currentProduct?.kraj || ''}
-            onChange={(e) => setCurrentProduct({ kraj: e.target.value as 'Polska' | 'Niemcy' })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Wybierz kraj</option>
-            <option value="Polska">Polska</option>
-            <option value="Niemcy">Niemcy</option>
-          </select>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Kraj
+              </label>
+              <select
+                value={currentProduct?.kraj || ''}
+                onChange={(e) => setCurrentProduct({ kraj: e.target.value as 'Polska' | 'Niemcy' })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz kraj</option>
+                <option value="Polska">Polska</option>
+                <option value="Niemcy">Niemcy</option>
+              </select>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            EAN
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.ean || ''}
-            onChange={(e) => setCurrentProduct({ ean: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 1234567890123"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                EAN
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.ean || ''}
+                onChange={(e) => setCurrentProduct({ ean: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 1234567890123"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Cena Sugerowana
-          </label>
-          <input
-            type="number"
-            value={currentProduct?.cenaSugerowana || ''}
-            onChange={(e) => setCurrentProduct({ cenaSugerowana: parseFloat(e.target.value) || undefined })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 29.99"
-            step="0.01"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Cena Sugerowana
+              </label>
+              <input
+                type="number"
+                value={currentProduct?.cenaSugerowana || ''}
+                onChange={(e) => setCurrentProduct({ cenaSugerowana: parseFloat(e.target.value) || undefined })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 29.99"
+                step="0.01"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Waluta
-          </label>
-          <select
-            value={currentProduct?.waluta || ''}
-            onChange={(e) => setCurrentProduct({ waluta: e.target.value as 'PLN' | 'GBP' | 'EUR' | 'USD' })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Wybierz walutę</option>
-            <option value="PLN">PLN</option>
-            <option value="GBP">GBP</option>
-            <option value="EUR">EUR</option>
-            <option value="USD">USD</option>
-          </select>
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Waluta
+              </label>
+              <select
+                value={currentProduct?.waluta || ''}
+                onChange={(e) => setCurrentProduct({ waluta: e.target.value as 'PLN' | 'GBP' | 'EUR' | 'USD' })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz walutę</option>
+                <option value="PLN">PLN</option>
+                <option value="GBP">GBP</option>
+                <option value="EUR">EUR</option>
+                <option value="USD">USD</option>
+              </select>
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            VAT (%)
-          </label>
-          <input
-            type="number"
-            value={currentProduct?.vat || ''}
-            onChange={(e) => setCurrentProduct({ vat: parseFloat(e.target.value) || undefined })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. 23"
-            step="0.01"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                VAT (%)
+              </label>
+              <input
+                type="number"
+                value={currentProduct?.vat || ''}
+                onChange={(e) => setCurrentProduct({ vat: parseFloat(e.target.value) || undefined })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. 23"
+                step="0.01"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            BLOZ
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.bloz || ''}
-            onChange={(e) => setCurrentProduct({ bloz: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. BLOZ-123456"
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                BLOZ
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.bloz || ''}
+                onChange={(e) => setCurrentProduct({ bloz: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. BLOZ-123456"
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            GIS Link
-          </label>
-          <input
-            type="url"
-            value={currentProduct?.gisLink || ''}
-            onChange={(e) => setCurrentProduct({ gisLink: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="https://..."
-          />
-        </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                GIS Link
+              </label>
+              <input
+                type="url"
+                value={currentProduct?.gisLink || ''}
+                onChange={(e) => setCurrentProduct({ gisLink: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="https://..."
+              />
+            </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            GIS Numer
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.gisNumer || ''}
-            onChange={(e) => setCurrentProduct({ gisNumer: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. GIS-789012"
-          />
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                GIS Numer
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.gisNumer || ''}
+                onChange={(e) => setCurrentProduct({ gisNumer: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. GIS-789012"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Opakowanie
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.opakowanie || ''}
+                onChange={(e) => setCurrentProduct({ opakowanie: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Butelka szklana 250ml"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Receptura
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.receptura || ''}
+                onChange={(e) => setCurrentProduct({ receptura: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. R-001/2024"
+              />
+            </div>
+          </div>
         </div>
       </div>
     );
@@ -1425,7 +1465,9 @@ const Products: React.FC = () => {
                 vat: undefined,
                 bloz: '',
                 gisLink: '',
-                gisNumer: ''
+                gisNumer: '',
+                opakowanie: '',
+                receptura: ''
               });
               setActiveTab('marketing');
             }}
@@ -1571,7 +1613,8 @@ const Products: React.FC = () => {
               previewProduct.iloscNetto || previewProduct.wagaNetto || previewProduct.kategoriaZywnosci || 
               previewProduct.zalecanyWiek || previewProduct.kraj || previewProduct.ean || 
               previewProduct.cenaSugerowana || previewProduct.waluta || previewProduct.vat || 
-              previewProduct.bloz || previewProduct.gisLink || previewProduct.gisNumer) && (
+              previewProduct.bloz || previewProduct.gisLink || previewProduct.gisNumer ||
+              previewProduct.opakowanie || previewProduct.receptura) && (
               <div className="pt-4 border-t border-gray-200">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Informacje Działu Produktu</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1674,6 +1717,18 @@ const Products: React.FC = () => {
                     <div>
                       <span className="text-sm font-medium text-gray-700">GIS Numer:</span>
                       <p className="text-gray-900">{previewProduct.gisNumer}</p>
+                    </div>
+                  )}
+                  {previewProduct.opakowanie && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Opakowanie:</span>
+                      <p className="text-gray-900">{previewProduct.opakowanie}</p>
+                    </div>
+                  )}
+                  {previewProduct.receptura && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Receptura:</span>
+                      <p className="text-gray-900">{previewProduct.receptura}</p>
                     </div>
                   )}
                 </div>
