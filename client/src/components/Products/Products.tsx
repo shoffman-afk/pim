@@ -54,8 +54,24 @@ interface Product {
   bloz?: string; // BLOZ number
   gisLink?: string; // GIS Link
   gisNumer?: string; // GIS Number
-  opakowanie?: string; // Packaging
-  receptura?: string; // Formula
+  opakowanie?: string; // Packaging (link)
+  receptura?: string; // Formula (link)
+  // Cechy Ogólne (General Characteristics)
+  naturalny100?: boolean; // 100% naturalny
+  markowySurowiec?: boolean; // Markowy Surowiec
+  weganski?: boolean; // Wegański
+  wegetarianski?: boolean; // Wegetariański
+  bezCukru?: boolean; // Bez Cukru
+  bezSubstancjiSlodzacych?: boolean; // Bez Substancji Słodzących
+  bezLaktozy?: boolean; // Bez Laktozy
+  bezglutenowy?: boolean; // Bezglutenowy
+  bezalkoholowy?: boolean; // Bezalkoholowy
+  bezzapachowy?: boolean; // Bezzapachowy
+  wolneOdSoi?: boolean; // Wolne od Soi
+  wolneOdAlergenow?: boolean; // Wolne od Alergenów
+  nonGmo?: boolean; // Non-gmo
+  wolneOdSorbinianuPotasu?: boolean; // Wolne od Sorbinianu Potasu
+  cleanLabel?: boolean; // Clean Label
   createdAt: string;
   updatedAt: string;
 }
@@ -254,7 +270,23 @@ const Products: React.FC = () => {
     gisLink: '',
     gisNumer: '',
     opakowanie: '',
-    receptura: ''
+    receptura: '',
+    // Cechy Ogólne defaults
+    naturalny100: false,
+    markowySurowiec: false,
+    weganski: false,
+    wegetarianski: false,
+    bezCukru: false,
+    bezSubstancjiSlodzacych: false,
+    bezLaktozy: false,
+    bezglutenowy: false,
+    bezalkoholowy: false,
+    bezzapachowy: false,
+    wolneOdSoi: false,
+    wolneOdAlergenow: false,
+    nonGmo: false,
+    wolneOdSorbinianuPotasu: false,
+    cleanLabel: false
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -347,6 +379,22 @@ const Products: React.FC = () => {
       gisNumer: newProduct.gisNumer,
       opakowanie: newProduct.opakowanie,
       receptura: newProduct.receptura,
+      // Cechy Ogólne
+      naturalny100: newProduct.naturalny100,
+      markowySurowiec: newProduct.markowySurowiec,
+      weganski: newProduct.weganski,
+      wegetarianski: newProduct.wegetarianski,
+      bezCukru: newProduct.bezCukru,
+      bezSubstancjiSlodzacych: newProduct.bezSubstancjiSlodzacych,
+      bezLaktozy: newProduct.bezLaktozy,
+      bezglutenowy: newProduct.bezglutenowy,
+      bezalkoholowy: newProduct.bezalkoholowy,
+      bezzapachowy: newProduct.bezzapachowy,
+      wolneOdSoi: newProduct.wolneOdSoi,
+      wolneOdAlergenow: newProduct.wolneOdAlergenow,
+      nonGmo: newProduct.nonGmo,
+      wolneOdSorbinianuPotasu: newProduct.wolneOdSorbinianuPotasu,
+      cleanLabel: newProduct.cleanLabel,
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -392,7 +440,23 @@ const Products: React.FC = () => {
       gisLink: '',
       gisNumer: '',
       opakowanie: '',
-      receptura: ''
+      receptura: '',
+      // Reset Cechy Ogólne
+      naturalny100: false,
+      markowySurowiec: false,
+      weganski: false,
+      wegetarianski: false,
+      bezCukru: false,
+      bezSubstancjiSlodzacych: false,
+      bezLaktozy: false,
+      bezglutenowy: false,
+      bezalkoholowy: false,
+      bezzapachowy: false,
+      wolneOdSoi: false,
+      wolneOdAlergenow: false,
+      nonGmo: false,
+      wolneOdSorbinianuPotasu: false,
+      cleanLabel: false
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1100,28 +1164,214 @@ const Products: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Opakowanie
+                Opakowanie (Link)
               </label>
               <input
-                type="text"
+                type="url"
                 value={currentProduct?.opakowanie || ''}
                 onChange={(e) => setCurrentProduct({ opakowanie: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Butelka szklana 250ml"
+                placeholder="https://..."
               />
             </div>
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Receptura
+                Receptura (Link)
               </label>
               <input
-                type="text"
+                type="url"
                 value={currentProduct?.receptura || ''}
                 onChange={(e) => setCurrentProduct({ receptura: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. R-001/2024"
+                placeholder="https://..."
               />
+            </div>
+          </div>
+        </div>
+
+        {/* Cechy Ogólne Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Cechy Ogólne</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">100% naturalny</label>
+              <select
+                value={currentProduct?.naturalny100 ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ naturalny100: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Markowy Surowiec</label>
+              <select
+                value={currentProduct?.markowySurowiec ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ markowySurowiec: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Wegański</label>
+              <select
+                value={currentProduct?.weganski ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ weganski: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Wegetariański</label>
+              <select
+                value={currentProduct?.wegetarianski ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wegetarianski: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bez Cukru</label>
+              <select
+                value={currentProduct?.bezCukru ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezCukru: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bez Substancji Słodzących</label>
+              <select
+                value={currentProduct?.bezSubstancjiSlodzacych ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezSubstancjiSlodzacych: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bez Laktozy</label>
+              <select
+                value={currentProduct?.bezLaktozy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezLaktozy: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bezglutenowy</label>
+              <select
+                value={currentProduct?.bezglutenowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezglutenowy: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bezalkoholowy</label>
+              <select
+                value={currentProduct?.bezalkoholowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezalkoholowy: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Bezzapachowy</label>
+              <select
+                value={currentProduct?.bezzapachowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezzapachowy: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Wolne od Soi</label>
+              <select
+                value={currentProduct?.wolneOdSoi ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdSoi: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Wolne od Alergenów</label>
+              <select
+                value={currentProduct?.wolneOdAlergenow ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdAlergenow: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Non-gmo</label>
+              <select
+                value={currentProduct?.nonGmo ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ nonGmo: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Wolne od Sorbinianu Potasu</label>
+              <select
+                value={currentProduct?.wolneOdSorbinianuPotasu ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdSorbinianuPotasu: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Clean Label</label>
+              <select
+                value={currentProduct?.cleanLabel ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ cleanLabel: e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
             </div>
           </div>
         </div>
@@ -1467,7 +1717,23 @@ const Products: React.FC = () => {
                 gisLink: '',
                 gisNumer: '',
                 opakowanie: '',
-                receptura: ''
+                receptura: '',
+                // Reset Cechy Ogólne
+                naturalny100: false,
+                markowySurowiec: false,
+                weganski: false,
+                wegetarianski: false,
+                bezCukru: false,
+                bezSubstancjiSlodzacych: false,
+                bezLaktozy: false,
+                bezglutenowy: false,
+                bezalkoholowy: false,
+                bezzapachowy: false,
+                wolneOdSoi: false,
+                wolneOdAlergenow: false,
+                nonGmo: false,
+                wolneOdSorbinianuPotasu: false,
+                cleanLabel: false
               });
               setActiveTab('marketing');
             }}
@@ -1614,7 +1880,12 @@ const Products: React.FC = () => {
               previewProduct.zalecanyWiek || previewProduct.kraj || previewProduct.ean || 
               previewProduct.cenaSugerowana || previewProduct.waluta || previewProduct.vat || 
               previewProduct.bloz || previewProduct.gisLink || previewProduct.gisNumer ||
-              previewProduct.opakowanie || previewProduct.receptura) && (
+              previewProduct.opakowanie || previewProduct.receptura ||
+              previewProduct.naturalny100 || previewProduct.markowySurowiec || previewProduct.weganski ||
+              previewProduct.wegetarianski || previewProduct.bezCukru || previewProduct.bezSubstancjiSlodzacych ||
+              previewProduct.bezLaktozy || previewProduct.bezglutenowy || previewProduct.bezalkoholowy ||
+              previewProduct.bezzapachowy || previewProduct.wolneOdSoi || previewProduct.wolneOdAlergenow ||
+              previewProduct.nonGmo || previewProduct.wolneOdSorbinianuPotasu || previewProduct.cleanLabel) && (
               <div className="pt-4 border-t border-gray-200">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Informacje Działu Produktu</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -1722,13 +1993,109 @@ const Products: React.FC = () => {
                   {previewProduct.opakowanie && (
                     <div>
                       <span className="text-sm font-medium text-gray-700">Opakowanie:</span>
-                      <p className="text-gray-900">{previewProduct.opakowanie}</p>
+                      <p className="text-blue-600 underline">
+                        <a href={previewProduct.opakowanie} target="_blank" rel="noopener noreferrer">
+                          {previewProduct.opakowanie}
+                        </a>
+                      </p>
                     </div>
                   )}
                   {previewProduct.receptura && (
                     <div>
                       <span className="text-sm font-medium text-gray-700">Receptura:</span>
-                      <p className="text-gray-900">{previewProduct.receptura}</p>
+                      <p className="text-blue-600 underline">
+                        <a href={previewProduct.receptura} target="_blank" rel="noopener noreferrer">
+                          {previewProduct.receptura}
+                        </a>
+                      </p>
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Cechy Ogólne Section in Preview */}
+            {(previewProduct.naturalny100 || previewProduct.markowySurowiec || previewProduct.weganski ||
+              previewProduct.wegetarianski || previewProduct.bezCukru || previewProduct.bezSubstancjiSlodzacych ||
+              previewProduct.bezLaktozy || previewProduct.bezglutenowy || previewProduct.bezalkoholowy ||
+              previewProduct.bezzapachowy || previewProduct.wolneOdSoi || previewProduct.wolneOdAlergenow ||
+              previewProduct.nonGmo || previewProduct.wolneOdSorbinianuPotasu || previewProduct.cleanLabel) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Cechy Ogólne</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {previewProduct.naturalny100 && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      100% naturalny
+                    </div>
+                  )}
+                  {previewProduct.markowySurowiec && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Markowy Surowiec
+                    </div>
+                  )}
+                  {previewProduct.weganski && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Wegański
+                    </div>
+                  )}
+                  {previewProduct.wegetarianski && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Wegetariański
+                    </div>
+                  )}
+                  {previewProduct.bezCukru && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bez Cukru
+                    </div>
+                  )}
+                  {previewProduct.bezSubstancjiSlodzacych && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bez Substancji Słodzących
+                    </div>
+                  )}
+                  {previewProduct.bezLaktozy && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bez Laktozy
+                    </div>
+                  )}
+                  {previewProduct.bezglutenowy && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bezglutenowy
+                    </div>
+                  )}
+                  {previewProduct.bezalkoholowy && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bezalkoholowy
+                    </div>
+                  )}
+                  {previewProduct.bezzapachowy && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Bezzapachowy
+                    </div>
+                  )}
+                  {previewProduct.wolneOdSoi && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Wolne od Soi
+                    </div>
+                  )}
+                  {previewProduct.wolneOdAlergenow && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Wolne od Alergenów
+                    </div>
+                  )}
+                  {previewProduct.nonGmo && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Non-gmo
+                    </div>
+                  )}
+                  {previewProduct.wolneOdSorbinianuPotasu && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Wolne od Sorbinianu Potasu
+                    </div>
+                  )}
+                  {previewProduct.cleanLabel && (
+                    <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Clean Label
                     </div>
                   )}
                 </div>

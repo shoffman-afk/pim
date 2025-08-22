@@ -56,6 +56,17 @@ shared/
 - Database: PostgreSQL with Drizzle ORM
 
 ## Recent Changes
+**2025-01-22**: 
+- Reorganized "Dział Produktu" section with structured "Ogólne Informacje" subsection
+- Changed Opakowanie and Receptura fields to URL inputs (links) instead of text
+- Added "Cechy Ogólne" section with 15 Yes/No characteristics:
+  - 100% naturalny, Markowy Surowiec, Wegański, Wegetariański
+  - Bez Cukru, Bez Substancji Słodzących, Bez Laktozy, Bezglutenowy
+  - Bezalkoholowy, Bezzapachowy, Wolne od Soi, Wolne od Alergenów
+  - Non-gmo, Wolne od Sorbinianu Potasu, Clean Label
+- Enhanced preview modal to display "Cechy Ogólne" as green badges and links for Opakowanie/Receptura
+- Updated Product interface and all initialization points with new boolean fields
+
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal
 - Added comprehensive form fields: Postać dropdown (integrated with Form.tsx data), Marka dropdown (integrated with Brand.tsx data)
