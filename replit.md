@@ -96,7 +96,9 @@ shared/
   - Applied equal width classes (`w-1/5` for 5-column tables, `w-1/8` for 8-column Components table)
   - Updated Standaryzacja, Nazwa Składnika (Components), Kategorie (Materials), Dodatkowe Informacje, Marka, Postać, Kategorie (Products), Zastosowanie, and ActiveComponents
   - **Enhanced "Użyte w" Column Width**: Made "Użyte w" column 100% wider (double width) across all pages
-  - Updated column distributions: 5-column tables use `w-1/6` for other columns and `w-2/6` for "Użyte w", 8-column Components table uses `w-1/9` for other columns and `w-2/9` for "Użyte w"
+  - Updated column distributions: 5-column tables use `w-1/6` for other columns and `w-2/6` for "Użyte w", Components table (now 7 columns) uses `w-1/7` for other columns and `w-2/7` for "Użyte w"
+  - **Components Table Restructuring**: Removed "Nazwa Składnika" column and moved active names as subtitles under "Tytuł" column (similar to Products page design)
+  - Components table now has 7 columns instead of 8, with improved title-subtitle display pattern for better readability
   - All columns now have proportional width distribution with enhanced "Użyte w" visibility across all subpages
 
 **Previous Features (2025-01-27)**:

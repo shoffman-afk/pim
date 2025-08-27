@@ -864,20 +864,19 @@ const Components: React.FC = () => {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Tytuł</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Kategorie</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Nazwa Składnika</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Standaryzacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-2/9">Użyte w</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Tytuł</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Kategorie</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Standaryzacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-2/7">Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Akcje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
               {filteredComponents.length === 0 ? (
                 <tr>
-                  <td colSpan={8} className="p-8 text-center">
+                  <td colSpan={7} className="p-8 text-center">
                     <Package className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p className="text-gray-500">
                       {searchTerm ? 'Nie znaleziono składników pasujących do wyszukiwania' : 'Brak składników'}
@@ -888,18 +887,18 @@ const Components: React.FC = () => {
                 filteredComponents.map((component) => (
                   <tr key={component.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-sm font-medium text-gray-900">
-                        {component.title}
-                      </h3>
+                      <div>
+                        <div className="text-sm font-medium text-gray-900">
+                          {component.title}
+                        </div>
+                        {component.activeName && (
+                          <p className="text-sm text-gray-600">{component.activeName}</p>
+                        )}
+                      </div>
                     </td>
                     <td className="py-4 px-6">
                       <span className="inline-block bg-purple-100 text-purple-800 text-xs px-2 py-1 rounded-full">
                         {component.category}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className="inline-block bg-orange-100 text-orange-800 text-xs px-2 py-1 rounded-full">
-                        {component.activeName}
                       </span>
                     </td>
                     <td className="py-4 px-6">
