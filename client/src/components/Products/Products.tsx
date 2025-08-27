@@ -938,65 +938,68 @@ const Products: React.FC = () => {
     }, [isEdit]);
 
     return (
-      <div className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Nazwa produktu *
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.name || ''}
-            onChange={(e) => setCurrentProduct({ name: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. Suplement Witamina C 1000mg"
-            autoComplete="off"
-          />
-        </div>
+      <div className="space-y-6">
+        {/* Two-column grid for basic fields */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Nazwa produktu *
+            </label>
+            <input
+              type="text"
+              value={currentProduct?.name || ''}
+              onChange={(e) => setCurrentProduct({ name: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="np. Suplement Witamina C 1000mg"
+              autoComplete="off"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Podtytuł nr 1
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.subtitle1 || ''}
-            onChange={(e) => setCurrentProduct({ subtitle1: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. Najwyższej jakości witamina C"
-            autoComplete="off"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Kategoria Produktu *
+            </label>
+            <select
+              value={currentProduct?.category || ''}
+              onChange={(e) => setCurrentProduct({ category: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              <option value="">Wybierz kategorię</option>
+              {availableCategories.map((category) => (
+                <option key={category} value={category}>
+                  {category}
+                </option>
+              ))}
+            </select>
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Podtytuł nr 2
-          </label>
-          <input
-            type="text"
-            value={currentProduct?.subtitle2 || ''}
-            onChange={(e) => setCurrentProduct({ subtitle2: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-            placeholder="np. Wspiera naturalną odporność organizmu"
-            autoComplete="off"
-          />
-        </div>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Podtytuł nr 1
+            </label>
+            <input
+              type="text"
+              value={currentProduct?.subtitle1 || ''}
+              onChange={(e) => setCurrentProduct({ subtitle1: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="np. Najwyższej jakości witamina C"
+              autoComplete="off"
+            />
+          </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Kategoria Produktu *
-          </label>
-          <select
-            value={currentProduct?.category || ''}
-            onChange={(e) => setCurrentProduct({ category: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Wybierz kategorię</option>
-            {availableCategories.map((category) => (
-              <option key={category} value={category}>
-                {category}
-              </option>
-            ))}
-          </select>
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-1">
+              Podtytuł nr 2
+            </label>
+            <input
+              type="text"
+              value={currentProduct?.subtitle2 || ''}
+              onChange={(e) => setCurrentProduct({ subtitle2: e.target.value })}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              placeholder="np. Wspiera naturalną odporność organizmu"
+              autoComplete="off"
+            />
+          </div>
         </div>
 
         <div>
@@ -1176,23 +1179,23 @@ const Products: React.FC = () => {
         {/* Ogólne Informacje Section */}
         <div className="border border-gray-200 rounded-lg p-4">
           <h4 className="text-lg font-semibold text-gray-900 mb-4">Ogólne Informacje</h4>
-          <div className="space-y-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">
-            Postać *
-          </label>
-          <select
-            value={currentProduct?.postac || ''}
-            onChange={(e) => setCurrentProduct({ postac: e.target.value })}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Wybierz postać</option>
-            {availablePostac.map((postac) => (
-              <option key={postac.id} value={postac.name}>
-                {postac.name}
-              </option>
-            ))}
-          </select>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Postać *
+              </label>
+              <select
+                value={currentProduct?.postac || ''}
+                onChange={(e) => setCurrentProduct({ postac: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz postać</option>
+                {availablePostac.map((postac) => (
+                  <option key={postac.id} value={postac.name}>
+                    {postac.name}
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div>
