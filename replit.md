@@ -99,6 +99,8 @@ shared/
   - Updated column distributions: 5-column tables use `w-1/6` for other columns and `w-2/6` for "Użyte w", Components table (now 7 columns) uses `w-1/7` for other columns and `w-2/7` for "Użyte w"
   - **Components Table Restructuring**: Removed "Nazwa Składnika" column and moved active names as subtitles under "Tytuł" column (similar to Products page design)
   - Components table now has 7 columns instead of 8, with improved title-subtitle display pattern for better readability
+  - **Products Table Enhancement**: Added "Data utworzenia" and "Ostatnia aktualizacja" columns to Products table
+  - Products table expanded from 4 columns to 6 columns with equal width distribution (w-1/6 for each column)
   - All columns now have proportional width distribution with enhanced "Użyte w" visibility across all subpages
 
 **Previous Features (2025-01-27)**:

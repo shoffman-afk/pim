@@ -3797,27 +3797,21 @@ const Products: React.FC = () => {
         </div>
         
         <div className="overflow-x-auto">
-          <table className="w-full">
-            <thead className="bg-gray-50">
+          <table className="w-full table-fixed">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Produkt
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Kategoria
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Status
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Akcje
-                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Produkt</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Kategoria</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Status</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Akcje</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredProducts.length === 0 ? (
                 <tr>
-                  <td colSpan={4} className="py-8 px-6 text-center text-gray-500">
+                  <td colSpan={6} className="py-8 px-6 text-center text-gray-500">
                     Brak produktów do wyświetlenia
                   </td>
                 </tr>
@@ -3858,6 +3852,18 @@ const Products: React.FC = () => {
                       <span className={`inline-block text-xs px-2 py-1 rounded-full ${getStatusColor(product.status)}`}>
                         {getStatusLabel(product.status)}
                       </span>
+                    </td>
+                    <td className="py-4 px-6 text-gray-600 text-sm">
+                      {new Date(product.createdAt).toLocaleDateString('pl-PL')}
+                    </td>
+                    <td className="py-4 px-6 text-gray-600 text-sm">
+                      {product.updatedAt !== product.createdAt ? (
+                        <span className="text-blue-600 font-medium">
+                          {new Date(product.updatedAt).toLocaleDateString('pl-PL')}
+                        </span>
+                      ) : (
+                        <span className="text-gray-400">-</span>
+                      )}
                     </td>
                     <td className="py-4 px-6">
                       <div className="flex space-x-2">
