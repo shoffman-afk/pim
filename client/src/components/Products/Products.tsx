@@ -2384,7 +2384,72 @@ const Products: React.FC = () => {
         <div className="flex items-center justify-between mb-4">
           <h3 className="text-xl font-semibold">Dodaj nowy produkt</h3>
           <button
-            onClick={handleCancel}
+            onClick={() => {
+              setShowCreateModal(false);
+              setNewProduct({
+                name: '',
+                category: '',
+                subcategories: [],
+                usage: [],
+                status: 'active',
+                dailyPortions: '',
+                netQuantity: '',
+                netWeight: '',
+                foodCategory: '',
+                recommendedAge: '',
+                ean: '',
+                suggestedPrice: '',
+                vat: '',
+                bloz: '',
+                gisLink: '',
+                gisNumber: '',
+                country: 'Polska',
+                currency: 'PLN',
+                packaging: '',
+                recipe: '',
+                form: '',
+                brand: '',
+                naturalHundredPercent: undefined,
+                brandIngredient: undefined,
+                vegan: undefined,
+                vegetarian: undefined,
+                sugarFree: undefined,
+                sweetenerFree: undefined,
+                lactoseFree: undefined,
+                glutenFree: undefined,
+                alcoholFree: undefined,
+                fragranceFree: undefined,
+                soyFree: undefined,
+                allergenFree: undefined,
+                nonGmo: undefined,
+                potassiumSorbinateFree: undefined,
+                cleanLabel: undefined,
+                forMen: undefined,
+                forWomen: undefined,
+                forPregnantWomen: undefined,
+                forSeniors: undefined,
+                forChildren: undefined,
+                forFamily: undefined,
+                forDiabetics: undefined,
+                forAthletes: undefined,
+                forVegans: undefined,
+                forVegetarians: undefined,
+                researchStudies: [],
+                fullFrontText: '',
+                specialPropertiesTitle: '',
+                statementContent: '',
+                dailyPortionRecommendation: '',
+                ingredients: [],
+                tables: [],
+                bulkPackageQuantity: 0,
+                unitGrossWeight: 0,
+                palletQuantity: 0,
+                packagingType: '',
+                storageConditions: '',
+                shelfLife: '',
+                transportConditions: ''
+              });
+            }}
             className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
           >
             <X className="w-6 h-6" />
@@ -3738,8 +3803,16 @@ const Products: React.FC = () => {
       {/* Edit Product Modal */}
       {editingProduct && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Edytuj produkt</h3>
+          <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Edytuj produkt</h3>
+              <button
+                onClick={() => setEditingProduct(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             
             {/* Tabs */}
             <div className="flex space-x-2 mb-6 border-b border-gray-200">

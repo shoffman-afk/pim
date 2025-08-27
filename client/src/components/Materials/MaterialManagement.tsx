@@ -134,8 +134,16 @@ const MaterialManagement: React.FC = () => {
 
   const CreateMaterialModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">Dodaj nowy surowiec</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Dodaj nowy surowiec</h3>
+          <button
+            onClick={handleCancel}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-4">
           <div>
@@ -369,8 +377,16 @@ const MaterialManagement: React.FC = () => {
       {/* Edit Material Inline Form */}
       {editingMaterial && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Edytuj surowiec</h3>
+          <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Edytuj surowiec</h3>
+              <button
+                onClick={() => setEditingMaterial(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             
             <div className="space-y-4">
               <div>

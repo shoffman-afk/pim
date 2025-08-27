@@ -102,8 +102,27 @@ const UserManagement: React.FC = () => {
 
   const CreateUserModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">Dodaj nowego użytkownika</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Dodaj nowego użytkownika</h3>
+          <button
+            onClick={() => {
+              setShowCreateModal(false);
+              setNewUser({
+                firstName: '',
+                lastName: '',
+                email: '',
+                position: '',
+                password: '',
+                role: 'user',
+                permissions: []
+              });
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-4">
           <div className="grid grid-cols-2 gap-4">
@@ -219,10 +238,21 @@ const UserManagement: React.FC = () => {
 
   const PermissionsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">
-          Uprawnienia - {selectedUser?.firstName} {selectedUser?.lastName}
-        </h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">
+            Uprawnienia - {selectedUser?.firstName} {selectedUser?.lastName}
+          </h3>
+          <button
+            onClick={() => {
+              setShowPermissionsModal(false);
+              setSelectedUser(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-3 max-h-96 overflow-y-auto">
           {permissions.map((permission) => (
@@ -388,8 +418,16 @@ const UserManagement: React.FC = () => {
       {/* Edit User Inline Form */}
       {editingUser && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Edytuj użytkownika</h3>
+          <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Edytuj użytkownika</h3>
+              <button
+                onClick={() => setEditingUser(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             
             <div className="space-y-4">
               <div className="grid grid-cols-2 gap-4">

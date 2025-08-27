@@ -559,8 +559,31 @@ const Components: React.FC = () => {
         }
       }}
     >
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-semibold mb-4">Dodaj nowy składnik</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Dodaj nowy składnik</h3>
+          <button
+            onClick={() => {
+              setShowCreateModal(false);
+              setNewComponent({
+                title: '',
+                category: '',
+                activeName: '',
+                standardization: '',
+                supplier: '',
+                producer: '',
+                ingredientsList: '',
+                notes: '',
+                trademark: '',
+                expiryDate: '',
+                country: ''
+              });
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
@@ -737,8 +760,19 @@ const Components: React.FC = () => {
 
   const PreviewModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-semibold mb-4">Podgląd składnika</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Podgląd składnika</h3>
+          <button
+            onClick={() => {
+              setShowPreviewModal(false);
+              setPreviewComponent(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         {previewComponent && (
           <div className="space-y-4">
@@ -839,10 +873,21 @@ const Components: React.FC = () => {
 
   const ProductsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">
-          Produkty zawierające: {selectedComponent?.title}
-        </h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">
+            Produkty zawierające: {selectedComponent?.title}
+          </h3>
+          <button
+            onClick={() => {
+              setShowProductsModal(false);
+              setSelectedComponent(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {selectedComponent?.usedInProducts.length === 0 ? (
@@ -1055,8 +1100,16 @@ const Components: React.FC = () => {
             }
           }}
         >
-          <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-            <h3 className="text-xl font-semibold mb-4">Edytuj składnik</h3>
+          <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Edytuj składnik</h3>
+              <button
+                onClick={() => setEditingComponent(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>

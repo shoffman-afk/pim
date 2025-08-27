@@ -125,8 +125,19 @@ const Categories: React.FC = () => {
 
   const CreateCategoryModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">Dodaj nową kategorię</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Dodaj nową kategorię</h3>
+          <button
+            onClick={() => {
+              setShowCreateModal(false);
+              setNewCategoryName('');
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-4">
           <div>
@@ -167,10 +178,21 @@ const Categories: React.FC = () => {
 
   const ProductsModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">
-          Produkty z kategorii: {selectedCategory?.name}
-        </h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">
+            Produkty z kategorii: {selectedCategory?.name}
+          </h3>
+          <button
+            onClick={() => {
+              setShowProductsModal(false);
+              setSelectedCategory(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="space-y-2 max-h-96 overflow-y-auto">
           {selectedCategory?.usedInProducts.length === 0 ? (
@@ -338,8 +360,16 @@ const Categories: React.FC = () => {
       {/* Edit Category Modal */}
       {editingCategory && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-full max-w-md">
-            <h3 className="text-xl font-semibold mb-4">Edytuj kategorię</h3>
+          <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-xl font-semibold">Edytuj kategorię</h3>
+              <button
+                onClick={() => setEditingCategory(null)}
+                className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
             
             <div className="space-y-4">
               <div>
