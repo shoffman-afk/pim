@@ -132,6 +132,9 @@ interface Product {
   gisNumer?: string; // GIS Number
   opakowanie?: string; // Packaging (link)
   receptura?: string; // Formula (link)
+  sposobUzycia?: string; // Usage instructions (3-line textarea)
+  przechowywanie?: string; // Storage instructions
+  producent?: string; // Producer/Manufacturer
   // Cechy Ogólne (General Characteristics)
   naturalny100?: boolean; // 100% naturalny
   markowySurowiec?: boolean; // Markowy Surowiec
@@ -635,6 +638,9 @@ const Products: React.FC = () => {
       gisNumer: '',
       opakowanie: '',
       receptura: '',
+      sposobUzycia: '',
+      przechowywanie: '',
+      producent: '',
       // Reset Cechy Ogólne
       naturalny100: undefined,
       markowySurowiec: undefined,
@@ -1422,6 +1428,47 @@ const Products: React.FC = () => {
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="https://..."
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Sposób użycia
+              </label>
+              <textarea
+                rows={3}
+                value={currentProduct?.sposobUzycia || ''}
+                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Przechowywanie
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.przechowywanie || ''}
+                onChange={(e) => setCurrentProduct({ przechowywanie: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Przechowywać w suchym i chłodnym miejscu"
+                autoComplete="off"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Producent
+              </label>
+              <select
+                value={currentProduct?.producent || ''}
+                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz producenta</option>
+                <option value="Aura Herbals">Aura Herbals</option>
+              </select>
             </div>
           </div>
         </div>
@@ -2940,6 +2987,24 @@ const Products: React.FC = () => {
                           {previewProduct.receptura}
                         </a>
                       </p>
+                    </div>
+                  )}
+                  {previewProduct.sposobUzycia && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Sposób użycia:</span>
+                      <p className="text-gray-900 whitespace-pre-line">{previewProduct.sposobUzycia}</p>
+                    </div>
+                  )}
+                  {previewProduct.przechowywanie && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Przechowywanie:</span>
+                      <p className="text-gray-900">{previewProduct.przechowywanie}</p>
+                    </div>
+                  )}
+                  {previewProduct.producent && (
+                    <div>
+                      <span className="text-sm font-medium text-gray-700">Producent:</span>
+                      <p className="text-gray-900">{previewProduct.producent}</p>
                     </div>
                   )}
                 </div>
