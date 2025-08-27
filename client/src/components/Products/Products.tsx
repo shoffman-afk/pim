@@ -4085,20 +4085,46 @@ const Products: React.FC = () => {
                     {editingTable.rows.map((row, rowIndex) => (
                       <div key={rowIndex} className="flex items-center space-x-2">
                         <div className="flex-1 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                          {row.map((cell, cellIndex) => (
-                            <input
-                              key={cellIndex}
-                              type="text"
-                              value={cell}
-                              onChange={(e) => {
-                                const newRows = [...editingTable.rows];
-                                newRows[rowIndex][cellIndex] = e.target.value;
-                                setEditingTable(prev => ({ ...prev, rows: newRows }));
-                              }}
-                              placeholder={cellIndex === 0 ? editingTable.firstColumnHeader : `Kolumna ${cellIndex + 1}`}
-                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            />
-                          ))}
+                          {row.map((cell, cellIndex) => {
+                            // First column with "Składniki aktywne" uses dropdown from Materials database
+                            if (cellIndex === 0 && editingTable.firstColumnHeader === 'Składniki aktywne') {
+                              return (
+                                <select
+                                  key={cellIndex}
+                                  value={cell}
+                                  onChange={(e) => {
+                                    const newRows = [...editingTable.rows];
+                                    newRows[rowIndex][cellIndex] = e.target.value;
+                                    setEditingTable(prev => ({ ...prev, rows: newRows }));
+                                  }}
+                                  className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                >
+                                  <option value="">Wybierz składnik</option>
+                                  {availableMaterials.map((material) => (
+                                    <option key={material.id} value={material.activeName}>
+                                      {material.activeName}
+                                    </option>
+                                  ))}
+                                </select>
+                              );
+                            }
+                            
+                            // All other columns use regular input fields
+                            return (
+                              <input
+                                key={cellIndex}
+                                type="text"
+                                value={cell}
+                                onChange={(e) => {
+                                  const newRows = [...editingTable.rows];
+                                  newRows[rowIndex][cellIndex] = e.target.value;
+                                  setEditingTable(prev => ({ ...prev, rows: newRows }));
+                                }}
+                                placeholder={cellIndex === 0 ? editingTable.firstColumnHeader : `Kolumna ${cellIndex + 1}`}
+                                className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                              />
+                            );
+                          })}
                         </div>
                         <button
                           onClick={() => {
