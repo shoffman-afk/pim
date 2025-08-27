@@ -3834,7 +3834,7 @@ const Products: React.FC = () => {
                           )}
                         </div>
                         <div>
-                          <div className="font-medium text-gray-900">
+                          <div className="text-sm font-medium text-gray-900">
                             {product.name}
                           </div>
                           {product.subtitle1 && (
