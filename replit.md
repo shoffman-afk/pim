@@ -106,6 +106,16 @@ shared/
   - Components table: First column 30%, "Użyte w" 24% (double width), other columns 10-12%
   - All columns now have proportional width distribution with enhanced "Użyte w" visibility across all subpages
 
+**2025-01-27 (Evening)**:
+- **Activity Logs Page Implementation**: Added new "Logi Aktywności" page as final menu item
+  - Created comprehensive activity logs interface with search and filtering capabilities
+  - Added filters for category (user, product, material, system) and level (info, warning, error)
+  - Implemented table with timestamp, user, action, details, category, and level columns
+  - Added export functionality button for future implementation
+  - Mock data includes realistic log entries for demonstration
+  - Integrated into sidebar menu with Activity icon and admin_full permission
+  - Route configured at /activity-logs matching menu structure
+
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:
   - Each product can now have multiple tables instead of just one

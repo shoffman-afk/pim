@@ -56,7 +56,7 @@ const AppContent = () => {
         <Route path="/products/categories" component={ProductCategories} />
         <Route path="/products/usage" component={ProductUsage} />
         <Route path="/products/additional-info" component={AdditionalInfo} />
-        <Route path="/logs" component={ActivityLogs} />
+        <Route path="/activity-logs" component={ActivityLogs} />
       </Switch>
     </Layout>
   );

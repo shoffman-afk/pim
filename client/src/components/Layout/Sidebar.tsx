@@ -8,7 +8,8 @@ import {
   Settings, 
   LogOut,
   FileText,
-  ChevronDown
+  ChevronDown,
+  Activity
 } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 
@@ -41,6 +42,12 @@ const Sidebar: React.FC = () => {
       label: 'Użytkownicy',
       icon: Users,
       permission: 'users_manage'
+    },
+    {
+      path: '/activity-logs',
+      label: 'Logi Aktywności',
+      icon: Activity,
+      permission: 'admin_full'
     }
   ];
 
