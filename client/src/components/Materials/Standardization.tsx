@@ -280,7 +280,7 @@ const Standardization: React.FC = () => {
                 filteredStandardizations.map((standardization) => (
                   <tr key={standardization.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {standardization.name}
                       </h3>
                     </td>

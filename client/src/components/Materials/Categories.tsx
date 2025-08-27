@@ -287,7 +287,7 @@ const Categories: React.FC = () => {
                 filteredCategories.map((category) => (
                   <tr key={category.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {category.name}
                       </h3>
                     </td>

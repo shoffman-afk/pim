@@ -888,7 +888,7 @@ const Components: React.FC = () => {
                 filteredComponents.map((component) => (
                   <tr key={component.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {component.title}
                       </h3>
                     </td>

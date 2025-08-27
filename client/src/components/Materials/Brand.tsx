@@ -287,7 +287,7 @@ const Brand: React.FC = () => {
                 filteredBrands.map((brand) => (
                   <tr key={brand.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {brand.name}
                       </h3>
                     </td>

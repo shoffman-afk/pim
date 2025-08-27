@@ -84,6 +84,11 @@ shared/
   - Enhanced styling with search icons, hover effects, and proper remove buttons
   - Maintained proper field functionality and validation
   - Improved form organization and user experience
+- **Font Size Standardization Completed**:
+  - Standardized first column font sizes across all subpages to match AdditionalInfo component
+  - Updated "Standaryzacja", "Nazwa Składnika", "Kategorie", "Marka", "Postać", and "Zastosowanie" components
+  - Changed from `text-lg font-medium` to `text-sm font-medium` for design consistency
+  - All table first columns now use uniform `text-sm font-medium` styling
 
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:
