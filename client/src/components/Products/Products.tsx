@@ -179,11 +179,14 @@ interface Product {
     activeName: string; // Nazwa składnika (do wyszukiwania)
     ingredientsList: string; // Nazwa lista składników (wyświetlana w produkcie)
   }>;
-  // Tabela (Table)
-  tableType?: '3-column' | '4-column';
-  firstColumnHeader?: 'Składniki aktywne' | 'Wartości odżywcze';
-  tableHeaders?: string[]; // Array of column headers
-  tableRows?: string[][]; // Array of table rows, each row is an array of cell values
+  // Tabele (Tables) - Support for multiple tables
+  tables?: Array<{
+    id: string;
+    tableType: '3-column' | '4-column';
+    firstColumnHeader: 'Składniki aktywne' | 'Wartości odżywcze';
+    tableHeaders: string[]; // Array of column headers
+    tableRows: string[][]; // Array of table rows, each row is an array of cell values
+  }>;
   createdAt: string;
   updatedAt: string;
 }
@@ -419,11 +422,8 @@ const Products: React.FC = () => {
     zalecanadzienna: '',
     // Składniki defaults
     skladniki: [],
-    // Tabela defaults
-    tableType: undefined,
-    firstColumnHeader: undefined,
-    tableHeaders: ['', '', '', ''],
-    tableRows: []
+    // Tabele defaults
+    tables: []
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -433,6 +433,19 @@ const Products: React.FC = () => {
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('marketing');
   const [ingredientFilter, setIngredientFilter] = useState('');
+  
+  // Current table being edited
+  const [currentTable, setCurrentTable] = useState<{
+    tableType: '3-column' | '4-column' | '';
+    firstColumnHeader: 'Składniki aktywne' | 'Wartości odżywcze' | '';
+    tableHeaders: string[];
+    tableRows: string[][];
+  }>({
+    tableType: '',
+    firstColumnHeader: '',
+    tableHeaders: ['', '', '', ''],
+    tableRows: []
+  });
 
   const getRowBackgroundColor = (status: string) => {
     switch (status) {
@@ -553,11 +566,8 @@ const Products: React.FC = () => {
       zalecanadzienna: newProduct.zalecanadzienna || '',
       // Składniki
       skladniki: newProduct.skladniki || [],
-      // Tabela
-      tableType: newProduct.tableType,
-      firstColumnHeader: newProduct.firstColumnHeader,
-      tableHeaders: newProduct.tableHeaders || ['', '', '', ''],
-      tableRows: newProduct.tableRows || [],
+      // Tabele
+      tables: newProduct.tables || [],
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -640,11 +650,8 @@ const Products: React.FC = () => {
       zalecanadzienna: '',
       // Reset Składniki
       skladniki: [],
-      // Reset Tabela
-      tableType: undefined,
-      firstColumnHeader: undefined,
-      tableHeaders: ['', '', '', ''],
-      tableRows: []
+      // Reset Tabele
+      tables: []
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -2052,188 +2059,302 @@ const Products: React.FC = () => {
           </div>
         </div>
 
-        {/* Table Creation Section */}
+        {/* Tables Management Section */}
         <div className="border border-gray-200 rounded-lg p-4 mt-6">
-          <h4 className="text-lg font-semibold text-gray-900 mb-4">Tworzenie Tabeli</h4>
-          
-          <div className="space-y-4">
-            {/* Table Options */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Typ tabeli</label>
-                <select
-                  value={newProduct.tableType || ''}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, tableType: e.target.value as '3-column' | '4-column' || undefined }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  <option value="">Wybierz typ tabeli</option>
-                  <option value="3-column">3 kolumny</option>
-                  <option value="4-column">4 kolumny</option>
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">Nagłówek pierwszej kolumny</label>
-                <select
-                  value={newProduct.firstColumnHeader || ''}
-                  onChange={(e) => setNewProduct(prev => ({ ...prev, firstColumnHeader: e.target.value as 'Składniki aktywne' | 'Wartości odżywcze' || undefined }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  disabled={!newProduct.tableType}
-                >
-                  <option value="">Wybierz nagłówek</option>
-                  <option value="Składniki aktywne">Składniki aktywne</option>
-                  <option value="Wartości odżywcze">Wartości odżywcze</option>
-                </select>
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-lg font-semibold text-gray-900">Tabele ({(newProduct.tables || []).length})</h4>
+            <button
+              onClick={() => {
+                setCurrentTable({
+                  tableType: '',
+                  firstColumnHeader: '',
+                  tableHeaders: ['', '', '', ''],
+                  tableRows: []
+                });
+              }}
+              className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
+            >
+              <Plus className="w-4 h-4 mr-2" />
+              Dodaj nową tabelę
+            </button>
+          </div>
+
+          {/* Existing Tables List */}
+          {newProduct.tables && newProduct.tables.length > 0 && (
+            <div className="mb-6">
+              <h5 className="font-medium text-gray-900 mb-3">Istniejące tabele</h5>
+              <div className="space-y-2">
+                {newProduct.tables.map((table, index) => (
+                  <div key={table.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
+                    <div>
+                      <div className="font-medium text-sm text-gray-900">
+                        {table.firstColumnHeader} - {table.tableType === '3-column' ? '3 kolumny' : '4 kolumny'}
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Wierszy: {table.tableRows.length}
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-2">
+                      <button
+                        onClick={() => setCurrentTable({...table})}
+                        className="text-blue-600 hover:text-blue-800 text-sm px-2 py-1 rounded"
+                      >
+                        <Edit className="w-4 h-4" />
+                      </button>
+                      <button
+                        onClick={() => {
+                          const tables = [...(newProduct.tables || [])];
+                          tables.splice(index, 1);
+                          setNewProduct(prev => ({ ...prev, tables }));
+                        }}
+                        className="text-red-600 hover:text-red-800 text-sm px-2 py-1 rounded"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
+          )}
 
-            {/* Table Preview/Editor */}
-            {newProduct.tableType && newProduct.firstColumnHeader && (
-              <div className="mt-6">
-                <h5 className="font-medium text-gray-900 mb-3">Podgląd i edycja tabeli</h5>
-                <div className="border border-gray-300 rounded-lg overflow-hidden">
-                  <table className="w-full">
-                    <thead className="bg-gray-50">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b">
-                          {newProduct.firstColumnHeader}
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-l">
-                          <input
-                            type="text"
-                            placeholder="Nagłówek kolumny 2"
-                            value={newProduct.tableHeaders?.[1] || ''}
-                            onChange={(e) => {
-                              const headers = [...(newProduct.tableHeaders || ['', '', '', ''])];
-                              headers[1] = e.target.value;
-                              setNewProduct(prev => ({ ...prev, tableHeaders: headers }));
-                            }}
-                            className="w-full px-2 py-1 text-sm border-0 bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 rounded"
-                          />
-                        </th>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-l">
-                          <input
-                            type="text"
-                            placeholder="Nagłówek kolumny 3"
-                            value={newProduct.tableHeaders?.[2] || ''}
-                            onChange={(e) => {
-                              const headers = [...(newProduct.tableHeaders || ['', '', '', ''])];
-                              headers[2] = e.target.value;
-                              setNewProduct(prev => ({ ...prev, tableHeaders: headers }));
-                            }}
-                            className="w-full px-2 py-1 text-sm border-0 bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 rounded"
-                          />
-                        </th>
-                        {newProduct.tableType === '4-column' && (
+          {/* Current Table Editor */}
+          {(currentTable.tableType !== '' || currentTable.firstColumnHeader !== '') && (
+            <div className="space-y-4 border-t pt-4">
+              <h5 className="font-medium text-gray-900">
+                {newProduct.tables?.some(t => t.id === (currentTable as any).id) ? 'Edytuj tabelę' : 'Nowa tabela'}
+              </h5>
+              
+              {/* Table Options */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Typ tabeli</label>
+                  <select
+                    value={currentTable.tableType}
+                    onChange={(e) => setCurrentTable(prev => ({ 
+                      ...prev, 
+                      tableType: e.target.value as '3-column' | '4-column' | ''
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Wybierz typ tabeli</option>
+                    <option value="3-column">3 kolumny</option>
+                    <option value="4-column">4 kolumny</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">Nagłówek pierwszej kolumny</label>
+                  <select
+                    value={currentTable.firstColumnHeader}
+                    onChange={(e) => setCurrentTable(prev => ({ 
+                      ...prev, 
+                      firstColumnHeader: e.target.value as 'Składniki aktywne' | 'Wartości odżywcze' | ''
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={!currentTable.tableType}
+                  >
+                    <option value="">Wybierz nagłówek</option>
+                    <option value="Składniki aktywne">Składniki aktywne</option>
+                    <option value="Wartości odżywcze">Wartości odżywcze</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Table Preview/Editor */}
+              {currentTable.tableType && currentTable.firstColumnHeader && (
+                <div className="mt-6">
+                  <div className="border border-gray-300 rounded-lg overflow-hidden">
+                    <table className="w-full">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b">
+                            {currentTable.firstColumnHeader}
+                          </th>
                           <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-l">
                             <input
                               type="text"
-                              placeholder="Nagłówek kolumny 4"
-                              value={newProduct.tableHeaders?.[3] || ''}
+                              placeholder="Nagłówek kolumny 2"
+                              value={currentTable.tableHeaders[1] || ''}
                               onChange={(e) => {
-                                const headers = [...(newProduct.tableHeaders || ['', '', '', ''])];
-                                headers[3] = e.target.value;
-                                setNewProduct(prev => ({ ...prev, tableHeaders: headers }));
+                                const headers = [...currentTable.tableHeaders];
+                                headers[1] = e.target.value;
+                                setCurrentTable(prev => ({ ...prev, tableHeaders: headers }));
                               }}
                               className="w-full px-2 py-1 text-sm border-0 bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 rounded"
                             />
                           </th>
-                        )}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {(newProduct.tableRows || []).map((row, rowIndex) => (
-                        <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                          <td className="px-4 py-3 text-sm border-b">
+                          <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-l">
                             <input
                               type="text"
-                              placeholder="Wartość"
-                              value={row[0] || ''}
+                              placeholder="Nagłówek kolumny 3"
+                              value={currentTable.tableHeaders[2] || ''}
                               onChange={(e) => {
-                                const rows = [...(newProduct.tableRows || [])];
-                                rows[rowIndex][0] = e.target.value;
-                                setNewProduct(prev => ({ ...prev, tableRows: rows }));
+                                const headers = [...currentTable.tableHeaders];
+                                headers[2] = e.target.value;
+                                setCurrentTable(prev => ({ ...prev, tableHeaders: headers }));
                               }}
-                              className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              className="w-full px-2 py-1 text-sm border-0 bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 rounded"
                             />
-                          </td>
-                          <td className="px-4 py-3 text-sm border-b border-l">
-                            <input
-                              type="text"
-                              placeholder="Wartość"
-                              value={row[1] || ''}
-                              onChange={(e) => {
-                                const rows = [...(newProduct.tableRows || [])];
-                                rows[rowIndex][1] = e.target.value;
-                                setNewProduct(prev => ({ ...prev, tableRows: rows }));
-                              }}
-                              className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            />
-                          </td>
-                          <td className="px-4 py-3 text-sm border-b border-l">
-                            <input
-                              type="text"
-                              placeholder="Wartość"
-                              value={row[2] || ''}
-                              onChange={(e) => {
-                                const rows = [...(newProduct.tableRows || [])];
-                                rows[rowIndex][2] = e.target.value;
-                                setNewProduct(prev => ({ ...prev, tableRows: rows }));
-                              }}
-                              className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                            />
-                          </td>
-                          {newProduct.tableType === '4-column' && (
-                            <td className="px-4 py-3 text-sm border-b border-l">
+                          </th>
+                          {currentTable.tableType === '4-column' && (
+                            <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-l">
+                              <input
+                                type="text"
+                                placeholder="Nagłówek kolumny 4"
+                                value={currentTable.tableHeaders[3] || ''}
+                                onChange={(e) => {
+                                  const headers = [...currentTable.tableHeaders];
+                                  headers[3] = e.target.value;
+                                  setCurrentTable(prev => ({ ...prev, tableHeaders: headers }));
+                                }}
+                                className="w-full px-2 py-1 text-sm border-0 bg-transparent focus:outline-none focus:ring-1 focus:ring-blue-500 rounded"
+                              />
+                            </th>
+                          )}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {currentTable.tableRows.map((row, rowIndex) => (
+                          <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                            <td className="px-4 py-3 text-sm border-b">
                               <input
                                 type="text"
                                 placeholder="Wartość"
-                                value={row[3] || ''}
+                                value={row[0] || ''}
                                 onChange={(e) => {
-                                  const rows = [...(newProduct.tableRows || [])];
-                                  rows[rowIndex][3] = e.target.value;
-                                  setNewProduct(prev => ({ ...prev, tableRows: rows }));
+                                  const rows = [...currentTable.tableRows];
+                                  rows[rowIndex][0] = e.target.value;
+                                  setCurrentTable(prev => ({ ...prev, tableRows: rows }));
                                 }}
                                 className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
                               />
                             </td>
-                          )}
-                          <td className="px-4 py-3 text-sm border-b border-l">
-                            <button
-                              onClick={() => {
-                                const rows = [...(newProduct.tableRows || [])];
-                                rows.splice(rowIndex, 1);
-                                setNewProduct(prev => ({ ...prev, tableRows: rows }));
-                              }}
-                              className="text-red-600 hover:text-red-800 text-sm"
-                            >
-                              <Trash2 className="w-4 h-4" />
-                            </button>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                            <td className="px-4 py-3 text-sm border-b border-l">
+                              <input
+                                type="text"
+                                placeholder="Wartość"
+                                value={row[1] || ''}
+                                onChange={(e) => {
+                                  const rows = [...currentTable.tableRows];
+                                  rows[rowIndex][1] = e.target.value;
+                                  setCurrentTable(prev => ({ ...prev, tableRows: rows }));
+                                }}
+                                className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              />
+                            </td>
+                            <td className="px-4 py-3 text-sm border-b border-l">
+                              <input
+                                type="text"
+                                placeholder="Wartość"
+                                value={row[2] || ''}
+                                onChange={(e) => {
+                                  const rows = [...currentTable.tableRows];
+                                  rows[rowIndex][2] = e.target.value;
+                                  setCurrentTable(prev => ({ ...prev, tableRows: rows }));
+                                }}
+                                className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                              />
+                            </td>
+                            {currentTable.tableType === '4-column' && (
+                              <td className="px-4 py-3 text-sm border-b border-l">
+                                <input
+                                  type="text"
+                                  placeholder="Wartość"
+                                  value={row[3] || ''}
+                                  onChange={(e) => {
+                                    const rows = [...currentTable.tableRows];
+                                    rows[rowIndex][3] = e.target.value;
+                                    setCurrentTable(prev => ({ ...prev, tableRows: rows }));
+                                  }}
+                                  className="w-full px-2 py-1 text-sm border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                                />
+                              </td>
+                            )}
+                            <td className="px-4 py-3 text-sm border-b border-l">
+                              <button
+                                onClick={() => {
+                                  const rows = [...currentTable.tableRows];
+                                  rows.splice(rowIndex, 1);
+                                  setCurrentTable(prev => ({ ...prev, tableRows: rows }));
+                                }}
+                                className="text-red-600 hover:text-red-800 text-sm"
+                              >
+                                <Trash2 className="w-4 h-4" />
+                              </button>
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
 
-                {/* Add Row Button */}
-                <div className="mt-3 flex justify-start">
-                  <button
-                    onClick={() => {
-                      const columnCount = newProduct.tableType === '4-column' ? 4 : 3;
-                      const newRow = new Array(columnCount).fill('');
-                      const rows = [...(newProduct.tableRows || []), newRow];
-                      setNewProduct(prev => ({ ...prev, tableRows: rows }));
-                    }}
-                    className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
-                  >
-                    <Plus className="w-4 h-4 mr-2" />
-                    Dodaj wiersz
-                  </button>
+                  {/* Table Actions */}
+                  <div className="mt-3 flex justify-between items-center">
+                    <button
+                      onClick={() => {
+                        const columnCount = currentTable.tableType === '4-column' ? 4 : 3;
+                        const newRow = new Array(columnCount).fill('');
+                        const rows = [...currentTable.tableRows, newRow];
+                        setCurrentTable(prev => ({ ...prev, tableRows: rows }));
+                      }}
+                      className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
+                    >
+                      <Plus className="w-4 h-4 mr-2" />
+                      Dodaj wiersz
+                    </button>
+                    
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() => {
+                          setCurrentTable({
+                            tableType: '',
+                            firstColumnHeader: '',
+                            tableHeaders: ['', '', '', ''],
+                            tableRows: []
+                          });
+                        }}
+                        className="px-3 py-2 text-sm font-medium text-gray-600 bg-gray-100 rounded-lg hover:bg-gray-200"
+                      >
+                        Anuluj
+                      </button>
+                      <button
+                        onClick={() => {
+                          const tables = [...(newProduct.tables || [])];
+                          const tableId = (currentTable as any).id || Date.now().toString();
+                          const tableToSave = {
+                            id: tableId,
+                            tableType: currentTable.tableType,
+                            firstColumnHeader: currentTable.firstColumnHeader,
+                            tableHeaders: currentTable.tableHeaders,
+                            tableRows: currentTable.tableRows
+                          };
+                          
+                          const existingIndex = tables.findIndex(t => t.id === tableId);
+                          if (existingIndex >= 0) {
+                            tables[existingIndex] = tableToSave;
+                          } else {
+                            tables.push(tableToSave);
+                          }
+                          
+                          setNewProduct(prev => ({ ...prev, tables }));
+                          setCurrentTable({
+                            tableType: '',
+                            firstColumnHeader: '',
+                            tableHeaders: ['', '', '', ''],
+                            tableRows: []
+                          });
+                        }}
+                        className="px-3 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700"
+                      >
+                        Zapisz tabelę
+                      </button>
+                    </div>
+                  </div>
                 </div>
-              </div>
-            )}
-          </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
     );
@@ -2259,8 +2380,16 @@ const Products: React.FC = () => {
 
   const CreateProductModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-semibold mb-4">Dodaj nowy produkt</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Dodaj nowy produkt</h3>
+          <button
+            onClick={handleCancel}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         {/* Tabs */}
         <div className="flex space-x-2 mb-6 border-b border-gray-200">
@@ -2634,8 +2763,19 @@ const Products: React.FC = () => {
 
   const PreviewModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-2xl max-h-[90vh] overflow-y-auto">
-        <h3 className="text-xl font-semibold mb-4">Podgląd produktu</h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">Podgląd produktu</h3>
+          <button
+            onClick={() => {
+              setShowPreviewModal(false);
+              setPreviewProduct(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         {previewProduct && (
           <div className="space-y-6">
@@ -3144,39 +3284,45 @@ const Products: React.FC = () => {
               </div>
             )}
 
-            {/* Tabela Section in Preview */}
-            {previewProduct.tableType && previewProduct.firstColumnHeader && previewProduct.tableRows && previewProduct.tableRows.length > 0 && (
+            {/* Tabele Section in Preview */}
+            {previewProduct.tables && previewProduct.tables.length > 0 && (
               <div className="mb-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-3">Tabela</h3>
-                <div className="bg-gray-50 p-4 rounded-lg overflow-x-auto">
-                  <table className="w-full border border-gray-300 bg-white">
-                    <thead className="bg-gray-100">
-                      <tr>
-                        <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-r">
-                          {previewProduct.firstColumnHeader}
-                        </th>
-                        {previewProduct.tableHeaders?.slice(1, previewProduct.tableType === '4-column' ? 4 : 3).map((header, index) => (
-                          <th key={index + 1} className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-r">
-                            {header || `Kolumna ${index + 2}`}
-                          </th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {previewProduct.tableRows.map((row, rowIndex) => (
-                        <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
-                          {row.slice(0, previewProduct.tableType === '4-column' ? 4 : 3).map((cell, cellIndex) => (
-                            <td key={cellIndex} className="px-4 py-3 text-sm text-gray-700 border-b border-r">
-                              {cell || '-'}
-                            </td>
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Tabele ({previewProduct.tables.length})</h3>
+                <div className="space-y-4">
+                  {previewProduct.tables.map((table, tableIndex) => (
+                    <div key={table.id} className="bg-gray-50 p-4 rounded-lg overflow-x-auto">
+                      <div className="mb-2">
+                        <h4 className="font-medium text-gray-900">
+                          {table.firstColumnHeader} - {table.tableType === '3-column' ? '3 kolumny' : '4 kolumny'}
+                        </h4>
+                      </div>
+                      <table className="w-full border border-gray-300 bg-white">
+                        <thead className="bg-gray-100">
+                          <tr>
+                            <th className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-r">
+                              {table.firstColumnHeader}
+                            </th>
+                            {table.tableHeaders.slice(1, table.tableType === '4-column' ? 4 : 3).map((header, index) => (
+                              <th key={index + 1} className="px-4 py-3 text-left text-sm font-medium text-gray-900 border-b border-r">
+                                {header || `Kolumna ${index + 2}`}
+                              </th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {table.tableRows.map((row, rowIndex) => (
+                            <tr key={rowIndex} className={rowIndex % 2 === 0 ? 'bg-white' : 'bg-gray-50'}>
+                              {row.slice(0, table.tableType === '4-column' ? 4 : 3).map((cell, cellIndex) => (
+                                <td key={cellIndex} className="px-4 py-3 text-sm text-gray-700 border-b border-r">
+                                  {cell || '-'}
+                                </td>
+                              ))}
+                            </tr>
                           ))}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                  <div className="mt-2 text-xs text-gray-500">
-                    Typ tabeli: {previewProduct.tableType === '3-column' ? '3 kolumny' : '4 kolumny'}
-                  </div>
+                        </tbody>
+                      </table>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
@@ -3289,10 +3435,21 @@ const Products: React.FC = () => {
 
   const SyncModal = () => (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-xl p-6 w-full max-w-md">
-        <h3 className="text-xl font-semibold mb-4">
-          Synchronizacja produktu: {selectedProductForSync?.name}
-        </h3>
+      <div className="bg-white rounded-xl p-6 w-[75vw] relative">
+        <div className="flex items-center justify-between mb-4">
+          <h3 className="text-xl font-semibold">
+            Synchronizacja produktu: {selectedProductForSync?.name}
+          </h3>
+          <button
+            onClick={() => {
+              setShowSyncModal(false);
+              setSelectedProductForSync(null);
+            }}
+            className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
         
         <div className="mb-6">
           <div className="space-y-3">

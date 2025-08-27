@@ -56,6 +56,19 @@ shared/
 - Database: PostgreSQL with Drizzle ORM
 
 ## Recent Changes
+**2025-01-27**: 
+- Added support for multiple separate tables in different variations:
+  - Each product can now have multiple tables instead of just one
+  - Tables list management with add/edit/delete functionality  
+  - Individual table editor with preview for each table
+  - Table counter showing number of existing tables
+- Increased all popup/modal widths to 75% of screen width (75vw)
+- Added X close buttons in top-right corner of all modals:
+  - Create Product Modal, Preview Modal, and Sync Modal
+  - Consistent positioning with hover effects
+- Updated Product interface to use `tables` array instead of single table fields
+- Enhanced table preview in product modal to display multiple tables with individual headers
+
 **2025-01-22**: 
 - Reorganized "Dział Produktu" section with structured "Ogólne Informacje" subsection
 - Changed Opakowanie and Receptura fields to URL inputs (links) instead of text
@@ -82,9 +95,9 @@ shared/
   - Click-to-add functionality from available to selected
   - Displays ingredient titles (from Materials) in selection but shows activeName in product preview
   - Remove functionality for selected ingredients
-- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, "Opis Produktu" as formatted content sections, "Składniki" as comma-separated text with proper capitalization, and "Tabela" as formatted table
-- Added table creation functionality with 3-column and 4-column options, first column header choices ("Składniki aktywne", "Wartości odżywcze"), editable headers and cells, add/remove rows functionality
-- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, product description fields, ingredients array, and table structure
+- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, "Opis Produktu" as formatted content sections, "Składniki" as comma-separated text with proper capitalization, and "Tabele" as formatted multiple tables
+- Added multiple table creation functionality with 3-column and 4-column options, first column header choices ("Składniki aktywne", "Wartości odżywcze"), editable headers and cells, add/remove rows functionality
+- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, product description fields, ingredients array, and multiple tables structure
 
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal
