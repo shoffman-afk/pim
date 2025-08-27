@@ -76,8 +76,14 @@ shared/
   - Szczególne Właściwości - Tytuł (text input)
   - Treść oświadczenia (WYSIWYG HTML editor using ReactQuill)
   - Zalecana dzienna porcja (text input)
-- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, and "Opis Produktu" as formatted content sections
-- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, and product description fields
+- Added "Składniki" section with dual-pane ingredient selector:
+  - Left pane shows available ingredients from Materials database
+  - Right pane shows selected ingredients for the product
+  - Click-to-add functionality from available to selected
+  - Displays ingredient titles (from Materials) in selection but shows activeName in product preview
+  - Remove functionality for selected ingredients
+- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, "Opis Produktu" as formatted content sections, and "Składniki" as a bulleted list
+- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, product description fields, and ingredients array
 
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal

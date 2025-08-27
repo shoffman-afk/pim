@@ -16,6 +16,70 @@ import {
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
+// Mock ingredients data from Materials/Components
+const availableIngredients = [
+  {
+    id: '1',
+    title: 'Witamina C (kwas askorbinowy) USP',
+    activeName: 'Kwas askorbinowy',
+    category: 'Witaminy'
+  },
+  {
+    id: '2', 
+    title: 'Witamina D3 (Cholekalcyferol) 100,000 IU/g',
+    activeName: 'Witamina D3 (Cholekalcyferol)',
+    category: 'Witaminy'
+  },
+  {
+    id: '3',
+    title: 'Ekstrakt z kurkumy 95% kurkuminy',
+    activeName: 'Ekstrakt z kurkumy',
+    category: 'Ekstrakty roślinne'
+  },
+  {
+    id: '4',
+    title: 'Koenzym Q10 99% Ubiquinone',
+    activeName: 'Koenzym Q10',
+    category: 'Koenzymy'
+  },
+  {
+    id: '5',
+    title: 'Omega-3 Fish Oil 18/12 EPA/DHA',
+    activeName: 'Omega-3 (EPA/DHA)',
+    category: 'Kwasy tłuszczowe'
+  },
+  {
+    id: '6',
+    title: 'Lactobacillus acidophilus 10^9 CFU/g',
+    activeName: 'Probiotyki Lactobacillus',
+    category: 'Probiotyki'
+  },
+  {
+    id: '7',
+    title: 'Magnesium Bisglycinate Chelate',
+    activeName: 'Magnez bisglicynian',
+    category: 'Minerały'
+  },
+  {
+    id: '8',
+    title: 'Zinc Picolinate 22% Zn',
+    activeName: 'Cynk pikolinian',
+    category: 'Minerały'
+  },
+  {
+    id: '9',
+    title: 'Selenium Yeast 0.5% Se',
+    activeName: 'Selen z drożdży',
+    category: 'Minerały'
+  },
+  {
+    id: '10',
+    title: 'Ashwagandha Root Extract 5% Withanolides',
+    activeName: 'Ekstrakt z ashwagandhy',
+    category: 'Ekstrakty roślinne'
+  }
+];
+
 interface Product {
   id: string;
   name: string;
@@ -98,6 +162,12 @@ interface Product {
   szczegolneWlasciwosciTytul?: string; // Szczególne Właściwości - Tytuł
   trescOswiadczenia?: string; // Treść oświadczenia (HTML content)
   zalecanadzienna?: string; // Zalecana dzienna porcja
+  // Składniki (Ingredients)
+  skladniki?: Array<{
+    id: string;
+    title: string; // Tytuł składnika (z bazy Materials)
+    activeName: string; // Nazwa składnika (wyświetlana w produkcie)
+  }>;
   createdAt: string;
   updatedAt: string;
 }
@@ -330,7 +400,9 @@ const Products: React.FC = () => {
     pelnatrescFrontu: '',
     szczegolneWlasciwosciTytul: '',
     trescOswiadczenia: '',
-    zalecanadzienna: ''
+    zalecanadzienna: '',
+    // Składniki defaults
+    skladniki: []
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -457,6 +529,8 @@ const Products: React.FC = () => {
       szczegolneWlasciwosciTytul: newProduct.szczegolneWlasciwosciTytul || '',
       trescOswiadczenia: newProduct.trescOswiadczenia || '',
       zalecanadzienna: newProduct.zalecanadzienna || '',
+      // Składniki
+      skladniki: newProduct.skladniki || [],
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -536,7 +610,9 @@ const Products: React.FC = () => {
       pelnatrescFrontu: '',
       szczegolneWlasciwosciTytul: '',
       trescOswiadczenia: '',
-      zalecanadzienna: ''
+      zalecanadzienna: '',
+      // Reset Składniki
+      skladniki: []
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1823,6 +1899,83 @@ const Products: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Składniki Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Składniki</h4>
+          
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {/* Available Ingredients */}
+            <div>
+              <h5 className="font-medium text-gray-900 mb-3">Dostępne składniki</h5>
+              <div className="border border-gray-200 rounded-lg h-64 overflow-y-auto">
+                <div className="space-y-1 p-2">
+                  {availableIngredients
+                    .filter(ingredient => !currentProduct?.skladniki?.some(s => s.id === ingredient.id))
+                    .map((ingredient) => (
+                    <div
+                      key={ingredient.id}
+                      onClick={() => {
+                        const newIngredient = {
+                          id: ingredient.id,
+                          title: ingredient.title,
+                          activeName: ingredient.activeName
+                        };
+                        setCurrentProduct({
+                          skladniki: [...(currentProduct?.skladniki || []), newIngredient]
+                        });
+                      }}
+                      className="p-2 hover:bg-blue-50 cursor-pointer rounded border border-transparent hover:border-blue-200 transition-colors"
+                    >
+                      <div className="font-medium text-sm text-gray-900">{ingredient.title}</div>
+                      <div className="text-xs text-gray-600">{ingredient.activeName}</div>
+                      <div className="text-xs text-blue-600">{ingredient.category}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+            {/* Selected Ingredients */}
+            <div>
+              <h5 className="font-medium text-gray-900 mb-3">Wybrane składniki</h5>
+              <div className="border border-gray-200 rounded-lg h-64 overflow-y-auto">
+                <div className="space-y-1 p-2">
+                  {currentProduct?.skladniki && currentProduct.skladniki.length > 0 ? (
+                    currentProduct.skladniki.map((ingredient, index) => (
+                      <div
+                        key={ingredient.id}
+                        className="p-2 bg-green-50 border border-green-200 rounded flex items-center justify-between"
+                      >
+                        <div className="flex-1">
+                          <div className="font-medium text-sm text-gray-900">{ingredient.title}</div>
+                          <div className="text-xs text-gray-600">{ingredient.activeName}</div>
+                        </div>
+                        <button
+                          onClick={() => {
+                            const updatedIngredients = currentProduct.skladniki?.filter(s => s.id !== ingredient.id) || [];
+                            setCurrentProduct({ skladniki: updatedIngredients });
+                          }}
+                          className="ml-2 text-red-600 hover:text-red-800 text-sm"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))
+                  ) : (
+                    <div className="text-center py-8 text-gray-500 text-sm">
+                      Brak wybranych składników
+                    </div>
+                  )}
+                </div>
+              </div>
+            </div>
+          </div>
+          
+          <div className="mt-4 text-sm text-gray-600">
+            Kliknij na składnik po lewej stronie, aby dodać go do produktu. W podglądzie produktu będą wyświetlane nazwy składników.
+          </div>
+        </div>
       </div>
     );
   };
@@ -2199,7 +2352,9 @@ const Products: React.FC = () => {
                 pelnatrescFrontu: '',
                 szczegolneWlasciwosciTytul: '',
                 trescOswiadczenia: '',
-                zalecanadzienna: ''
+                zalecanadzienna: '',
+                // Reset Składniki
+                skladniki: []
               });
               setActiveTab('marketing');
             }}
@@ -2703,6 +2858,23 @@ const Products: React.FC = () => {
                       </div>
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Składniki Section in Preview */}
+            {previewProduct.skladniki && previewProduct.skladniki.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Składniki</h3>
+                <div className="bg-gray-50 p-4 rounded-lg">
+                  <div className="space-y-2">
+                    {previewProduct.skladniki.map((ingredient, index) => (
+                      <div key={ingredient.id} className="flex items-center">
+                        <span className="w-4 h-4 bg-blue-500 rounded-full mr-3 flex-shrink-0"></span>
+                        <span className="text-sm text-gray-700">{ingredient.activeName}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
