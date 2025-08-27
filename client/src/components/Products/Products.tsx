@@ -433,6 +433,7 @@ const Products: React.FC = () => {
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('marketing');
   const [ingredientFilter, setIngredientFilter] = useState('');
+  const [selectedIngredientFilter, setSelectedIngredientFilter] = useState('');
   
   // Current table being edited
   const [currentTable, setCurrentTable] = useState<{
@@ -924,6 +925,7 @@ const Products: React.FC = () => {
             onChange={(e) => setCurrentProduct({ name: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="np. Suplement Witamina C 1000mg"
+            autoComplete="off"
           />
         </div>
 
@@ -937,6 +939,7 @@ const Products: React.FC = () => {
             onChange={(e) => setCurrentProduct({ subtitle1: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="np. Najwyższej jakości witamina C"
+            autoComplete="off"
           />
         </div>
 
@@ -950,6 +953,7 @@ const Products: React.FC = () => {
             onChange={(e) => setCurrentProduct({ subtitle2: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="np. Wspiera naturalną odporność organizmu"
+            autoComplete="off"
           />
         </div>
 
@@ -1028,7 +1032,7 @@ const Products: React.FC = () => {
           </label>
           <div className="space-y-2">
             {(currentProduct?.features || []).map((feature, index) => (
-              <div key={index} className="flex items-center space-x-2">
+              <div key={`feature-${index}-${feature.slice(0, 10)}`} className="flex items-center space-x-2">
                 <input
                   type="text"
                   value={feature}
@@ -1039,6 +1043,7 @@ const Products: React.FC = () => {
                   }}
                   className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="np. Wysokiej jakości składniki"
+                  autoComplete="off"
                 />
                 <button
                   type="button"
@@ -1077,6 +1082,7 @@ const Products: React.FC = () => {
             onChange={(e) => setCurrentProduct({ qualityGuaranteeTitle: e.target.value })}
             className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             placeholder="np. Najwyższa jakość gwarantowana"
+            autoComplete="off"
           />
         </div>
 
@@ -1189,6 +1195,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ iloscDziennychPorcji: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="np. 2 kapsułki dziennie"
+                autoComplete="off"
               />
             </div>
 
@@ -1202,6 +1209,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ iloscNetto: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="np. 60 kapsułek"
+                autoComplete="off"
               />
             </div>
 
@@ -1229,6 +1237,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ kategoriaZywnosci: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="np. Suplement diety"
+                autoComplete="off"
               />
             </div>
 
@@ -1242,6 +1251,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ zalecanyWiek: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                 placeholder="np. Dorośli od 18 lat"
+                autoComplete="off"
               />
             </div>
 
@@ -2014,32 +2024,65 @@ const Products: React.FC = () => {
             {/* Selected Ingredients */}
             <div>
               <h5 className="font-medium text-gray-900 mb-3">Wybrane składniki</h5>
+              
+              {/* Search Filter for Selected Ingredients */}
+              <div className="mb-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Szukaj wybranych składników..."
+                    value={selectedIngredientFilter}
+                    onChange={(e) => setSelectedIngredientFilter(e.target.value)}
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                </div>
+              </div>
+              
               <div className="border border-gray-200 rounded-lg h-64 overflow-y-auto">
                 <div className="space-y-1 p-2">
                   {currentProduct?.skladniki && currentProduct.skladniki.length > 0 ? (
-                    currentProduct.skladniki.map((ingredient, index) => (
-                      <div
-                        key={ingredient.id}
-                        className="p-2 bg-green-50 border border-green-200 rounded flex items-center justify-between"
-                      >
-                        <div className="flex-1">
-                          <div className="font-medium text-sm text-gray-900">{ingredient.title}</div>
-                          <div className="text-xs text-gray-600">{ingredient.activeName}</div>
-                        </div>
-                        <button
-                          onClick={() => {
-                            const updatedIngredients = currentProduct.skladniki?.filter(s => s.id !== ingredient.id) || [];
-                            setCurrentProduct({ skladniki: updatedIngredients });
-                          }}
-                          className="ml-2 text-red-600 hover:text-red-800 text-sm"
+                    currentProduct.skladniki
+                      .filter(ingredient => 
+                        selectedIngredientFilter === '' || 
+                        ingredient.title.toLowerCase().includes(selectedIngredientFilter.toLowerCase()) ||
+                        ingredient.activeName.toLowerCase().includes(selectedIngredientFilter.toLowerCase())
+                      )
+                      .map((ingredient, index) => (
+                        <div
+                          key={ingredient.id}
+                          className="p-2 bg-green-50 border border-green-200 rounded flex items-center justify-between"
                         >
-                          ✕
-                        </button>
-                      </div>
-                    ))
+                          <div className="flex-1">
+                            <div className="font-medium text-sm text-gray-900">{ingredient.title}</div>
+                            <div className="text-xs text-gray-600">{ingredient.activeName}</div>
+                          </div>
+                          <button
+                            onClick={() => {
+                              const updatedIngredients = currentProduct.skladniki?.filter(s => s.id !== ingredient.id) || [];
+                              setCurrentProduct({ skladniki: updatedIngredients });
+                            }}
+                            className="ml-2 text-red-600 hover:text-red-800 text-sm"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      ))
                   ) : (
                     <div className="text-center py-8 text-gray-500 text-sm">
                       Brak wybranych składników
+                    </div>
+                  )}
+                  
+                  {/* No results message for selected ingredients */}
+                  {currentProduct?.skladniki && currentProduct.skladniki.length > 0 && 
+                   currentProduct.skladniki.filter(ingredient => 
+                     selectedIngredientFilter === '' || 
+                     ingredient.title.toLowerCase().includes(selectedIngredientFilter.toLowerCase()) ||
+                     ingredient.activeName.toLowerCase().includes(selectedIngredientFilter.toLowerCase())
+                   ).length === 0 && selectedIngredientFilter !== '' && (
+                    <div className="text-center py-8 text-gray-500 text-sm">
+                      Brak składników pasujących do frazy "{selectedIngredientFilter}"
                     </div>
                   )}
                 </div>
@@ -2053,7 +2096,12 @@ const Products: React.FC = () => {
             </div>
             {ingredientFilter && (
               <div className="text-blue-600">
-                Wyświetlane składniki filtrowane według: "{ingredientFilter}"
+                Dostępne składniki filtrowane według: "{ingredientFilter}"
+              </div>
+            )}
+            {selectedIngredientFilter && (
+              <div className="text-green-600">
+                Wybrane składniki filtrowane według: "{selectedIngredientFilter}"
               </div>
             )}
           </div>
