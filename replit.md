@@ -94,8 +94,10 @@ shared/
 - **Equal Width Columns Implementation Completed**:
   - Added `table-fixed` class to all specified subpage tables for equal column distribution
   - Applied equal width classes (`w-1/5` for 5-column tables, `w-1/8` for 8-column Components table)
-  - Updated Standaryzacja, Nazwa Składnika (Components), Kategorie (Materials), Dodatkowe Informacje, Marka, Postać, Kategorie (Products), and Zastosowanie
-  - All columns now have uniform width across all specified subpages for consistent table layout
+  - Updated Standaryzacja, Nazwa Składnika (Components), Kategorie (Materials), Dodatkowe Informacje, Marka, Postać, Kategorie (Products), Zastosowanie, and ActiveComponents
+  - **Enhanced "Użyte w" Column Width**: Made "Użyte w" column 100% wider (double width) across all pages
+  - Updated column distributions: 5-column tables use `w-1/6` for other columns and `w-2/6` for "Użyte w", 8-column Components table uses `w-1/9` for other columns and `w-2/9` for "Użyte w"
+  - All columns now have proportional width distribution with enhanced "Użyte w" visibility across all subpages
 
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:

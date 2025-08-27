@@ -266,11 +266,11 @@ const Categories: React.FC = () => {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/5">Kategoria</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/5">Użyte w</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/5">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/5">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/5">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Kategoria</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-2/6">Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Akcje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">

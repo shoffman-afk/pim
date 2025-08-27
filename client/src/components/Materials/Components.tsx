@@ -864,14 +864,14 @@ const Components: React.FC = () => {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Tytuł</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Kategorie</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Nazwa Składnika</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Standaryzacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Użyte w</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Tytuł</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Kategorie</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Nazwa Składnika</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Standaryzacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-2/9">Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/9">Akcje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
