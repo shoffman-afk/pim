@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
   Plus, 
   Edit, 
@@ -909,9 +909,13 @@ const Products: React.FC = () => {
 
   const MarketingTab = ({ isEdit = false }: { isEdit?: boolean }) => {
     const currentProduct = isEdit ? editingProduct : newProduct;
-    const setCurrentProduct = isEdit 
-      ? (updates: any) => setEditingProduct({ ...editingProduct!, ...updates })
-      : (updates: any) => setNewProduct({ ...newProduct, ...updates });
+    const setCurrentProduct = useCallback((updates: any) => {
+      if (isEdit) {
+        setEditingProduct(prev => ({ ...prev!, ...updates }));
+      } else {
+        setNewProduct(prev => ({ ...prev, ...updates }));
+      }
+    }, [isEdit]);
 
     return (
       <div className="space-y-4">
@@ -1104,9 +1108,13 @@ const Products: React.FC = () => {
 
   const ProductTab = ({ isEdit = false }: { isEdit?: boolean }) => {
     const currentProduct = isEdit ? editingProduct : newProduct;
-    const setCurrentProduct = isEdit 
-      ? (updates: any) => setEditingProduct({ ...editingProduct!, ...updates })
-      : (updates: any) => setNewProduct({ ...newProduct, ...updates });
+    const setCurrentProduct = useCallback((updates: any) => {
+      if (isEdit) {
+        setEditingProduct(prev => ({ ...prev!, ...updates }));
+      } else {
+        setNewProduct(prev => ({ ...prev, ...updates }));
+      }
+    }, [isEdit]);
 
     // Available Postać options from Form.tsx
     const availablePostac = [
