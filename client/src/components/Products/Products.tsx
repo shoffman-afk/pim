@@ -414,16 +414,32 @@ const Products: React.FC = () => {
     dlaWegan: undefined,
     dlaWegetarian: undefined,
     // Badania defaults
-    badania: [],
+    badania: [] as Array<{
+      id: string;
+      title: string;
+      date: string;
+      type: string;
+      file?: string;
+    }>,
     // Opis Produktu defaults
     pelnatrescFrontu: '',
     szczegolneWlasciwosciTytul: '',
     trescOswiadczenia: '',
     zalecanadzienna: '',
     // Składniki defaults
-    skladniki: [],
+    skladniki: [] as Array<{
+      id: string;
+      title: string;
+      activeName: string;
+    }>,
     // Tabele defaults
-    tables: []
+    tables: [] as Array<{
+      id: string;
+      tableType: '3-column' | '4-column';
+      firstColumnHeader: 'Składniki aktywne' | 'Wartości odżywcze';
+      tableHeaders: string[];
+      tableRows: string[][];
+    }>
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
