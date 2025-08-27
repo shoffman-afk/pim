@@ -315,10 +315,10 @@ const Usage: React.FC = () => {
                         <span className="text-gray-400 text-sm">Nie używane</span>
                       )}
                     </td>
-                    <td className="py-4 px-6 text-gray-600">
+                    <td className="py-4 px-6 text-gray-600 text-sm">
                       {new Date(usage.createdAt).toLocaleDateString('pl-PL')}
                     </td>
-                    <td className="py-4 px-6 text-gray-600">
+                    <td className="py-4 px-6 text-gray-600 text-sm">
                       {usage.updatedAt !== usage.createdAt ? (
                         <span className="text-blue-600 font-medium">
                           {new Date(usage.updatedAt).toLocaleDateString('pl-PL')}

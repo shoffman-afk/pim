@@ -287,7 +287,7 @@ const Categories: React.FC = () => {
                 filteredCategories.map((category) => (
                   <tr key={category.id} className="hover:bg-gray-50">
                     <td className="py-4 px-6">
-                      <h3 className="text-lg font-medium text-gray-900">
+                      <h3 className="text-sm font-medium text-gray-900">
                         {category.name}
                       </h3>
                     </td>
@@ -315,10 +315,10 @@ const Categories: React.FC = () => {
                         <span className="text-gray-400 text-sm">Nie używane</span>
                       )}
                     </td>
-                    <td className="py-4 px-6 text-gray-600">
+                    <td className="py-4 px-6 text-gray-600 text-sm">
                       {new Date(category.createdAt).toLocaleDateString('pl-PL')}
                     </td>
-                    <td className="py-4 px-6 text-gray-600">
+                    <td className="py-4 px-6 text-gray-600 text-sm">
                       {category.updatedAt !== category.createdAt ? (
                         <span className="text-blue-600 font-medium">
                           {new Date(category.updatedAt).toLocaleDateString('pl-PL')}

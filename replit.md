@@ -87,8 +87,10 @@ shared/
 - **Font Size Standardization Completed**:
   - Standardized first column font sizes across all subpages to match AdditionalInfo component
   - Updated "Standaryzacja", "Nazwa Składnika", "Kategorie", "Marka", "Postać", and "Zastosowanie" components
+  - Fixed remaining Components that still had `text-lg font-medium` in Products Brand and Categories
   - Changed from `text-lg font-medium` to `text-sm font-medium` for design consistency
-  - All table first columns now use uniform `text-sm font-medium` styling
+  - Standardized date columns (creation and update dates) to use `text-sm` sizing across all components
+  - All table first columns and date columns now use uniform `text-sm` styling for visual consistency
 
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:
