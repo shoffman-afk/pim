@@ -347,6 +347,7 @@ const Products: React.FC = () => {
 
   const [searchTerm, setSearchTerm] = useState('');
   const [legalSearchTerm, setLegalSearchTerm] = useState('');
+  const [selectedLegalSearchTerm, setSelectedLegalSearchTerm] = useState('');
 
   // Legal disclaimers data
   const legalDisclaimers = [
@@ -404,6 +405,8 @@ const Products: React.FC = () => {
   const filteredLegalDisclaimers = legalDisclaimers.filter(disclaimer =>
     disclaimer.name.toLowerCase().includes(legalSearchTerm.toLowerCase())
   );
+
+
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newProduct, setNewProduct] = useState({
@@ -2353,34 +2356,71 @@ const Products: React.FC = () => {
                 <h5 className="font-medium text-gray-700 mb-2">
                   Wybrane informacje ({(currentProduct?.additionalInfo || []).length})
                 </h5>
-                <div className="bg-white border border-gray-200 rounded-lg h-52 overflow-y-auto">
-                  {(currentProduct?.additionalInfo || []).map((info, index) => (
-                    <div
-                      key={index}
-                      className="p-3 border-b border-gray-100 last:border-b-0 group hover:bg-red-50 transition-colors"
-                    >
-                      <div className="flex justify-between items-start">
-                        <span className="text-gray-800 text-sm font-medium flex-1 pr-2">{info}</span>
-                        <button
-                          onClick={() => {
-                            const currentInfo = currentProduct?.additionalInfo || [];
-                            setCurrentProduct({ 
-                              additionalInfo: currentInfo.filter((_, i) => i !== index) 
-                            });
-                          }}
-                          className="text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity"
-                          title="Usuń informację"
+                <div className="relative mb-3">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
+                  <input
+                    type="text"
+                    placeholder="Szukaj w wybranych informacjach..."
+                    value={selectedLegalSearchTerm}
+                    onChange={(e) => setSelectedLegalSearchTerm(e.target.value)}
+                    className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="bg-white border border-gray-200 rounded-lg h-44 overflow-y-auto">
+                  {(() => {
+                    const filteredSelectedLegalInfo = (currentProduct?.additionalInfo || []).filter(info =>
+                      info.toLowerCase().includes(selectedLegalSearchTerm.toLowerCase())
+                    );
+                    
+                    return filteredSelectedLegalInfo.map((info, index) => {
+                      const originalIndex = (currentProduct?.additionalInfo || []).indexOf(info);
+                      return (
+                        <div
+                          key={originalIndex}
+                          className="p-3 border-b border-gray-100 last:border-b-0 group hover:bg-red-50 transition-colors"
                         >
-                          <X className="w-4 h-4" />
-                        </button>
-                      </div>
-                    </div>
-                  ))}
-                  {(currentProduct?.additionalInfo || []).length === 0 && (
-                    <div className="p-4 text-center text-gray-500 text-sm">
-                      Brak wybranych informacji prawnych
-                    </div>
-                  )}
+                          <div className="flex justify-between items-start">
+                            <span className="text-gray-800 text-sm font-medium flex-1 pr-2">{info}</span>
+                            <button
+                              onClick={() => {
+                                const currentInfo = currentProduct?.additionalInfo || [];
+                                setCurrentProduct({ 
+                                  additionalInfo: currentInfo.filter((_, i) => i !== originalIndex) 
+                                });
+                              }}
+                              className="text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity"
+                              title="Usuń informację"
+                            >
+                              <X className="w-4 h-4" />
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    });
+                  })()}
+                  {(() => {
+                    const filteredSelectedLegalInfo = (currentProduct?.additionalInfo || []).filter(info =>
+                      info.toLowerCase().includes(selectedLegalSearchTerm.toLowerCase())
+                    );
+                    
+                    if (filteredSelectedLegalInfo.length === 0 && (currentProduct?.additionalInfo || []).length > 0) {
+                      return (
+                        <div className="p-4 text-center text-gray-500 text-sm">
+                          Brak wyników wyszukiwania
+                        </div>
+                      );
+                    }
+                    
+                    if ((currentProduct?.additionalInfo || []).length === 0) {
+                      return (
+                        <div className="p-4 text-center text-gray-500 text-sm">
+                          Brak wybranych informacji prawnych
+                        </div>
+                      );
+                    }
+                    
+                    return null;
+                  })()}
                 </div>
               </div>
             </div>

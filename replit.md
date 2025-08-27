@@ -78,6 +78,10 @@ shared/
 - **Form Layout Reorganization Completed**:
   - Legal disclaimers section moved to full-width standalone section (separate row)
   - "Sposób użycia", "Przechowywanie", and "Producent" fields moved from "Dodatkowe Informacje" to "Ogólne Informacje" section
+  - Swapped positions of "Sposób użycia" and "Producent" fields per user request
+  - Legal disclaimers converted to modal box style matching ingredients system
+  - Added dual search functionality for both available and selected legal disclaimers
+  - Enhanced styling with search icons, hover effects, and proper remove buttons
   - Maintained proper field functionality and validation
   - Improved form organization and user experience
 
