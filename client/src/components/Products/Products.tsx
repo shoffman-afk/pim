@@ -1430,46 +1430,7 @@ const Products: React.FC = () => {
               />
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sposób użycia
-              </label>
-              <textarea
-                rows={3}
-                value={currentProduct?.sposobUzycia || ''}
-                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
-              />
-            </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Przechowywanie
-              </label>
-              <input
-                type="text"
-                value={currentProduct?.przechowywanie || ''}
-                onChange={(e) => setCurrentProduct({ przechowywanie: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Przechowywać w suchym i chłodnym miejscu"
-                autoComplete="off"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Producent
-              </label>
-              <select
-                value={currentProduct?.producent || ''}
-                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Wybierz producenta</option>
-                <option value="Aura Herbals">Aura Herbals</option>
-              </select>
-            </div>
           </div>
         </div>
 
@@ -2245,6 +2206,53 @@ const Products: React.FC = () => {
               Brak dodanych tabel
             </div>
           )}
+        </div>
+
+        {/* Additional Product Information Section */}
+        <div className="border border-gray-200 rounded-lg p-4 mt-6">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Dodatkowe Informacje</h4>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Sposób użycia
+              </label>
+              <textarea
+                rows={3}
+                value={currentProduct?.sposobUzycia || ''}
+                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Przechowywanie
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.przechowywanie || ''}
+                onChange={(e) => setCurrentProduct({ przechowywanie: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Przechowywać w suchym i chłodnym miejscu"
+                autoComplete="off"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Producent
+              </label>
+              <select
+                value={currentProduct?.producent || ''}
+                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz producenta</option>
+                <option value="Aura Herbals">Aura Herbals</option>
+              </select>
+            </div>
+          </div>
         </div>
       </div>
     );

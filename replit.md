@@ -62,12 +62,21 @@ shared/
   - Tables list management with add/edit/delete functionality  
   - Individual table editor with preview for each table
   - Table counter showing number of existing tables
+- Enhanced table functionality with intelligent dropdown integration:
+  - First column uses dropdown from Materials database when "Składniki aktywne" is selected
+  - Shows "Nazwa Składnika" (activeName) from Materials database
+  - Regular input fields for "Wartości odżywcze" and all other columns
+- Added three new product information fields positioned after tables section:
+  - "Sposób użycia" (3-line textarea for usage instructions)
+  - "Przechowywanie" (input field for storage instructions)
+  - "Producent" (dropdown with "Aura Herbals" option)
 - Increased all popup/modal widths to 75% of screen width (75vw)
 - Added X close buttons in top-right corner of all modals:
   - Create Product Modal, Preview Modal, and Sync Modal
   - Consistent positioning with hover effects
 - Updated Product interface to use `tables` array instead of single table fields
 - Enhanced table preview in product modal to display multiple tables with individual headers
+- Organized new fields under "Dodatkowe Informacje" section with responsive grid layout
 
 **2025-01-22**: 
 - Reorganized "Dział Produktu" section with structured "Ogólne Informacje" subsection
