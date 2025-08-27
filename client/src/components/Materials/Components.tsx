@@ -11,6 +11,8 @@ import {
   ChevronDown,
   Check
 } from 'lucide-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 import './Components.css';
 
 interface Component {
@@ -126,7 +128,7 @@ const SearchableDropdown = ({
   </div>
 );
 
-// Simple WYSIWYG Editor Component
+// ReactQuill WYSIWYG Editor Component
 const WYSIWYGEditor = ({ 
   value, 
   onChange, 
@@ -136,143 +138,34 @@ const WYSIWYGEditor = ({
   onChange: (value: string) => void; 
   placeholder?: string; 
 }) => {
-  const [isEditing, setIsEditing] = useState(false);
-  const [tempValue, setTempValue] = useState(value);
-
-  // Update tempValue when value changes
-  React.useEffect(() => {
-    setTempValue(value);
-  }, [value]);
-
-  const handleSave = () => {
-    onChange(tempValue);
-    setIsEditing(false);
+  const modules = {
+    toolbar: [
+      [{ 'header': [1, 2, 3, false] }],
+      ['bold', 'italic', 'underline'],
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      ['clean']
+    ],
   };
 
-  const handleCancel = () => {
-    setTempValue(value);
-    setIsEditing(false);
-  };
-
-  const insertTag = (tag: string) => {
-    const textarea = document.getElementById('wysiwyg-textarea') as HTMLTextAreaElement;
-    if (textarea) {
-      const start = textarea.selectionStart;
-      const end = textarea.selectionEnd;
-      const selectedText = tempValue.substring(start, end);
-      const beforeText = tempValue.substring(0, start);
-      const afterText = tempValue.substring(end);
-      
-      let newText = '';
-      if (tag === 'br') {
-        newText = `${beforeText}<br>${afterText}`;
-      } else {
-        if (selectedText) {
-          newText = `${beforeText}<${tag}>${selectedText}</${tag}>${afterText}`;
-        } else {
-          newText = `${beforeText}<${tag}></${tag}>${afterText}`;
-        }
-      }
-      
-      setTempValue(newText);
-      setTimeout(() => {
-        textarea.focus();
-        const newPosition = tag === 'br' 
-          ? start + 4 
-          : start + tag.length + 2 + (selectedText ? selectedText.length : 0);
-        textarea.setSelectionRange(newPosition, newPosition);
-      }, 0);
-    }
-  };
+  const formats = [
+    'header', 'bold', 'italic', 'underline',
+    'list', 'bullet'
+  ];
 
   return (
     <div>
       <label className="block text-sm font-medium text-gray-700 mb-1">
         Nazwa lista składników
       </label>
-      
-      {!isEditing ? (
-        <div 
-          onClick={() => setIsEditing(true)}
-          className="w-full min-h-[100px] px-3 py-2 border border-gray-300 rounded-lg cursor-text hover:border-gray-400 bg-white"
-          style={{ wordBreak: 'break-word', whiteSpace: 'pre-wrap' }}
-        >
-          {value ? (
-            <div 
-              dangerouslySetInnerHTML={{ __html: value }}
-              className="wysiwyg-content"
-            />
-          ) : (
-            <span className="text-gray-500">{placeholder}</span>
-          )}
-        </div>
-      ) : (
-        <div className="border border-gray-300 rounded-lg">
-          {/* Toolbar */}
-          <div className="flex items-center space-x-2 p-2 border-b border-gray-200 bg-gray-50">
-            <button
-              type="button"
-              onClick={() => insertTag('strong')}
-              className="px-2 py-1 text-sm font-bold border border-gray-300 rounded hover:bg-gray-200"
-              title="Pogrubienie"
-            >
-              B
-            </button>
-            <button
-              type="button"
-              onClick={() => insertTag('em')}
-              className="px-2 py-1 text-sm italic border border-gray-300 rounded hover:bg-gray-200"
-              title="Kursywa"
-            >
-              I
-            </button>
-            <button
-              type="button"
-              onClick={() => insertTag('p')}
-              className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-200"
-              title="Paragraf"
-            >
-              P
-            </button>
-            <button
-              type="button"
-              onClick={() => insertTag('br')}
-              className="px-2 py-1 text-sm border border-gray-300 rounded hover:bg-gray-200"
-              title="Nowa linia"
-            >
-              BR
-            </button>
-            <div className="flex-1"></div>
-            <button
-              type="button"
-              onClick={handleCancel}
-              className="px-3 py-1 text-sm text-gray-600 border border-gray-300 rounded hover:bg-gray-200"
-            >
-              Anuluj
-            </button>
-            <button
-              type="button"
-              onClick={handleSave}
-              className="px-3 py-1 text-sm text-white bg-blue-600 rounded hover:bg-blue-700"
-            >
-              Zapisz
-            </button>
-          </div>
-          
-          {/* Editor */}
-          <textarea
-            id="wysiwyg-textarea"
-            value={tempValue}
-            onChange={(e) => setTempValue(e.target.value)}
-            className="w-full min-h-[100px] px-3 py-2 border-none focus:outline-none resize-none"
-            placeholder={placeholder}
-          />
-        </div>
-      )}
-      
-      <p className="text-xs text-gray-500 mt-1">
-        Kliknij aby edytować. Możesz używać tagów HTML: &lt;p&gt;, &lt;strong&gt;, &lt;em&gt;, &lt;br&gt;
-      </p>
+      <ReactQuill
+        theme="snow"
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        modules={modules}
+        formats={formats}
+        style={{ height: '150px', marginBottom: '50px' }}
+      />
     </div>
   );
 };
