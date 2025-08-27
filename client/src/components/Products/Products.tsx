@@ -2910,13 +2910,17 @@ const Products: React.FC = () => {
               <div className="mb-6">
                 <h3 className="text-lg font-semibold text-gray-900 mb-3">Składniki</h3>
                 <div className="bg-gray-50 p-4 rounded-lg">
-                  <div className="space-y-2">
-                    {previewProduct.skladniki.map((ingredient, index) => (
-                      <div key={ingredient.id} className="flex items-center">
-                        <span className="w-4 h-4 bg-blue-500 rounded-full mr-3 flex-shrink-0"></span>
-                        <span className="text-sm text-gray-700">{ingredient.activeName}</span>
-                      </div>
-                    ))}
+                  <div className="text-sm text-gray-700">
+                    {previewProduct.skladniki
+                      .map((ingredient, index) => {
+                        // Capitalize first letter of the first ingredient, keep others as they are
+                        const name = ingredient.activeName;
+                        if (index === 0) {
+                          return name.charAt(0).toUpperCase() + name.slice(1);
+                        }
+                        return name;
+                      })
+                      .join(', ')}.
                   </div>
                 </div>
               </div>
