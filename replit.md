@@ -57,6 +57,26 @@ shared/
 
 ## Recent Changes
 **2025-01-27**: 
+- **Legal Disclaimers Multi-Select Implementation Completed**:
+  - Replaced single dropdown with two-column multi-select system for legal disclaimers in product modal
+  - Left column: Available legal disclaimers with search functionality
+  - Right column: Selected disclaimers with removal capability
+  - Visual count display showing number of selected disclaimers
+  - Multi-select system identical to ingredients design for consistency
+  - Updated Product interface to use `additionalInfo` as array instead of string
+- **AdditionalInfo Component Refactored to Match Brand Design (1:1)**:
+  - Completely restructured layout to match Brand component exactly
+  - Updated header section with title, description, and action button
+  - Converted table layout to match Brand component styling and structure
+  - Modified modals to use 75vw width and consistent X close button positioning
+  - Changed product badges to yellow theme (vs orange for Brand) for differentiation
+  - Maintained exact same UI/UX patterns for design uniformity across all subpages
+- **Enhanced Product Preview Display**:
+  - Legal disclaimers now display as bulleted list in preview modal
+  - Proper array handling for additionalInfo field throughout application
+  - Fixed all TypeScript compilation errors related to interface changes
+
+**Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:
   - Each product can now have multiple tables instead of just one
   - Tables list management with add/edit/delete functionality  

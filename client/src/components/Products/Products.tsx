@@ -346,6 +346,64 @@ const Products: React.FC = () => {
   ];
 
   const [searchTerm, setSearchTerm] = useState('');
+  const [legalSearchTerm, setLegalSearchTerm] = useState('');
+
+  // Legal disclaimers data
+  const legalDisclaimers = [
+    {
+      id: '1',
+      name: 'Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.',
+    },
+    {
+      id: '2',
+      name: '*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.',
+    },
+    {
+      id: '3',
+      name: 'Przechowywać w suchym miejscu w temperaturze pokojowej.',
+    },
+    {
+      id: '4',
+      name: 'Nie przekraczać zalecanej dziennej porcji.',
+    },
+    {
+      id: '5',
+      name: 'Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.',
+    },
+    {
+      id: '6',
+      name: 'W przypadku przyjmowania leków skonsultuj się z lekarzem.',
+    },
+    {
+      id: '7',
+      name: 'Przechowywać w miejscu niedostępnym dla małych dzieci.',
+    },
+    {
+      id: '8',
+      name: '*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.',
+    },
+    {
+      id: '9',
+      name: 'Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.',
+    },
+    {
+      id: '10',
+      name: 'Nie stosować w przypadku alergii na którykolwiek ze składników.',
+    },
+    {
+      id: '11',
+      name: 'Przed użyciem należy zapoznać się z ulotką.',
+    },
+    {
+      id: '12',
+      name: '*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.',
+    },
+  ];
+
+  // Filter legal disclaimers based on search term
+  const filteredLegalDisclaimers = legalDisclaimers.filter(disclaimer =>
+    disclaimer.name.toLowerCase().includes(legalSearchTerm.toLowerCase())
+  );
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingProduct, setEditingProduct] = useState<Product | null>(null);
   const [newProduct, setNewProduct] = useState({
@@ -638,10 +696,7 @@ const Products: React.FC = () => {
       gisNumer: '',
       opakowanie: '',
       receptura: '',
-      sposobUzycia: '',
-      przechowywanie: '',
-      producent: '',
-      additionalInfo: '',
+      additionalInfo: [],
       // Reset Cechy Ogólne
       naturalny100: undefined,
       markowySurowiec: undefined,
@@ -2260,25 +2315,75 @@ const Products: React.FC = () => {
               <label className="block text-sm font-medium text-gray-700 mb-1">
                 Dodatkowe informacje prawne
               </label>
-              <select
-                value={currentProduct?.additionalInfo || ''}
-                onChange={(e) => setCurrentProduct({ additionalInfo: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Wybierz informację prawną</option>
-                <option value="Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.">Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.</option>
-                <option value="*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.">*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.</option>
-                <option value="Przechowywać w suchym miejscu w temperaturze pokojowej.">Przechowywać w suchym miejscu w temperaturze pokojowej.</option>
-                <option value="Nie przekraczać zalecanej dziennej porcji.">Nie przekraczać zalecanej dziennej porcji.</option>
-                <option value="Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.">Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.</option>
-                <option value="W przypadku przyjmowania leków skonsultuj się z lekarzem.">W przypadku przyjmowania leków skonsultuj się z lekarzem.</option>
-                <option value="Przechowywać w miejscu niedostępnym dla małych dzieci.">Przechowywać w miejscu niedostępnym dla małych dzieci.</option>
-                <option value="*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.">*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.</option>
-                <option value="Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.">Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.</option>
-                <option value="Nie stosować w przypadku alergii na którykolwiek ze składników.">Nie stosować w przypadku alergii na którykolwiek ze składników.</option>
-                <option value="Przed użyciem należy zapoznać się z ulotką.">Przed użyciem należy zapoznać się z ulotką.</option>
-                <option value="*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.">*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.</option>
-              </select>
+              <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+                <div className="grid grid-cols-2 gap-4 h-64">
+                  {/* Available Legal Disclaimers */}
+                  <div className="bg-white rounded-lg border border-gray-200">
+                    <div className="p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                      <h5 className="font-medium text-gray-700">Dostępne informacje</h5>
+                      <input
+                        type="text"
+                        placeholder="Szukaj informacji..."
+                        value={legalSearchTerm}
+                        onChange={(e) => setLegalSearchTerm(e.target.value)}
+                        className="w-full mt-2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                      />
+                    </div>
+                    <div className="p-2 h-40 overflow-y-auto">
+                      {filteredLegalDisclaimers
+                        .filter(disclaimer => !((currentProduct?.additionalInfo || []).includes(disclaimer.name)))
+                        .map((disclaimer) => (
+                        <div
+                          key={disclaimer.id}
+                          onClick={() => {
+                            const currentInfo = currentProduct?.additionalInfo || [];
+                            setCurrentProduct({ 
+                              additionalInfo: [...currentInfo, disclaimer.name] 
+                            });
+                          }}
+                          className="p-2 hover:bg-blue-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0"
+                        >
+                          <span className="text-gray-800">{disclaimer.name}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Selected Legal Disclaimers */}
+                  <div className="bg-white rounded-lg border border-gray-200">
+                    <div className="p-3 border-b border-gray-200 bg-green-50 rounded-t-lg">
+                      <h5 className="font-medium text-gray-700">Wybrane informacje ({(currentProduct?.additionalInfo || []).length})</h5>
+                    </div>
+                    <div className="p-2 h-40 overflow-y-auto">
+                      {(currentProduct?.additionalInfo || []).map((info, index) => (
+                        <div
+                          key={index}
+                          className="p-2 hover:bg-red-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0 flex justify-between items-start"
+                        >
+                          <span className="text-gray-800 flex-1">{info}</span>
+                          <button
+                            onClick={() => {
+                              const currentInfo = currentProduct?.additionalInfo || [];
+                              setCurrentProduct({ 
+                                additionalInfo: currentInfo.filter((_, i) => i !== index) 
+                              });
+                            }}
+                            className="ml-2 text-red-600 hover:text-red-800 text-xs"
+                            title="Usuń"
+                          >
+                            ×
+                          </button>
+                        </div>
+                      ))}
+                      {(currentProduct?.additionalInfo || []).length === 0 && (
+                        <p className="text-gray-400 text-sm text-center py-4">
+                          Brak wybranych informacji
+                        </p>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -2737,10 +2842,7 @@ const Products: React.FC = () => {
                 // Reset Tabele  
                 tables: [],
                 // Reset Dodatkowe informacje
-                sposobUzycia: '',
-                przechowywanie: '',
-                producent: '',
-                additionalInfo: ''
+                additionalInfo: []
               });
               setActiveTab('marketing');
             }}
@@ -3433,11 +3535,13 @@ const Products: React.FC = () => {
             )}
 
             {/* Additional Legal Info */}
-            {previewProduct.additionalInfo && (
+            {previewProduct.additionalInfo && previewProduct.additionalInfo.length > 0 && (
               <div>
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Dodatkowe informacje prawne</h4>
-                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
-                  <p className="text-gray-800">{previewProduct.additionalInfo}</p>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 space-y-2">
+                  {previewProduct.additionalInfo.map((info, index) => (
+                    <p key={index} className="text-gray-800">• {info}</p>
+                  ))}
                 </div>
               </div>
             )}

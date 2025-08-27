@@ -35,7 +35,7 @@ export interface Product {
   unitsPerLayer?: number;
   unitsPerPallet?: number;
   status: 'active' | 'inactive' | 'pending';
-  additionalInfo?: string;
+  additionalInfo?: string[];
   // Product department fields
   postac?: string;
   marka?: string;
