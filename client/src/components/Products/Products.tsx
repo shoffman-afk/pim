@@ -1490,15 +1490,16 @@ const Products: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sposób użycia
+                Producent
               </label>
-              <textarea
-                rows={3}
-                value={currentProduct?.sposobUzycia || ''}
-                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
+              <select
+                value={currentProduct?.producent || ''}
+                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
-              />
+              >
+                <option value="">Wybierz producenta</option>
+                <option value="Aura Herbals">Aura Herbals</option>
+              </select>
             </div>
 
             <div>
@@ -1517,16 +1518,15 @@ const Products: React.FC = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-1">
-                Producent
+                Sposób użycia
               </label>
-              <select
-                value={currentProduct?.producent || ''}
-                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
+              <textarea
+                rows={3}
+                value={currentProduct?.sposobUzycia || ''}
+                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Wybierz producenta</option>
-                <option value="Aura Herbals">Aura Herbals</option>
-              </select>
+                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
+              />
             </div>
           </div>
         </div>
@@ -2308,21 +2308,22 @@ const Products: React.FC = () => {
         {/* Legal Disclaimers Section - Full Width */}
         <div className="border border-gray-200 rounded-lg p-4 mt-6">
           <h4 className="text-lg font-semibold text-gray-900 mb-4">Dodatkowe informacje prawne</h4>
-          <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+          <div className="bg-gray-50 border border-gray-300 rounded-lg p-4">
             <div className="grid grid-cols-2 gap-4 h-64">
               {/* Available Legal Disclaimers */}
-              <div className="bg-white rounded-lg border border-gray-200">
-                <div className="p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-                  <h5 className="font-medium text-gray-700">Dostępne informacje</h5>
+              <div className="space-y-2">
+                <h5 className="font-medium text-gray-700 mb-2">Dostępne informacje</h5>
+                <div className="relative mb-3">
+                  <Search className="w-4 h-4 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
                   <input
                     type="text"
-                    placeholder="Szukaj informacji..."
+                    placeholder="Szukaj informacji prawnych..."
                     value={legalSearchTerm}
                     onChange={(e) => setLegalSearchTerm(e.target.value)}
-                    className="w-full mt-2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                    className="w-full pl-10 pr-3 py-2 text-sm border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                   />
                 </div>
-                <div className="p-2 h-40 overflow-y-auto">
+                <div className="bg-white border border-gray-200 rounded-lg h-44 overflow-y-auto">
                   {filteredLegalDisclaimers
                     .filter(disclaimer => !((currentProduct?.additionalInfo || []).includes(disclaimer.name)))
                     .map((disclaimer) => (
@@ -2334,44 +2335,51 @@ const Products: React.FC = () => {
                           additionalInfo: [...currentInfo, disclaimer.name] 
                         });
                       }}
-                      className="p-2 hover:bg-blue-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0"
+                      className="p-3 hover:bg-blue-50 cursor-pointer border-b border-gray-100 last:border-b-0 transition-colors"
                     >
-                      <span className="text-gray-800">{disclaimer.name}</span>
+                      <span className="text-gray-800 text-sm font-medium">{disclaimer.name}</span>
                     </div>
                   ))}
+                  {filteredLegalDisclaimers.filter(disclaimer => !((currentProduct?.additionalInfo || []).includes(disclaimer.name))).length === 0 && (
+                    <div className="p-4 text-center text-gray-500 text-sm">
+                      {legalSearchTerm ? 'Brak wyników wyszukiwania' : 'Wszystkie informacje zostały wybrane'}
+                    </div>
+                  )}
                 </div>
               </div>
 
               {/* Selected Legal Disclaimers */}
-              <div className="bg-white rounded-lg border border-gray-200">
-                <div className="p-3 border-b border-gray-200 bg-green-50 rounded-t-lg">
-                  <h5 className="font-medium text-gray-700">Wybrane informacje ({(currentProduct?.additionalInfo || []).length})</h5>
-                </div>
-                <div className="p-2 h-40 overflow-y-auto">
+              <div className="space-y-2">
+                <h5 className="font-medium text-gray-700 mb-2">
+                  Wybrane informacje ({(currentProduct?.additionalInfo || []).length})
+                </h5>
+                <div className="bg-white border border-gray-200 rounded-lg h-52 overflow-y-auto">
                   {(currentProduct?.additionalInfo || []).map((info, index) => (
                     <div
                       key={index}
-                      className="p-2 hover:bg-red-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0 flex justify-between items-start"
+                      className="p-3 border-b border-gray-100 last:border-b-0 group hover:bg-red-50 transition-colors"
                     >
-                      <span className="text-gray-800 flex-1">{info}</span>
-                      <button
-                        onClick={() => {
-                          const currentInfo = currentProduct?.additionalInfo || [];
-                          setCurrentProduct({ 
-                            additionalInfo: currentInfo.filter((_, i) => i !== index) 
-                          });
-                        }}
-                        className="ml-2 text-red-600 hover:text-red-800 text-xs"
-                        title="Usuń"
-                      >
-                        ×
-                      </button>
+                      <div className="flex justify-between items-start">
+                        <span className="text-gray-800 text-sm font-medium flex-1 pr-2">{info}</span>
+                        <button
+                          onClick={() => {
+                            const currentInfo = currentProduct?.additionalInfo || [];
+                            setCurrentProduct({ 
+                              additionalInfo: currentInfo.filter((_, i) => i !== index) 
+                            });
+                          }}
+                          className="text-red-600 hover:text-red-800 opacity-0 group-hover:opacity-100 transition-opacity"
+                          title="Usuń informację"
+                        >
+                          <X className="w-4 h-4" />
+                        </button>
+                      </div>
                     </div>
                   ))}
                   {(currentProduct?.additionalInfo || []).length === 0 && (
-                    <p className="text-gray-400 text-sm text-center py-4">
-                      Brak wybranych informacji
-                    </p>
+                    <div className="p-4 text-center text-gray-500 text-sm">
+                      Brak wybranych informacji prawnych
+                    </div>
                   )}
                 </div>
               </div>
