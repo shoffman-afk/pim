@@ -11,7 +11,8 @@ import {
   RefreshCw,
   Globe,
   ShoppingCart,
-  Power
+  Power,
+  Download
 } from 'lucide-react';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
@@ -768,6 +769,110 @@ const Products: React.FC = () => {
       ));
       setEditingProduct(null);
     }
+  };
+
+  const handleDownloadPDF = (product: Product) => {
+    // Generate product information for PDF download
+    const productInfo = `
+INFORMACJE O PRODUKCIE
+======================
+
+Nazwa produktu: ${product.name}
+Kategoria: ${product.category}
+Status: ${getStatusLabel(product.status)}
+${product.subtitle1 ? `Podtytuł 1: ${product.subtitle1}` : ''}
+${product.subtitle2 ? `Podtytuł 2: ${product.subtitle2}` : ''}
+
+DZIAŁ PRODUKTU
+==============
+${product.postac ? `Postać: ${product.postac}` : ''}
+${product.marka ? `Marka: ${product.marka}` : ''}
+${product.iloscDziennychPorcji ? `Ilość dziennych porcji: ${product.iloscDziennychPorcji}` : ''}
+${product.iloscNetto ? `Ilość netto: ${product.iloscNetto}` : ''}
+${product.wagaNetto ? `Waga netto: ${product.wagaNetto}g` : ''}
+${product.kategoriaZywnosci ? `Kategoria żywności: ${product.kategoriaZywnosci}` : ''}
+${product.zalecanyWiek ? `Zalecany wiek: ${product.zalecanyWiek}` : ''}
+${product.kraj ? `Kraj: ${product.kraj}` : ''}
+${product.ean ? `EAN: ${product.ean}` : ''}
+${product.cenaSugerowana ? `Cena sugerowana: ${product.cenaSugerowana} ${product.waluta || ''}` : ''}
+${product.vat ? `VAT: ${product.vat}%` : ''}
+${product.bloz ? `BLOZ: ${product.bloz}` : ''}
+${product.gisLink ? `GIS Link: ${product.gisLink}` : ''}
+${product.gisNumer ? `GIS Numer: ${product.gisNumer}` : ''}
+${product.opakowanie ? `Opakowanie: ${product.opakowanie}` : ''}
+${product.receptura ? `Receptura: ${product.receptura}` : ''}
+
+SKŁADNIKI
+=========
+${product.skladniki && product.skladniki.length > 0 
+  ? product.skladniki.map(s => `- ${s.activeName}`).join('\n')
+  : 'Brak składników'
+}
+
+TABELE
+======
+${product.tables && product.tables.length > 0
+  ? product.tables.map((table, index) => `
+Tabela ${index + 1}: ${table.tableTitle}
+${table.rows.map(row => `${row.col1} | ${row.col2} | ${row.col3 || ''}`).join('\n')}
+`).join('\n')
+  : 'Brak tabel'
+}
+
+CECHY OGÓLNE
+============
+${product.naturalny100 === true ? '✓ 100% naturalny' : product.naturalny100 === false ? '✗ 100% naturalny' : ''}
+${product.markowySurowiec === true ? '✓ Markowy surowiec' : product.markowySurowiec === false ? '✗ Markowy surowiec' : ''}
+${product.weganski === true ? '✓ Wegański' : product.weganski === false ? '✗ Wegański' : ''}
+${product.wegetarianski === true ? '✓ Wegetariański' : product.wegetarianski === false ? '✗ Wegetariański' : ''}
+${product.bezCukru === true ? '✓ Bez cukru' : product.bezCukru === false ? '✗ Bez cukru' : ''}
+${product.bezSubstancjiSlodzacych === true ? '✓ Bez substancji słodzących' : product.bezSubstancjiSlodzacych === false ? '✗ Bez substancji słodzących' : ''}
+${product.bezLaktozy === true ? '✓ Bez laktozy' : product.bezLaktozy === false ? '✗ Bez laktozy' : ''}
+${product.bezglutenowy === true ? '✓ Bezglutenowy' : product.bezglutenowy === false ? '✗ Bezglutenowy' : ''}
+
+DLA KOGO
+========
+${product.dlaMezczyzn === true ? '✓ Dla mężczyzn' : product.dlaMezczyzn === false ? '✗ Dla mężczyzn' : ''}
+${product.dlaKobiet === true ? '✓ Dla kobiet' : product.dlaKobiet === false ? '✗ Dla kobiet' : ''}
+${product.dlaKobietWCiazy === true ? '✓ Dla kobiet w ciąży' : product.dlaKobietWCiazy === false ? '✗ Dla kobiet w ciąży' : ''}
+${product.dlaSeniorow === true ? '✓ Dla seniorów' : product.dlaSeniorow === false ? '✗ Dla seniorów' : ''}
+${product.dlaDzieci === true ? '✓ Dla dzieci' : product.dlaDzieci === false ? '✗ Dla dzieci' : ''}
+
+BADANIA
+=======
+${product.badania && product.badania.length > 0
+  ? product.badania.map(b => `- ${b.title} (${b.date}) - ${b.type}`).join('\n')
+  : 'Brak badań'
+}
+
+OPIS PRODUKTU
+=============
+${product.pelnatrescFrontu ? `Pełna treść frontu opakowania:\n${product.pelnatrescFrontu}` : ''}
+${product.szczegolneWlasciwosciTytul ? `Szczególne właściwości: ${product.szczegolneWlasciwosciTytul}` : ''}
+${product.trescOswiadczenia ? `Treść oświadczenia:\n${product.trescOswiadczenia.replace(/<[^>]*>/g, '')}` : ''}
+${product.zalecanadzienna ? `Zalecana dzienna porcja: ${product.zalecanadzienna}` : ''}
+
+DODATKOWE INFORMACJE
+===================
+${product.additionalInfo && product.additionalInfo.length > 0
+  ? product.additionalInfo.map(info => `• ${info}`).join('\n')
+  : 'Brak dodatkowych informacji'
+}
+
+Data utworzenia: ${new Date(product.createdAt).toLocaleDateString('pl-PL')}
+Ostatnia aktualizacja: ${product.updatedAt !== product.createdAt ? new Date(product.updatedAt).toLocaleDateString('pl-PL') : '-'}
+    `.trim();
+
+    // Create and download the file
+    const blob = new Blob([productInfo], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${product.name.replace(/[^a-zA-Z0-9]/g, '_')}_informacje.txt`;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
   };
 
   const handleDeleteProduct = (productId: string) => {
@@ -3873,6 +3978,13 @@ const Products: React.FC = () => {
                           title="Podgląd"
                         >
                           <Eye className="w-4 h-4" />
+                        </button>
+                        <button
+                          onClick={() => handleDownloadPDF(product)}
+                          className="p-2 text-purple-600 hover:bg-purple-50 rounded-lg transition-colors"
+                          title="Pobierz informacje"
+                        >
+                          <Download className="w-4 h-4" />
                         </button>
                         <button
                           onClick={() => openSyncModal(product)}
