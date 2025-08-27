@@ -1488,7 +1488,46 @@ const Products: React.FC = () => {
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Sposób użycia
+              </label>
+              <textarea
+                rows={3}
+                value={currentProduct?.sposobUzycia || ''}
+                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
+              />
+            </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Przechowywanie
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.przechowywanie || ''}
+                onChange={(e) => setCurrentProduct({ przechowywanie: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="np. Przechowywać w suchym i chłodnym miejscu"
+                autoComplete="off"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Producent
+              </label>
+              <select
+                value={currentProduct?.producent || ''}
+                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz producenta</option>
+                <option value="Aura Herbals">Aura Herbals</option>
+              </select>
+            </div>
           </div>
         </div>
 
@@ -2266,122 +2305,74 @@ const Products: React.FC = () => {
           )}
         </div>
 
-        {/* Additional Product Information Section */}
+        {/* Legal Disclaimers Section - Full Width */}
         <div className="border border-gray-200 rounded-lg p-4 mt-6">
-          <h4 className="text-lg font-semibold text-gray-900 mb-4">Dodatkowe Informacje</h4>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Sposób użycia
-              </label>
-              <textarea
-                rows={3}
-                value={currentProduct?.sposobUzycia || ''}
-                onChange={(e) => setCurrentProduct({ sposobUzycia: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Zażywać 1-2 kapsułki dziennie podczas posiłku, popijając wodą"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Przechowywanie
-              </label>
-              <input
-                type="text"
-                value={currentProduct?.przechowywanie || ''}
-                onChange={(e) => setCurrentProduct({ przechowywanie: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="np. Przechowywać w suchym i chłodnym miejscu"
-                autoComplete="off"
-              />
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Producent
-              </label>
-              <select
-                value={currentProduct?.producent || ''}
-                onChange={(e) => setCurrentProduct({ producent: e.target.value })}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-              >
-                <option value="">Wybierz producenta</option>
-                <option value="Aura Herbals">Aura Herbals</option>
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
-                Dodatkowe informacje prawne
-              </label>
-              <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
-                <div className="grid grid-cols-2 gap-4 h-64">
-                  {/* Available Legal Disclaimers */}
-                  <div className="bg-white rounded-lg border border-gray-200">
-                    <div className="p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
-                      <h5 className="font-medium text-gray-700">Dostępne informacje</h5>
-                      <input
-                        type="text"
-                        placeholder="Szukaj informacji..."
-                        value={legalSearchTerm}
-                        onChange={(e) => setLegalSearchTerm(e.target.value)}
-                        className="w-full mt-2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
-                      />
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Dodatkowe informacje prawne</h4>
+          <div className="border border-gray-300 rounded-lg p-4 bg-gray-50">
+            <div className="grid grid-cols-2 gap-4 h-64">
+              {/* Available Legal Disclaimers */}
+              <div className="bg-white rounded-lg border border-gray-200">
+                <div className="p-3 border-b border-gray-200 bg-gray-50 rounded-t-lg">
+                  <h5 className="font-medium text-gray-700">Dostępne informacje</h5>
+                  <input
+                    type="text"
+                    placeholder="Szukaj informacji..."
+                    value={legalSearchTerm}
+                    onChange={(e) => setLegalSearchTerm(e.target.value)}
+                    className="w-full mt-2 px-2 py-1 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-500"
+                  />
+                </div>
+                <div className="p-2 h-40 overflow-y-auto">
+                  {filteredLegalDisclaimers
+                    .filter(disclaimer => !((currentProduct?.additionalInfo || []).includes(disclaimer.name)))
+                    .map((disclaimer) => (
+                    <div
+                      key={disclaimer.id}
+                      onClick={() => {
+                        const currentInfo = currentProduct?.additionalInfo || [];
+                        setCurrentProduct({ 
+                          additionalInfo: [...currentInfo, disclaimer.name] 
+                        });
+                      }}
+                      className="p-2 hover:bg-blue-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0"
+                    >
+                      <span className="text-gray-800">{disclaimer.name}</span>
                     </div>
-                    <div className="p-2 h-40 overflow-y-auto">
-                      {filteredLegalDisclaimers
-                        .filter(disclaimer => !((currentProduct?.additionalInfo || []).includes(disclaimer.name)))
-                        .map((disclaimer) => (
-                        <div
-                          key={disclaimer.id}
-                          onClick={() => {
-                            const currentInfo = currentProduct?.additionalInfo || [];
-                            setCurrentProduct({ 
-                              additionalInfo: [...currentInfo, disclaimer.name] 
-                            });
-                          }}
-                          className="p-2 hover:bg-blue-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0"
-                        >
-                          <span className="text-gray-800">{disclaimer.name}</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
+                  ))}
+                </div>
+              </div>
 
-                  {/* Selected Legal Disclaimers */}
-                  <div className="bg-white rounded-lg border border-gray-200">
-                    <div className="p-3 border-b border-gray-200 bg-green-50 rounded-t-lg">
-                      <h5 className="font-medium text-gray-700">Wybrane informacje ({(currentProduct?.additionalInfo || []).length})</h5>
+              {/* Selected Legal Disclaimers */}
+              <div className="bg-white rounded-lg border border-gray-200">
+                <div className="p-3 border-b border-gray-200 bg-green-50 rounded-t-lg">
+                  <h5 className="font-medium text-gray-700">Wybrane informacje ({(currentProduct?.additionalInfo || []).length})</h5>
+                </div>
+                <div className="p-2 h-40 overflow-y-auto">
+                  {(currentProduct?.additionalInfo || []).map((info, index) => (
+                    <div
+                      key={index}
+                      className="p-2 hover:bg-red-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0 flex justify-between items-start"
+                    >
+                      <span className="text-gray-800 flex-1">{info}</span>
+                      <button
+                        onClick={() => {
+                          const currentInfo = currentProduct?.additionalInfo || [];
+                          setCurrentProduct({ 
+                            additionalInfo: currentInfo.filter((_, i) => i !== index) 
+                          });
+                        }}
+                        className="ml-2 text-red-600 hover:text-red-800 text-xs"
+                        title="Usuń"
+                      >
+                        ×
+                      </button>
                     </div>
-                    <div className="p-2 h-40 overflow-y-auto">
-                      {(currentProduct?.additionalInfo || []).map((info, index) => (
-                        <div
-                          key={index}
-                          className="p-2 hover:bg-red-50 cursor-pointer rounded text-sm border-b border-gray-100 last:border-b-0 flex justify-between items-start"
-                        >
-                          <span className="text-gray-800 flex-1">{info}</span>
-                          <button
-                            onClick={() => {
-                              const currentInfo = currentProduct?.additionalInfo || [];
-                              setCurrentProduct({ 
-                                additionalInfo: currentInfo.filter((_, i) => i !== index) 
-                              });
-                            }}
-                            className="ml-2 text-red-600 hover:text-red-800 text-xs"
-                            title="Usuń"
-                          >
-                            ×
-                          </button>
-                        </div>
-                      ))}
-                      {(currentProduct?.additionalInfo || []).length === 0 && (
-                        <p className="text-gray-400 text-sm text-center py-4">
-                          Brak wybranych informacji
-                        </p>
-                      )}
-                    </div>
-                  </div>
+                  ))}
+                  {(currentProduct?.additionalInfo || []).length === 0 && (
+                    <p className="text-gray-400 text-sm text-center py-4">
+                      Brak wybranych informacji
+                    </p>
+                  )}
                 </div>
               </div>
             </div>

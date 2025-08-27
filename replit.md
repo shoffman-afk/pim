@@ -75,6 +75,11 @@ shared/
   - Legal disclaimers now display as bulleted list in preview modal
   - Proper array handling for additionalInfo field throughout application
   - Fixed all TypeScript compilation errors related to interface changes
+- **Form Layout Reorganization Completed**:
+  - Legal disclaimers section moved to full-width standalone section (separate row)
+  - "Sposób użycia", "Przechowywanie", and "Producent" fields moved from "Dodatkowe Informacje" to "Ogólne Informacje" section
+  - Maintained proper field functionality and validation
+  - Improved form organization and user experience
 
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:
