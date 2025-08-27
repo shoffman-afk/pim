@@ -4100,9 +4100,9 @@ const Products: React.FC = () => {
                                   className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 >
                                   <option value="">Wybierz składnik</option>
-                                  {availableMaterials.map((material) => (
-                                    <option key={material.id} value={material.activeName}>
-                                      {material.activeName}
+                                  {availableIngredients.map((ingredient) => (
+                                    <option key={ingredient.id} value={ingredient.activeName}>
+                                      {ingredient.activeName}
                                     </option>
                                   ))}
                                 </select>
