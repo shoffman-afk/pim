@@ -67,8 +67,12 @@ shared/
 - Added "Dla Kogo" section with 10 demographic targeting options (-, Nie, Tak):
   - Dla Mężczyzn, Dla Kobiet, Dla Kobiet w Ciąży, Dla Seniorów, Dla Dzieci
   - Dla Rodziny, Dla Diabetyków, Dla Sportowców, Dla Wegan, Dla Wegetarian
-- Enhanced preview modal to display "Cechy Ogólne" as green badges and "Dla Kogo" as blue badges
-- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true)
+- Added "Badania" section with research studies management:
+  - Multiple research entries with title, date, type dropdown, and file upload
+  - Research types: Składniki aktywne, Mikrobiologia, Metale cięzkie, Osmolarność
+  - Dynamic add/remove functionality for research entries
+- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, and "Badania" as detailed cards
+- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true) and research studies array
 
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal

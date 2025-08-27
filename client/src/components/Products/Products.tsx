@@ -83,6 +83,14 @@ interface Product {
   dlaSportowcow?: boolean; // Dla Sportowców
   dlaWegan?: boolean; // Dla Wegan
   dlaWegetarian?: boolean; // Dla Wegetarian
+  // Badania (Research Studies)
+  badania?: Array<{
+    id: string;
+    tytul: string;
+    data: string;
+    rodzaj: 'Składniki aktywne' | 'Mikrobiologia' | 'Metale cięzkie' | 'Osmolarność';
+    plik?: string; // URL to uploaded file
+  }>;
   createdAt: string;
   updatedAt: string;
 }
@@ -308,7 +316,9 @@ const Products: React.FC = () => {
     dlaDiabetykow: undefined,
     dlaSportowcow: undefined,
     dlaWegan: undefined,
-    dlaWegetarian: undefined
+    dlaWegetarian: undefined,
+    // Badania defaults
+    badania: []
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -428,6 +438,8 @@ const Products: React.FC = () => {
       dlaSportowcow: newProduct.dlaSportowcow,
       dlaWegan: newProduct.dlaWegan,
       dlaWegetarian: newProduct.dlaWegetarian,
+      // Badania
+      badania: newProduct.badania || [],
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -500,7 +512,9 @@ const Products: React.FC = () => {
       dlaDiabetykow: undefined,
       dlaSportowcow: undefined,
       dlaWegan: undefined,
-      dlaWegetarian: undefined
+      dlaWegetarian: undefined,
+      // Reset Badania
+      badania: []
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1570,6 +1584,142 @@ const Products: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Badania Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <div className="flex items-center justify-between mb-4">
+            <h4 className="text-lg font-semibold text-gray-900">Badania</h4>
+            <button
+              onClick={() => {
+                const newBadanie = {
+                  id: Date.now().toString(),
+                  tytul: '',
+                  data: '',
+                  rodzaj: 'Składniki aktywne' as const,
+                  plik: undefined
+                };
+                setCurrentProduct({ 
+                  badania: [...(currentProduct?.badania || []), newBadanie]
+                });
+              }}
+              className="px-3 py-1 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500"
+            >
+              + Dodaj Badanie
+            </button>
+          </div>
+          
+          <div className="space-y-4">
+            {currentProduct?.badania?.map((badanie, index) => (
+              <div key={badanie.id} className="border border-gray-200 rounded-lg p-4 bg-gray-50">
+                <div className="flex items-center justify-between mb-3">
+                  <h5 className="font-medium text-gray-900">Badanie {index + 1}</h5>
+                  <button
+                    onClick={() => {
+                      const updatedBadania = currentProduct.badania?.filter(b => b.id !== badanie.id) || [];
+                      setCurrentProduct({ badania: updatedBadania });
+                    }}
+                    className="text-red-600 hover:text-red-800 text-sm"
+                  >
+                    Usuń
+                  </button>
+                </div>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Tytuł Badania
+                    </label>
+                    <input
+                      type="text"
+                      value={badanie.tytul}
+                      onChange={(e) => {
+                        const updatedBadania = currentProduct.badania?.map(b => 
+                          b.id === badanie.id ? { ...b, tytul: e.target.value } : b
+                        ) || [];
+                        setCurrentProduct({ badania: updatedBadania });
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      placeholder="Wprowadź tytuł badania"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Data Badania
+                    </label>
+                    <input
+                      type="date"
+                      value={badanie.data}
+                      onChange={(e) => {
+                        const updatedBadania = currentProduct.badania?.map(b => 
+                          b.id === badanie.id ? { ...b, data: e.target.value } : b
+                        ) || [];
+                        setCurrentProduct({ badania: updatedBadania });
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Rodzaj Badania
+                    </label>
+                    <select
+                      value={badanie.rodzaj}
+                      onChange={(e) => {
+                        const updatedBadania = currentProduct.badania?.map(b => 
+                          b.id === badanie.id ? { ...b, rodzaj: e.target.value as any } : b
+                        ) || [];
+                        setCurrentProduct({ badania: updatedBadania });
+                      }}
+                      className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    >
+                      <option value="Składniki aktywne">Składniki aktywne</option>
+                      <option value="Mikrobiologia">Mikrobiologia</option>
+                      <option value="Metale cięzkie">Metale cięzkie</option>
+                      <option value="Osmolarność">Osmolarność</option>
+                    </select>
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                      Plik Badania
+                    </label>
+                    <div className="flex items-center space-x-2">
+                      <input
+                        type="file"
+                        accept=".pdf,.doc,.docx,.jpg,.jpeg,.png"
+                        onChange={(e) => {
+                          const file = e.target.files?.[0];
+                          if (file) {
+                            // For now, we'll store the file name. In a real implementation,
+                            // this would upload to object storage and store the URL
+                            const updatedBadania = currentProduct.badania?.map(b => 
+                              b.id === badanie.id ? { ...b, plik: file.name } : b
+                            ) || [];
+                            setCurrentProduct({ badania: updatedBadania });
+                          }
+                        }}
+                        className="text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-medium file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
+                      />
+                    </div>
+                    {badanie.plik && (
+                      <div className="mt-1 text-sm text-gray-600">
+                        Wybrano: {badanie.plik}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            ))}
+            
+            {(!currentProduct?.badania || currentProduct.badania.length === 0) && (
+              <div className="text-center py-8 text-gray-500">
+                Brak dodanych badań. Kliknij "Dodaj Badanie" aby dodać nowe badanie.
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     );
   };
@@ -1939,7 +2089,9 @@ const Products: React.FC = () => {
                 dlaDiabetykow: undefined,
                 dlaSportowcow: undefined,
                 dlaWegan: undefined,
-                dlaWegetarian: undefined
+                dlaWegetarian: undefined,
+                // Reset Badania
+                badania: []
               });
               setActiveTab('marketing');
             }}
@@ -2370,6 +2522,31 @@ const Products: React.FC = () => {
                       Dla Wegetarian
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Badania Section in Preview */}
+            {previewProduct.badania && previewProduct.badania.length > 0 && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Badania</h3>
+                <div className="space-y-3">
+                  {previewProduct.badania.map((badanie, index) => (
+                    <div key={badanie.id} className="border border-gray-200 rounded-lg p-3 bg-gray-50">
+                      <div className="flex items-center justify-between mb-2">
+                        <h4 className="font-medium text-gray-900">{badanie.tytul || `Badanie ${index + 1}`}</h4>
+                        <span className="text-xs bg-purple-100 text-purple-800 px-2 py-1 rounded">
+                          {badanie.rodzaj}
+                        </span>
+                      </div>
+                      <div className="text-sm text-gray-600">
+                        <p>Data: {badanie.data || 'Nie podano'}</p>
+                        {badanie.plik && (
+                          <p>Plik: <span className="text-blue-600">{badanie.plik}</span></p>
+                        )}
+                      </div>
+                    </div>
+                  ))}
                 </div>
               </div>
             )}
