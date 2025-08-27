@@ -272,21 +272,21 @@ const Products: React.FC = () => {
     opakowanie: '',
     receptura: '',
     // Cechy Ogólne defaults
-    naturalny100: false,
-    markowySurowiec: false,
-    weganski: false,
-    wegetarianski: false,
-    bezCukru: false,
-    bezSubstancjiSlodzacych: false,
-    bezLaktozy: false,
-    bezglutenowy: false,
-    bezalkoholowy: false,
-    bezzapachowy: false,
-    wolneOdSoi: false,
-    wolneOdAlergenow: false,
-    nonGmo: false,
-    wolneOdSorbinianuPotasu: false,
-    cleanLabel: false
+    naturalny100: undefined,
+    markowySurowiec: undefined,
+    weganski: undefined,
+    wegetarianski: undefined,
+    bezCukru: undefined,
+    bezSubstancjiSlodzacych: undefined,
+    bezLaktozy: undefined,
+    bezglutenowy: undefined,
+    bezalkoholowy: undefined,
+    bezzapachowy: undefined,
+    wolneOdSoi: undefined,
+    wolneOdAlergenow: undefined,
+    nonGmo: undefined,
+    wolneOdSorbinianuPotasu: undefined,
+    cleanLabel: undefined
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -442,21 +442,21 @@ const Products: React.FC = () => {
       opakowanie: '',
       receptura: '',
       // Reset Cechy Ogólne
-      naturalny100: false,
-      markowySurowiec: false,
-      weganski: false,
-      wegetarianski: false,
-      bezCukru: false,
-      bezSubstancjiSlodzacych: false,
-      bezLaktozy: false,
-      bezglutenowy: false,
-      bezalkoholowy: false,
-      bezzapachowy: false,
-      wolneOdSoi: false,
-      wolneOdAlergenow: false,
-      nonGmo: false,
-      wolneOdSorbinianuPotasu: false,
-      cleanLabel: false
+      naturalny100: undefined,
+      markowySurowiec: undefined,
+      weganski: undefined,
+      wegetarianski: undefined,
+      bezCukru: undefined,
+      bezSubstancjiSlodzacych: undefined,
+      bezLaktozy: undefined,
+      bezglutenowy: undefined,
+      bezalkoholowy: undefined,
+      bezzapachowy: undefined,
+      wolneOdSoi: undefined,
+      wolneOdAlergenow: undefined,
+      nonGmo: undefined,
+      wolneOdSorbinianuPotasu: undefined,
+      cleanLabel: undefined
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1197,10 +1197,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">100% naturalny</label>
               <select
-                value={currentProduct?.naturalny100 ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ naturalny100: e.target.value === 'true' })}
+                value={currentProduct?.naturalny100 === undefined ? '-' : currentProduct.naturalny100 ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ naturalny100: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1209,10 +1210,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Markowy Surowiec</label>
               <select
-                value={currentProduct?.markowySurowiec ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ markowySurowiec: e.target.value === 'true' })}
+                value={currentProduct?.markowySurowiec === undefined ? '-' : currentProduct.markowySurowiec ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ markowySurowiec: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1221,10 +1223,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Wegański</label>
               <select
-                value={currentProduct?.weganski ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ weganski: e.target.value === 'true' })}
+                value={currentProduct?.weganski === undefined ? '-' : currentProduct.weganski ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ weganski: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1233,10 +1236,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Wegetariański</label>
               <select
-                value={currentProduct?.wegetarianski ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ wegetarianski: e.target.value === 'true' })}
+                value={currentProduct?.wegetarianski === undefined ? '-' : currentProduct.wegetarianski ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wegetarianski: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1245,10 +1249,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bez Cukru</label>
               <select
-                value={currentProduct?.bezCukru ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezCukru: e.target.value === 'true' })}
+                value={currentProduct?.bezCukru === undefined ? '-' : currentProduct.bezCukru ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezCukru: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1257,10 +1262,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bez Substancji Słodzących</label>
               <select
-                value={currentProduct?.bezSubstancjiSlodzacych ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezSubstancjiSlodzacych: e.target.value === 'true' })}
+                value={currentProduct?.bezSubstancjiSlodzacych === undefined ? '-' : currentProduct.bezSubstancjiSlodzacych ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezSubstancjiSlodzacych: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1269,10 +1275,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bez Laktozy</label>
               <select
-                value={currentProduct?.bezLaktozy ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezLaktozy: e.target.value === 'true' })}
+                value={currentProduct?.bezLaktozy === undefined ? '-' : currentProduct.bezLaktozy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezLaktozy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1281,10 +1288,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bezglutenowy</label>
               <select
-                value={currentProduct?.bezglutenowy ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezglutenowy: e.target.value === 'true' })}
+                value={currentProduct?.bezglutenowy === undefined ? '-' : currentProduct.bezglutenowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezglutenowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1293,10 +1301,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bezalkoholowy</label>
               <select
-                value={currentProduct?.bezalkoholowy ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezalkoholowy: e.target.value === 'true' })}
+                value={currentProduct?.bezalkoholowy === undefined ? '-' : currentProduct.bezalkoholowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezalkoholowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1305,10 +1314,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Bezzapachowy</label>
               <select
-                value={currentProduct?.bezzapachowy ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ bezzapachowy: e.target.value === 'true' })}
+                value={currentProduct?.bezzapachowy === undefined ? '-' : currentProduct.bezzapachowy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ bezzapachowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1317,10 +1327,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Wolne od Soi</label>
               <select
-                value={currentProduct?.wolneOdSoi ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ wolneOdSoi: e.target.value === 'true' })}
+                value={currentProduct?.wolneOdSoi === undefined ? '-' : currentProduct.wolneOdSoi ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdSoi: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1329,10 +1340,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Wolne od Alergenów</label>
               <select
-                value={currentProduct?.wolneOdAlergenow ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ wolneOdAlergenow: e.target.value === 'true' })}
+                value={currentProduct?.wolneOdAlergenow === undefined ? '-' : currentProduct.wolneOdAlergenow ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdAlergenow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1341,10 +1353,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Non-gmo</label>
               <select
-                value={currentProduct?.nonGmo ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ nonGmo: e.target.value === 'true' })}
+                value={currentProduct?.nonGmo === undefined ? '-' : currentProduct.nonGmo ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ nonGmo: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1353,10 +1366,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Wolne od Sorbinianu Potasu</label>
               <select
-                value={currentProduct?.wolneOdSorbinianuPotasu ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ wolneOdSorbinianuPotasu: e.target.value === 'true' })}
+                value={currentProduct?.wolneOdSorbinianuPotasu === undefined ? '-' : currentProduct.wolneOdSorbinianuPotasu ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ wolneOdSorbinianuPotasu: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1365,10 +1379,11 @@ const Products: React.FC = () => {
             <div className="flex items-center justify-between p-3 border rounded-lg">
               <label className="text-sm font-medium text-gray-700">Clean Label</label>
               <select
-                value={currentProduct?.cleanLabel ? 'true' : 'false'}
-                onChange={(e) => setCurrentProduct({ cleanLabel: e.target.value === 'true' })}
+                value={currentProduct?.cleanLabel === undefined ? '-' : currentProduct.cleanLabel ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ cleanLabel: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
+                <option value="-">-</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1719,21 +1734,21 @@ const Products: React.FC = () => {
                 opakowanie: '',
                 receptura: '',
                 // Reset Cechy Ogólne
-                naturalny100: false,
-                markowySurowiec: false,
-                weganski: false,
-                wegetarianski: false,
-                bezCukru: false,
-                bezSubstancjiSlodzacych: false,
-                bezLaktozy: false,
-                bezglutenowy: false,
-                bezalkoholowy: false,
-                bezzapachowy: false,
-                wolneOdSoi: false,
-                wolneOdAlergenow: false,
-                nonGmo: false,
-                wolneOdSorbinianuPotasu: false,
-                cleanLabel: false
+                naturalny100: undefined,
+                markowySurowiec: undefined,
+                weganski: undefined,
+                wegetarianski: undefined,
+                bezCukru: undefined,
+                bezSubstancjiSlodzacych: undefined,
+                bezLaktozy: undefined,
+                bezglutenowy: undefined,
+                bezalkoholowy: undefined,
+                bezzapachowy: undefined,
+                wolneOdSoi: undefined,
+                wolneOdAlergenow: undefined,
+                nonGmo: undefined,
+                wolneOdSorbinianuPotasu: undefined,
+                cleanLabel: undefined
               });
               setActiveTab('marketing');
             }}
