@@ -71,8 +71,13 @@ shared/
   - Multiple research entries with title, date, type dropdown, and file upload
   - Research types: Składniki aktywne, Mikrobiologia, Metale cięzkie, Osmolarność
   - Dynamic add/remove functionality for research entries
-- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, and "Badania" as detailed cards
-- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true) and research studies array
+- Added "Opis Produktu" section with product description fields:
+  - Pełna treść frontu opakowania (10-row textarea)
+  - Szczególne Właściwości - Tytuł (text input)
+  - Treść oświadczenia (WYSIWYG HTML editor using ReactQuill)
+  - Zalecana dzienna porcja (text input)
+- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, and "Opis Produktu" as formatted content sections
+- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, and product description fields
 
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal

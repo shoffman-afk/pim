@@ -13,6 +13,8 @@ import {
   ShoppingCart,
   Power
 } from 'lucide-react';
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 interface Product {
   id: string;
@@ -91,6 +93,11 @@ interface Product {
     rodzaj: 'Składniki aktywne' | 'Mikrobiologia' | 'Metale cięzkie' | 'Osmolarność';
     plik?: string; // URL to uploaded file
   }>;
+  // Opis Produktu (Product Description)
+  pelnatrescFrontu?: string; // Pełna treść frontu opakowania
+  szczegolneWlasciwosciTytul?: string; // Szczególne Właściwości - Tytuł
+  trescOswiadczenia?: string; // Treść oświadczenia (HTML content)
+  zalecanadzienna?: string; // Zalecana dzienna porcja
   createdAt: string;
   updatedAt: string;
 }
@@ -318,7 +325,12 @@ const Products: React.FC = () => {
     dlaWegan: undefined,
     dlaWegetarian: undefined,
     // Badania defaults
-    badania: []
+    badania: [],
+    // Opis Produktu defaults
+    pelnatrescFrontu: '',
+    szczegolneWlasciwosciTytul: '',
+    trescOswiadczenia: '',
+    zalecanadzienna: ''
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -440,6 +452,11 @@ const Products: React.FC = () => {
       dlaWegetarian: newProduct.dlaWegetarian,
       // Badania
       badania: newProduct.badania || [],
+      // Opis Produktu
+      pelnatrescFrontu: newProduct.pelnatrescFrontu || '',
+      szczegolneWlasciwosciTytul: newProduct.szczegolneWlasciwosciTytul || '',
+      trescOswiadczenia: newProduct.trescOswiadczenia || '',
+      zalecanadzienna: newProduct.zalecanadzienna || '',
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -514,7 +531,12 @@ const Products: React.FC = () => {
       dlaWegan: undefined,
       dlaWegetarian: undefined,
       // Reset Badania
-      badania: []
+      badania: [],
+      // Reset Opis Produktu
+      pelnatrescFrontu: '',
+      szczegolneWlasciwosciTytul: '',
+      trescOswiadczenia: '',
+      zalecanadzienna: ''
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1720,6 +1742,87 @@ const Products: React.FC = () => {
             )}
           </div>
         </div>
+
+        {/* Opis Produktu Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Opis Produktu</h4>
+          
+          <div className="space-y-4">
+            {/* Pełna treść frontu opakowania */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Pełna treść frontu opakowania
+              </label>
+              <textarea
+                rows={10}
+                value={currentProduct?.pelnatrescFrontu || ''}
+                onChange={(e) => setCurrentProduct({ pelnatrescFrontu: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 resize-vertical"
+                placeholder="Wprowadź pełną treść frontu opakowania..."
+              />
+            </div>
+
+            {/* Szczególne Właściwości - Tytuł */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Szczególne Właściwości - Tytuł
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.szczegolneWlasciwosciTytul || ''}
+                onChange={(e) => setCurrentProduct({ szczegolneWlasciwosciTytul: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Wprowadź tytuł szczególnych właściwości"
+              />
+            </div>
+
+            {/* Treść oświadczenia - WYSIWYG Editor */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Treść oświadczenia
+              </label>
+              <div className="border border-gray-300 rounded-md">
+                <ReactQuill
+                  value={currentProduct?.trescOswiadczenia || ''}
+                  onChange={(value) => setCurrentProduct({ trescOswiadczenia: value })}
+                  placeholder="Wprowadź treść oświadczenia..."
+                  theme="snow"
+                  modules={{
+                    toolbar: [
+                      [{ 'header': [1, 2, 3, false] }],
+                      ['bold', 'italic', 'underline', 'strike'],
+                      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+                      [{ 'align': [] }],
+                      ['link'],
+                      ['clean']
+                    ],
+                  }}
+                  formats={[
+                    'header',
+                    'bold', 'italic', 'underline', 'strike',
+                    'list', 'bullet',
+                    'align',
+                    'link'
+                  ]}
+                />
+              </div>
+            </div>
+
+            {/* Zalecana dzienna porcja */}
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Zalecana dzienna porcja
+              </label>
+              <input
+                type="text"
+                value={currentProduct?.zalecanadzienna || ''}
+                onChange={(e) => setCurrentProduct({ zalecanadzienna: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                placeholder="Wprowadź zalecaną dzienną porcję"
+              />
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -2091,7 +2194,12 @@ const Products: React.FC = () => {
                 dlaWegan: undefined,
                 dlaWegetarian: undefined,
                 // Reset Badania
-                badania: []
+                badania: [],
+                // Reset Opis Produktu
+                pelnatrescFrontu: '',
+                szczegolneWlasciwosciTytul: '',
+                trescOswiadczenia: '',
+                zalecanadzienna: ''
               });
               setActiveTab('marketing');
             }}
@@ -2547,6 +2655,54 @@ const Products: React.FC = () => {
                       </div>
                     </div>
                   ))}
+                </div>
+              </div>
+            )}
+
+            {/* Opis Produktu Section in Preview */}
+            {(previewProduct.pelnatrescFrontu || previewProduct.szczegolneWlasciwosciTytul || 
+              previewProduct.trescOswiadczenia || previewProduct.zalecanadzienna) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Opis Produktu</h3>
+                <div className="space-y-4">
+                  {previewProduct.pelnatrescFrontu && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-2">Pełna treść frontu opakowania</h4>
+                      <div className="bg-gray-50 p-3 rounded-md">
+                        <pre className="whitespace-pre-wrap text-sm text-gray-700">
+                          {previewProduct.pelnatrescFrontu}
+                        </pre>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {previewProduct.szczegolneWlasciwosciTytul && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-2">Szczególne Właściwości - Tytuł</h4>
+                      <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-700">
+                        {previewProduct.szczegolneWlasciwosciTytul}
+                      </div>
+                    </div>
+                  )}
+                  
+                  {previewProduct.trescOswiadczenia && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-2">Treść oświadczenia</h4>
+                      <div 
+                        className="bg-gray-50 p-3 rounded-md text-sm text-gray-700 prose prose-sm max-w-none"
+                        dangerouslySetInnerHTML={{ __html: previewProduct.trescOswiadczenia }}
+                      />
+                    </div>
+                  )}
+                  
+                  {previewProduct.zalecanadzienna && (
+                    <div>
+                      <h4 className="font-medium text-gray-900 mb-2">Zalecana dzienna porcja</h4>
+                      <div className="bg-gray-50 p-3 rounded-md text-sm text-gray-700">
+                        {previewProduct.zalecanadzienna}
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
             )}
