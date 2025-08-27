@@ -864,13 +864,13 @@ const Components: React.FC = () => {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Tytuł</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Kategorie</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Standaryzacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-2/7">Użyte w</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/7">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '30%'}}>Tytuł</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '12%'}}>Kategorie</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '12%'}}>Standaryzacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '24%'}}>Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '11%'}}>Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '11%'}}>Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '10%'}}>Akcje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">

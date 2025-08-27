@@ -3800,12 +3800,12 @@ const Products: React.FC = () => {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Produkt</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Kategoria</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Status</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/6">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '30%'}}>Produkt</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '14%'}}>Kategoria</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '14%'}}>Status</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '14%'}}>Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '14%'}}>Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '14%'}}>Akcje</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">

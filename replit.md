@@ -101,6 +101,9 @@ shared/
   - Components table now has 7 columns instead of 8, with improved title-subtitle display pattern for better readability
   - **Products Table Enhancement**: Added "Data utworzenia" and "Ostatnia aktualizacja" columns to Products table
   - Products table expanded from 4 columns to 6 columns with equal width distribution (w-1/6 for each column)
+  - **First Column Width Optimization**: Set first column (Produkt/Tytuł) to 30% width in Products and Components tables
+  - Products table: First column 30%, remaining 5 columns 14% each
+  - Components table: First column 30%, "Użyte w" 24% (double width), other columns 10-12%
   - All columns now have proportional width distribution with enhanced "Użyte w" visibility across all subpages
 
 **Previous Features (2025-01-27)**:
