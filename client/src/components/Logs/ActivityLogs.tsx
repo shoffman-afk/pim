@@ -10,13 +10,11 @@ interface LogEntry {
   action: string;
   details: string;
   category: 'user' | 'product' | 'material' | 'system';
-  level: 'info' | 'warning' | 'error';
 }
 
 export default function ActivityLogs() {
   const [searchTerm, setSearchTerm] = useState('');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
-  const [levelFilter, setLevelFilter] = useState<string>('all');
 
   // Mock data for demonstration
   const mockLogs: LogEntry[] = [
@@ -26,8 +24,7 @@ export default function ActivityLogs() {
       user: 'Jan Kowalski',
       action: 'Utworzył nowy produkt',
       details: 'Suplement Witamina C 1000mg',
-      category: 'product',
-      level: 'info'
+      category: 'product'
     },
     {
       id: '2',
@@ -35,8 +32,7 @@ export default function ActivityLogs() {
       user: 'Anna Nowak',
       action: 'Zaktualizował składnik',
       details: 'Kwas askorbinowy - zmieniono standaryzację',
-      category: 'material',
-      level: 'info'
+      category: 'material'
     },
     {
       id: '3',
@@ -44,8 +40,7 @@ export default function ActivityLogs() {
       user: 'Piotr Wiśniewski',
       action: 'Zalogował się do systemu',
       details: 'IP: 192.168.1.100',
-      category: 'user',
-      level: 'info'
+      category: 'user'
     },
     {
       id: '4',
@@ -53,8 +48,7 @@ export default function ActivityLogs() {
       user: 'System',
       action: 'Błąd synchronizacji',
       details: 'Nie udało się zsynchronizować z bazą zewnętrzną',
-      category: 'system',
-      level: 'error'
+      category: 'system'
     },
     {
       id: '5',
@@ -62,8 +56,7 @@ export default function ActivityLogs() {
       user: 'Jan Kowalski',
       action: 'Usunął kategorię produktu',
       details: 'Kategoria: Witaminy rozpuszczalne',
-      category: 'product',
-      level: 'warning'
+      category: 'product'
     }
   ];
 
@@ -72,9 +65,8 @@ export default function ActivityLogs() {
                          log.details.toLowerCase().includes(searchTerm.toLowerCase()) ||
                          log.user.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = categoryFilter === 'all' || log.category === categoryFilter;
-    const matchesLevel = levelFilter === 'all' || log.level === levelFilter;
     
-    return matchesSearch && matchesCategory && matchesLevel;
+    return matchesSearch && matchesCategory;
   });
 
   const getCategoryColor = (category: string) => {
@@ -87,14 +79,7 @@ export default function ActivityLogs() {
     }
   };
 
-  const getLevelColor = (level: string) => {
-    switch (level) {
-      case 'info': return 'bg-blue-100 text-blue-800';
-      case 'warning': return 'bg-yellow-100 text-yellow-800';
-      case 'error': return 'bg-red-100 text-red-800';
-      default: return 'bg-gray-100 text-gray-800';
-    }
-  };
+
 
   const getCategoryLabel = (category: string) => {
     switch (category) {
@@ -106,14 +91,7 @@ export default function ActivityLogs() {
     }
   };
 
-  const getLevelLabel = (level: string) => {
-    switch (level) {
-      case 'info': return 'Info';
-      case 'warning': return 'Ostrzeżenie';
-      case 'error': return 'Błąd';
-      default: return level;
-    }
-  };
+
 
   return (
     <div className="p-6 space-y-6">
@@ -125,7 +103,7 @@ export default function ActivityLogs() {
 
       {/* Filters */}
       <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
           <div className="relative">
             <Search className="w-5 h-5 absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400" />
             <input
@@ -149,17 +127,6 @@ export default function ActivityLogs() {
             <option value="system">System</option>
           </select>
 
-          <select
-            value={levelFilter}
-            onChange={(e) => setLevelFilter(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="all">Wszystkie poziomy</option>
-            <option value="info">Info</option>
-            <option value="warning">Ostrzeżenie</option>
-            <option value="error">Błąd</option>
-          </select>
-
           <button className="flex items-center justify-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
             <Download className="w-4 h-4 mr-2" />
             Eksportuj
@@ -179,18 +146,17 @@ export default function ActivityLogs() {
           <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '15%'}}>Data i czas</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '15%'}}>Użytkownik</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '20%'}}>Data i czas</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '20%'}}>Użytkownik</th>
                 <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '25%'}}>Akcja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '30%'}}>Szczegóły</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '25%'}}>Szczegóły</th>
                 <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '10%'}}>Kategoria</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '5%'}}>Poziom</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredLogs.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="py-8 px-6 text-center text-gray-500">
+                  <td colSpan={5} className="py-8 px-6 text-center text-gray-500">
                     <Activity className="w-12 h-12 text-gray-400 mx-auto mb-4" />
                     <p>Brak logów do wyświetlenia</p>
                   </td>
@@ -223,11 +189,6 @@ export default function ActivityLogs() {
                     <td className="py-4 px-6">
                       <span className={`inline-block text-xs px-2 py-1 rounded-full ${getCategoryColor(log.category)}`}>
                         {getCategoryLabel(log.category)}
-                      </span>
-                    </td>
-                    <td className="py-4 px-6">
-                      <span className={`inline-block text-xs px-2 py-1 rounded-full ${getLevelColor(log.level)}`}>
-                        {getLevelLabel(log.level)}
                       </span>
                     </td>
                   </tr>
