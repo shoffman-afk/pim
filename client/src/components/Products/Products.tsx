@@ -72,6 +72,17 @@ interface Product {
   nonGmo?: boolean; // Non-gmo
   wolneOdSorbinianuPotasu?: boolean; // Wolne od Sorbinianu Potasu
   cleanLabel?: boolean; // Clean Label
+  // Dla Kogo (Target Demographics)
+  dlaMezczyzn?: boolean; // Dla Mężczyzn
+  dlaKobiet?: boolean; // Dla Kobiet
+  dlaKobietWCiazy?: boolean; // Dla Kobiet w Ciąży
+  dlaSeniorow?: boolean; // Dla Seniorów
+  dlaDzieci?: boolean; // Dla Dzieci
+  dlaRodziny?: boolean; // Dla Rodziny
+  dlaDiabetykow?: boolean; // Dla Diabetyków
+  dlaSportowcow?: boolean; // Dla Sportowców
+  dlaWegan?: boolean; // Dla Wegan
+  dlaWegetarian?: boolean; // Dla Wegetarian
   createdAt: string;
   updatedAt: string;
 }
@@ -286,7 +297,18 @@ const Products: React.FC = () => {
     wolneOdAlergenow: undefined,
     nonGmo: undefined,
     wolneOdSorbinianuPotasu: undefined,
-    cleanLabel: undefined
+    cleanLabel: undefined,
+    // Dla Kogo defaults
+    dlaMezczyzn: undefined,
+    dlaKobiet: undefined,
+    dlaKobietWCiazy: undefined,
+    dlaSeniorow: undefined,
+    dlaDzieci: undefined,
+    dlaRodziny: undefined,
+    dlaDiabetykow: undefined,
+    dlaSportowcow: undefined,
+    dlaWegan: undefined,
+    dlaWegetarian: undefined
   });
   const [statusFilter, setStatusFilter] = useState<'all' | 'active' | 'inactive' | 'pending'>('all');
   const [categoryFilter, setCategoryFilter] = useState<string>('all');
@@ -395,6 +417,17 @@ const Products: React.FC = () => {
       nonGmo: newProduct.nonGmo,
       wolneOdSorbinianuPotasu: newProduct.wolneOdSorbinianuPotasu,
       cleanLabel: newProduct.cleanLabel,
+      // Dla Kogo
+      dlaMezczyzn: newProduct.dlaMezczyzn,
+      dlaKobiet: newProduct.dlaKobiet,
+      dlaKobietWCiazy: newProduct.dlaKobietWCiazy,
+      dlaSeniorow: newProduct.dlaSeniorow,
+      dlaDzieci: newProduct.dlaDzieci,
+      dlaRodziny: newProduct.dlaRodziny,
+      dlaDiabetykow: newProduct.dlaDiabetykow,
+      dlaSportowcow: newProduct.dlaSportowcow,
+      dlaWegan: newProduct.dlaWegan,
+      dlaWegetarian: newProduct.dlaWegetarian,
       createdAt: new Date().toISOString().split('T')[0],
       updatedAt: new Date().toISOString().split('T')[0]
     };
@@ -456,7 +489,18 @@ const Products: React.FC = () => {
       wolneOdAlergenow: undefined,
       nonGmo: undefined,
       wolneOdSorbinianuPotasu: undefined,
-      cleanLabel: undefined
+      cleanLabel: undefined,
+      // Reset Dla Kogo
+      dlaMezczyzn: undefined,
+      dlaKobiet: undefined,
+      dlaKobietWCiazy: undefined,
+      dlaSeniorow: undefined,
+      dlaDzieci: undefined,
+      dlaRodziny: undefined,
+      dlaDiabetykow: undefined,
+      dlaSportowcow: undefined,
+      dlaWegan: undefined,
+      dlaWegetarian: undefined
     });
     setShowCreateModal(false);
     setActiveTab('marketing');
@@ -1390,6 +1434,142 @@ const Products: React.FC = () => {
             </div>
           </div>
         </div>
+
+        {/* Dla Kogo Section */}
+        <div className="border border-gray-200 rounded-lg p-4">
+          <h4 className="text-lg font-semibold text-gray-900 mb-4">Dla Kogo</h4>
+          <div className="grid grid-cols-2 gap-4">
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Mężczyzn</label>
+              <select
+                value={currentProduct?.dlaMezczyzn === undefined ? '-' : currentProduct.dlaMezczyzn ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaMezczyzn: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Kobiet</label>
+              <select
+                value={currentProduct?.dlaKobiet === undefined ? '-' : currentProduct.dlaKobiet ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaKobiet: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Kobiet w Ciąży</label>
+              <select
+                value={currentProduct?.dlaKobietWCiazy === undefined ? '-' : currentProduct.dlaKobietWCiazy ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaKobietWCiazy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Seniorów</label>
+              <select
+                value={currentProduct?.dlaSeniorow === undefined ? '-' : currentProduct.dlaSeniorow ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaSeniorow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Dzieci</label>
+              <select
+                value={currentProduct?.dlaDzieci === undefined ? '-' : currentProduct.dlaDzieci ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaDzieci: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Rodziny</label>
+              <select
+                value={currentProduct?.dlaRodziny === undefined ? '-' : currentProduct.dlaRodziny ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaRodziny: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Diabetyków</label>
+              <select
+                value={currentProduct?.dlaDiabetykow === undefined ? '-' : currentProduct.dlaDiabetykow ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaDiabetykow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Sportowców</label>
+              <select
+                value={currentProduct?.dlaSportowcow === undefined ? '-' : currentProduct.dlaSportowcow ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaSportowcow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Wegan</label>
+              <select
+                value={currentProduct?.dlaWegan === undefined ? '-' : currentProduct.dlaWegan ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaWegan: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+
+            <div className="flex items-center justify-between p-3 border rounded-lg">
+              <label className="text-sm font-medium text-gray-700">Dla Wegetarian</label>
+              <select
+                value={currentProduct?.dlaWegetarian === undefined ? '-' : currentProduct.dlaWegetarian ? 'true' : 'false'}
+                onChange={(e) => setCurrentProduct({ dlaWegetarian: e.target.value === '-' ? undefined : e.target.value === 'true' })}
+                className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="-">-</option>
+                <option value="false">Nie</option>
+                <option value="true">Tak</option>
+              </select>
+            </div>
+          </div>
+        </div>
       </div>
     );
   };
@@ -1748,7 +1928,18 @@ const Products: React.FC = () => {
                 wolneOdAlergenow: undefined,
                 nonGmo: undefined,
                 wolneOdSorbinianuPotasu: undefined,
-                cleanLabel: undefined
+                cleanLabel: undefined,
+                // Reset Dla Kogo
+                dlaMezczyzn: undefined,
+                dlaKobiet: undefined,
+                dlaKobietWCiazy: undefined,
+                dlaSeniorow: undefined,
+                dlaDzieci: undefined,
+                dlaRodziny: undefined,
+                dlaDiabetykow: undefined,
+                dlaSportowcow: undefined,
+                dlaWegan: undefined,
+                dlaWegetarian: undefined
               });
               setActiveTab('marketing');
             }}
@@ -1900,7 +2091,11 @@ const Products: React.FC = () => {
               previewProduct.wegetarianski || previewProduct.bezCukru || previewProduct.bezSubstancjiSlodzacych ||
               previewProduct.bezLaktozy || previewProduct.bezglutenowy || previewProduct.bezalkoholowy ||
               previewProduct.bezzapachowy || previewProduct.wolneOdSoi || previewProduct.wolneOdAlergenow ||
-              previewProduct.nonGmo || previewProduct.wolneOdSorbinianuPotasu || previewProduct.cleanLabel) && (
+              previewProduct.nonGmo || previewProduct.wolneOdSorbinianuPotasu || previewProduct.cleanLabel ||
+              previewProduct.dlaMezczyzn || previewProduct.dlaKobiet || previewProduct.dlaKobietWCiazy ||
+              previewProduct.dlaSeniorow || previewProduct.dlaDzieci || previewProduct.dlaRodziny ||
+              previewProduct.dlaDiabetykow || previewProduct.dlaSportowcow || previewProduct.dlaWegan ||
+              previewProduct.dlaWegetarian) && (
               <div className="pt-4 border-t border-gray-200">
                 <h4 className="text-lg font-semibold text-gray-900 mb-3">Informacje Działu Produktu</h4>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -2111,6 +2306,68 @@ const Products: React.FC = () => {
                   {previewProduct.cleanLabel && (
                     <div className="bg-green-50 text-green-800 px-2 py-1 rounded-md text-sm font-medium">
                       Clean Label
+                    </div>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {/* Dla Kogo Section in Preview */}
+            {(previewProduct.dlaMezczyzn || previewProduct.dlaKobiet || previewProduct.dlaKobietWCiazy ||
+              previewProduct.dlaSeniorow || previewProduct.dlaDzieci || previewProduct.dlaRodziny ||
+              previewProduct.dlaDiabetykow || previewProduct.dlaSportowcow || previewProduct.dlaWegan ||
+              previewProduct.dlaWegetarian) && (
+              <div className="mb-6">
+                <h3 className="text-lg font-semibold text-gray-900 mb-3">Dla Kogo</h3>
+                <div className="grid grid-cols-3 gap-2">
+                  {previewProduct.dlaMezczyzn && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Mężczyzn
+                    </div>
+                  )}
+                  {previewProduct.dlaKobiet && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Kobiet
+                    </div>
+                  )}
+                  {previewProduct.dlaKobietWCiazy && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Kobiet w Ciąży
+                    </div>
+                  )}
+                  {previewProduct.dlaSeniorow && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Seniorów
+                    </div>
+                  )}
+                  {previewProduct.dlaDzieci && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Dzieci
+                    </div>
+                  )}
+                  {previewProduct.dlaRodziny && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Rodziny
+                    </div>
+                  )}
+                  {previewProduct.dlaDiabetykow && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Diabetyków
+                    </div>
+                  )}
+                  {previewProduct.dlaSportowcow && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Sportowców
+                    </div>
+                  )}
+                  {previewProduct.dlaWegan && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Wegan
+                    </div>
+                  )}
+                  {previewProduct.dlaWegetarian && (
+                    <div className="bg-blue-50 text-blue-800 px-2 py-1 rounded-md text-sm font-medium">
+                      Dla Wegetarian
                     </div>
                   )}
                 </div>
