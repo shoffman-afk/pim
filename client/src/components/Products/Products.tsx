@@ -451,8 +451,20 @@ const Products: React.FC = () => {
   const [ingredientFilter, setIngredientFilter] = useState('');
   const [selectedIngredientFilter, setSelectedIngredientFilter] = useState('');
   
-  // Simple table functionality
+  // Table functionality
   const [showTableModal, setShowTableModal] = useState(false);
+  const [editingTable, setEditingTable] = useState<{
+    id?: string;
+    tableType: '3-column' | '4-column' | '';
+    firstColumnHeader: 'Składniki aktywne' | 'Wartości odżywcze' | '';
+    headers: string[];
+    rows: string[][];
+  }>({
+    tableType: '',
+    firstColumnHeader: '',
+    headers: [],
+    rows: []
+  });
   
 
 
@@ -2126,7 +2138,7 @@ const Products: React.FC = () => {
         {/* Tables Management Section */}
         <div className="border border-gray-200 rounded-lg p-4 mt-6">
           <div className="flex items-center justify-between mb-4">
-            <h4 className="text-lg font-semibold text-gray-900">Tabele ({currentProduct?.tables?.length || 0})</h4>
+            <h4 className="text-lg font-semibold text-gray-900">Tabele ({newProduct?.tables?.length || 0})</h4>
             <button
               onClick={() => setShowTableModal(true)}
               className="inline-flex items-center px-3 py-2 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
@@ -2137,9 +2149,9 @@ const Products: React.FC = () => {
           </div>
           
           {/* Existing Tables List */}
-          {currentProduct?.tables && currentProduct.tables.length > 0 ? (
+          {newProduct?.tables && newProduct.tables.length > 0 ? (
             <div className="space-y-2">
-              {currentProduct.tables.map((table, index) => (
+              {newProduct.tables.map((table, index) => (
                 <div key={table.id} className="flex items-center justify-between p-3 border border-gray-200 rounded-lg bg-gray-50">
                   <div>
                     <div className="font-medium text-sm text-gray-900">
@@ -2149,15 +2161,32 @@ const Products: React.FC = () => {
                       Wierszy: {table.tableRows?.length || 0}
                     </div>
                   </div>
-                  <button
-                    onClick={() => {
-                      const updatedTables = currentProduct.tables?.filter((_, i) => i !== index) || [];
-                      setCurrentProduct({ tables: updatedTables });
-                    }}
-                    className="text-red-600 hover:text-red-800 text-sm px-2 py-1 rounded"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
+                  <div className="flex items-center space-x-2">
+                    <button
+                      onClick={() => {
+                        setEditingTable({
+                          id: table.id,
+                          tableType: table.tableType,
+                          firstColumnHeader: table.firstColumnHeader,
+                          headers: [...table.tableHeaders],
+                          rows: table.tableRows.map(row => [...row])
+                        });
+                        setShowTableModal(true);
+                      }}
+                      className="text-blue-600 hover:text-blue-800 text-sm px-2 py-1 rounded"
+                    >
+                      <Edit className="w-4 h-4" />
+                    </button>
+                    <button
+                      onClick={() => {
+                        const updatedTables = newProduct.tables?.filter((_, i) => i !== index) || [];
+                        setNewProduct(prev => ({ ...prev, tables: updatedTables }));
+                      }}
+                      className="text-red-600 hover:text-red-800 text-sm px-2 py-1 rounded"
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </button>
+                  </div>
                 </div>
               ))}
             </div>
@@ -3919,29 +3948,267 @@ const Products: React.FC = () => {
         </div>
       )}
 
-      {/* Simple Table Creation Modal */}
+      {/* Table Creation/Edit Modal */}
       {showTableModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-          <div className="bg-white rounded-xl p-6 w-[50vw] max-h-[70vh] overflow-y-auto relative">
+          <div className="bg-white rounded-xl p-6 w-[75vw] max-h-[90vh] overflow-y-auto relative">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-xl font-semibold">Dodaj nową tabelę</h3>
+              <h3 className="text-xl font-semibold">
+                {editingTable.id ? 'Edytuj tabelę' : 'Dodaj nową tabelę'}
+              </h3>
               <button
-                onClick={() => setShowTableModal(false)}
+                onClick={() => {
+                  setShowTableModal(false);
+                  setEditingTable({
+                    tableType: '',
+                    firstColumnHeader: '',
+                    headers: [],
+                    rows: []
+                  });
+                }}
                 className="absolute top-4 right-4 text-gray-400 hover:text-gray-600 p-1"
               >
                 <X className="w-5 h-5" />
               </button>
             </div>
             
-            <div className="text-center py-8 text-gray-500">
-              <div className="text-lg mb-2">Tworzenie tabel</div>
-              <div className="text-sm">Funkcjonalność będzie dostępna wkrótce</div>
-              <button
-                onClick={() => setShowTableModal(false)}
-                className="mt-4 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-              >
-                Zamknij
-              </button>
+            <div className="space-y-6">
+              {/* Table Configuration */}
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Typ tabeli
+                  </label>
+                  <select
+                    value={editingTable.tableType}
+                    onChange={(e) => {
+                      const tableType = e.target.value as '3-column' | '4-column' | '';
+                      const columnCount = tableType === '3-column' ? 2 : tableType === '4-column' ? 3 : 0;
+                      setEditingTable(prev => ({
+                        ...prev,
+                        tableType,
+                        headers: Array(columnCount).fill(''),
+                        rows: prev.rows.map(row => {
+                          const newRow = Array(columnCount + 1).fill('');
+                          row.forEach((cell, index) => {
+                            if (index < newRow.length) newRow[index] = cell;
+                          });
+                          return newRow;
+                        })
+                      }));
+                    }}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  >
+                    <option value="">Wybierz typ tabeli</option>
+                    <option value="3-column">3 kolumny</option>
+                    <option value="4-column">4 kolumny</option>
+                  </select>
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nagłówek pierwszej kolumny
+                  </label>
+                  <select
+                    value={editingTable.firstColumnHeader}
+                    onChange={(e) => setEditingTable(prev => ({
+                      ...prev,
+                      firstColumnHeader: e.target.value as 'Składniki aktywne' | 'Wartości odżywcze' | ''
+                    }))}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                    disabled={!editingTable.tableType}
+                  >
+                    <option value="">Wybierz nagłówek</option>
+                    <option value="Składniki aktywne">Składniki aktywne</option>
+                    <option value="Wartości odżywcze">Wartości odżywcze</option>
+                  </select>
+                </div>
+              </div>
+
+              {/* Headers Configuration */}
+              {editingTable.tableType && editingTable.firstColumnHeader && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Nagłówki kolumn
+                  </label>
+                  <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                    <input
+                      type="text"
+                      value={editingTable.firstColumnHeader}
+                      disabled
+                      className="px-3 py-2 border border-gray-300 rounded-lg bg-gray-100 text-gray-600"
+                    />
+                    {editingTable.headers.map((header, index) => (
+                      <input
+                        key={index}
+                        type="text"
+                        value={header}
+                        onChange={(e) => {
+                          const newHeaders = [...editingTable.headers];
+                          newHeaders[index] = e.target.value;
+                          setEditingTable(prev => ({ ...prev, headers: newHeaders }));
+                        }}
+                        placeholder={`Kolumna ${index + 2}`}
+                        className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      />
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Table Rows */}
+              {editingTable.tableType && editingTable.firstColumnHeader && (
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Wiersze tabeli
+                    </label>
+                    <button
+                      onClick={() => {
+                        const columnCount = editingTable.tableType === '3-column' ? 3 : 4;
+                        setEditingTable(prev => ({
+                          ...prev,
+                          rows: [...prev.rows, Array(columnCount).fill('')]
+                        }));
+                      }}
+                      className="inline-flex items-center px-3 py-1 text-sm font-medium text-blue-600 bg-blue-50 border border-blue-200 rounded-lg hover:bg-blue-100"
+                    >
+                      <Plus className="w-4 h-4 mr-1" />
+                      Dodaj wiersz
+                    </button>
+                  </div>
+                  
+                  <div className="space-y-2 max-h-60 overflow-y-auto">
+                    {editingTable.rows.map((row, rowIndex) => (
+                      <div key={rowIndex} className="flex items-center space-x-2">
+                        <div className="flex-1 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                          {row.map((cell, cellIndex) => (
+                            <input
+                              key={cellIndex}
+                              type="text"
+                              value={cell}
+                              onChange={(e) => {
+                                const newRows = [...editingTable.rows];
+                                newRows[rowIndex][cellIndex] = e.target.value;
+                                setEditingTable(prev => ({ ...prev, rows: newRows }));
+                              }}
+                              placeholder={cellIndex === 0 ? editingTable.firstColumnHeader : `Kolumna ${cellIndex + 1}`}
+                              className="px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            />
+                          ))}
+                        </div>
+                        <button
+                          onClick={() => {
+                            const newRows = editingTable.rows.filter((_, i) => i !== rowIndex);
+                            setEditingTable(prev => ({ ...prev, rows: newRows }));
+                          }}
+                          className="text-red-600 hover:text-red-800 p-1"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                  
+                  {editingTable.rows.length === 0 && (
+                    <div className="text-center py-4 text-gray-500 border-2 border-dashed border-gray-300 rounded-lg">
+                      Kliknij "Dodaj wiersz" aby dodać dane do tabeli
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {/* Table Preview */}
+              {editingTable.tableType && editingTable.firstColumnHeader && editingTable.rows.length > 0 && (
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Podgląd tabeli
+                  </label>
+                  <div className="border border-gray-300 rounded-lg overflow-hidden">
+                    <table className="w-full text-sm">
+                      <thead className="bg-gray-50">
+                        <tr>
+                          <th className="px-3 py-2 text-left font-medium text-gray-900 border-r border-gray-200">
+                            {editingTable.firstColumnHeader}
+                          </th>
+                          {editingTable.headers.map((header, index) => (
+                            <th key={index} className="px-3 py-2 text-left font-medium text-gray-900 border-r border-gray-200 last:border-r-0">
+                              {header || `Kolumna ${index + 2}`}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {editingTable.rows.map((row, rowIndex) => (
+                          <tr key={rowIndex} className="border-t border-gray-200">
+                            {row.map((cell, cellIndex) => (
+                              <td key={cellIndex} className="px-3 py-2 border-r border-gray-200 last:border-r-0">
+                                {cell || '-'}
+                              </td>
+                            ))}
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex justify-end space-x-3 pt-4 border-t border-gray-200">
+                <button
+                  onClick={() => {
+                    setShowTableModal(false);
+                    setEditingTable({
+                      tableType: '',
+                      firstColumnHeader: '',
+                      headers: [],
+                      rows: []
+                    });
+                  }}
+                  className="px-4 py-2 text-gray-700 border border-gray-300 rounded-lg hover:bg-gray-50"
+                >
+                  Anuluj
+                </button>
+                <button
+                  onClick={() => {
+                    if (editingTable.tableType && editingTable.firstColumnHeader) {
+                      const tableId = editingTable.id || Date.now().toString();
+                      const newTable = {
+                        id: tableId,
+                        tableType: editingTable.tableType,
+                        firstColumnHeader: editingTable.firstColumnHeader,
+                        tableHeaders: editingTable.headers,
+                        tableRows: editingTable.rows
+                      };
+
+                      const currentTables = newProduct.tables || [];
+                      const existingIndex = currentTables.findIndex(t => t.id === tableId);
+                      
+                      let updatedTables;
+                      if (existingIndex >= 0) {
+                        updatedTables = [...currentTables];
+                        updatedTables[existingIndex] = newTable;
+                      } else {
+                        updatedTables = [...currentTables, newTable];
+                      }
+
+                      setNewProduct(prev => ({ ...prev, tables: updatedTables }));
+                      setShowTableModal(false);
+                      setEditingTable({
+                        tableType: '',
+                        firstColumnHeader: '',
+                        headers: [],
+                        rows: []
+                      });
+                    }
+                  }}
+                  disabled={!editingTable.tableType || !editingTable.firstColumnHeader}
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:bg-gray-300 disabled:cursor-not-allowed"
+                >
+                  {editingTable.id ? 'Zaktualizuj tabelę' : 'Dodaj tabelę'}
+                </button>
+              </div>
             </div>
           </div>
         </div>
