@@ -91,6 +91,11 @@ shared/
   - Changed from `text-lg font-medium` to `text-sm font-medium` for design consistency
   - Standardized date columns (creation and update dates) to use `text-sm` sizing across all components
   - All table first columns and date columns now use uniform `text-sm` styling for visual consistency across entire application
+- **Equal Width Columns Implementation Completed**:
+  - Added `table-fixed` class to all specified subpage tables for equal column distribution
+  - Applied equal width classes (`w-1/5` for 5-column tables, `w-1/8` for 8-column Components table)
+  - Updated Standaryzacja, Nazwa Składnika (Components), Kategorie (Materials), Dodatkowe Informacje, Marka, Postać, Kategorie (Products), and Zastosowanie
+  - All columns now have uniform width across all specified subpages for consistent table layout
 
 **Previous Features (2025-01-27)**:
 - Added support for multiple separate tables in different variations:

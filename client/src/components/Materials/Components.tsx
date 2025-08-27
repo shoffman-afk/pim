@@ -861,17 +861,17 @@ const Components: React.FC = () => {
         </div>
         
         <div className="overflow-x-auto">
-          <table className="w-full">
+          <table className="w-full table-fixed">
             <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Tytuł</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Kategorie</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Nazwa Składnika</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Standaryzacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Użyte w</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Data utworzenia</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Ostatnia aktualizacja</th>
-                <th className="text-left py-3 px-6 font-medium text-gray-700">Akcje</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Tytuł</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Kategorie</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Nazwa Składnika</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Standaryzacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700 w-1/8">Akcje</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-gray-200">
