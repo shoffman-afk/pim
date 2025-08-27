@@ -82,8 +82,9 @@ shared/
   - Click-to-add functionality from available to selected
   - Displays ingredient titles (from Materials) in selection but shows activeName in product preview
   - Remove functionality for selected ingredients
-- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, "Opis Produktu" as formatted content sections, and "Składniki" as comma-separated text with proper capitalization
-- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, product description fields, and ingredients array
+- Enhanced preview modal to display "Cechy Ogólne" as green badges, "Dla Kogo" as blue badges, "Badania" as detailed cards, "Opis Produktu" as formatted content sections, "Składniki" as comma-separated text with proper capitalization, and "Tabela" as formatted table
+- Added table creation functionality with 3-column and 4-column options, first column header choices ("Składniki aktywne", "Wartości odżywcze"), editable headers and cells, add/remove rows functionality
+- Updated Product interface with all new boolean fields supporting 3-state logic (undefined, false, true), research studies array, product description fields, ingredients array, and table structure
 
 **2025-01-21**: 
 - Enhanced "Dział Produktu" tab in product creation/editing modal
