@@ -411,6 +411,7 @@ const Products: React.FC = () => {
   const [showPreviewModal, setShowPreviewModal] = useState(false);
   const [previewProduct, setPreviewProduct] = useState<Product | null>(null);
   const [activeTab, setActiveTab] = useState('marketing');
+  const [ingredientFilter, setIngredientFilter] = useState('');
 
   const getRowBackgroundColor = (status: string) => {
     switch (status) {
@@ -1908,10 +1909,31 @@ const Products: React.FC = () => {
             {/* Available Ingredients */}
             <div>
               <h5 className="font-medium text-gray-900 mb-3">Dostępne składniki</h5>
+              
+              {/* Search Filter */}
+              <div className="mb-3">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                  <input
+                    type="text"
+                    placeholder="Szukaj składników..."
+                    value={ingredientFilter}
+                    onChange={(e) => setIngredientFilter(e.target.value)}
+                    className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm"
+                  />
+                </div>
+              </div>
+              
               <div className="border border-gray-200 rounded-lg h-64 overflow-y-auto">
                 <div className="space-y-1 p-2">
                   {availableIngredients
-                    .filter(ingredient => !currentProduct?.skladniki?.some(s => s.id === ingredient.id))
+                    .filter(ingredient => 
+                      !currentProduct?.skladniki?.some(s => s.id === ingredient.id) &&
+                      (ingredientFilter === '' || 
+                       ingredient.title.toLowerCase().includes(ingredientFilter.toLowerCase()) ||
+                       ingredient.activeName.toLowerCase().includes(ingredientFilter.toLowerCase()) ||
+                       ingredient.category.toLowerCase().includes(ingredientFilter.toLowerCase()))
+                    )
                     .map((ingredient) => (
                     <div
                       key={ingredient.id}
@@ -1932,6 +1954,20 @@ const Products: React.FC = () => {
                       <div className="text-xs text-blue-600">{ingredient.category}</div>
                     </div>
                   ))}
+                  
+                  {/* No results message */}
+                  {availableIngredients
+                    .filter(ingredient => 
+                      !currentProduct?.skladniki?.some(s => s.id === ingredient.id) &&
+                      (ingredientFilter === '' || 
+                       ingredient.title.toLowerCase().includes(ingredientFilter.toLowerCase()) ||
+                       ingredient.activeName.toLowerCase().includes(ingredientFilter.toLowerCase()) ||
+                       ingredient.category.toLowerCase().includes(ingredientFilter.toLowerCase()))
+                    ).length === 0 && ingredientFilter !== '' && (
+                    <div className="text-center py-8 text-gray-500 text-sm">
+                      Brak składników pasujących do frazy "{ingredientFilter}"
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
@@ -1973,7 +2009,14 @@ const Products: React.FC = () => {
           </div>
           
           <div className="mt-4 text-sm text-gray-600">
-            Kliknij na składnik po lewej stronie, aby dodać go do produktu. W podglądzie produktu będą wyświetlane nazwy składników.
+            <div className="mb-2">
+              Kliknij na składnik po lewej stronie, aby dodać go do produktu. W podglądzie produktu będą wyświetlane nazwy składników.
+            </div>
+            {ingredientFilter && (
+              <div className="text-blue-600">
+                Wyświetlane składniki filtrowane według: "{ingredientFilter}"
+              </div>
+            )}
           </div>
         </div>
       </div>
