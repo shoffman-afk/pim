@@ -22,61 +22,71 @@ const availableIngredients = [
     id: '1',
     title: 'Witamina C (kwas askorbinowy) USP',
     activeName: 'Kwas askorbinowy',
-    category: 'Witaminy'
+    category: 'Witaminy',
+    ingredientsList: '<p>Kwas L-askorbinowy, mikrokrystaliczna celuloza, magnezu stearynian</p>'
   },
   {
     id: '2', 
     title: 'Witamina D3 (Cholekalcyferol) 100,000 IU/g',
     activeName: 'Witamina D3 (Cholekalcyferol)',
-    category: 'Witaminy'
+    category: 'Witaminy',
+    ingredientsList: '<p>Cholekalcyferol, olej MCT, żelatyna, glicerol</p>'
   },
   {
     id: '3',
     title: 'Ekstrakt z kurkumy 95% kurkuminy',
     activeName: 'Ekstrakt z kurkumy',
-    category: 'Ekstrakty roślinne'
+    category: 'Ekstrakty roślinne',
+    ingredientsList: '<p>Ekstrakt z korzenia kurkumy (Curcuma longa) 95% kurkuminy, maltodekstryna</p>'
   },
   {
     id: '4',
     title: 'Koenzym Q10 99% Ubiquinone',
     activeName: 'Koenzym Q10',
-    category: 'Koenzymy'
+    category: 'Koenzymy',
+    ingredientsList: '<p>Ubichinon, lecytyna sojowa, olej ryżowy</p>'
   },
   {
     id: '5',
     title: 'Omega-3 Fish Oil 18/12 EPA/DHA',
     activeName: 'Omega-3 (EPA/DHA)',
-    category: 'Kwasy tłuszczowe'
+    category: 'Kwasy tłuszczowe',
+    ingredientsList: '<p>Olej z ryb morskich, EPA 18%, DHA 12%, tokoferole</p>'
   },
   {
     id: '6',
     title: 'Lactobacillus acidophilus 10^9 CFU/g',
     activeName: 'Probiotyki Lactobacillus',
-    category: 'Probiotyki'
+    category: 'Probiotyki',
+    ingredientsList: '<p>Lactobacillus acidophilus 10^9 CFU/g, maltodekstryna</p>'
   },
   {
     id: '7',
     title: 'Magnesium Bisglycinate Chelate',
     activeName: 'Magnez bisglicynian',
-    category: 'Minerały'
+    category: 'Minerały',
+    ingredientsList: '<p>Magnez bisglicynian, mikrokrystaliczna celuloza, magnezu stearynian</p>'
   },
   {
     id: '8',
     title: 'Zinc Picolinate 22% Zn',
     activeName: 'Cynk pikolinian',
-    category: 'Minerały'
+    category: 'Minerały',
+    ingredientsList: '<p>Cynk pikolinian, mikrokrystaliczna celuloza</p>'
   },
   {
     id: '9',
     title: 'Selenium Yeast 0.5% Se',
     activeName: 'Selen z drożdży',
-    category: 'Minerały'
+    category: 'Minerały',
+    ingredientsList: '<p>Selen z drożdży piekarskich, mikrokrystaliczna celuloza</p>'
   },
   {
     id: '10',
     title: 'Ashwagandha Root Extract 5% Withanolides',
     activeName: 'Ekstrakt z ashwagandhy',
-    category: 'Ekstrakty roślinne'
+    category: 'Ekstrakty roślinne',
+    ingredientsList: '<p>Ekstrakt z korzenia ashwagandhy (Withania somnifera) 5% witanolidów, maltodekstryna</p>'
   }
 ];
 
@@ -166,7 +176,8 @@ interface Product {
   skladniki?: Array<{
     id: string;
     title: string; // Tytuł składnika (z bazy Materials)
-    activeName: string; // Nazwa składnika (wyświetlana w produkcie)
+    activeName: string; // Nazwa składnika (do wyszukiwania)
+    ingredientsList: string; // Nazwa lista składników (wyświetlana w produkcie)
   }>;
   createdAt: string;
   updatedAt: string;
@@ -1941,7 +1952,8 @@ const Products: React.FC = () => {
                         const newIngredient = {
                           id: ingredient.id,
                           title: ingredient.title,
-                          activeName: ingredient.activeName
+                          activeName: ingredient.activeName,
+                          ingredientsList: ingredient.ingredientsList
                         };
                         setCurrentProduct({
                           skladniki: [...(currentProduct?.skladniki || []), newIngredient]
@@ -2913,8 +2925,10 @@ const Products: React.FC = () => {
                   <div className="text-sm text-gray-700">
                     {previewProduct.skladniki
                       .map((ingredient, index) => {
-                        // Capitalize first letter of the first ingredient, lowercase others
-                        const name = ingredient.activeName;
+                        // Extract text from HTML and capitalize first letter of the first ingredient, lowercase others
+                        const tempDiv = document.createElement('div');
+                        tempDiv.innerHTML = ingredient.ingredientsList;
+                        const name = tempDiv.textContent || tempDiv.innerText || '';
                         if (index === 0) {
                           return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
                         }
