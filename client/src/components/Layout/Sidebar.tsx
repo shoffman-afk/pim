@@ -49,7 +49,8 @@ const Sidebar: React.FC = () => {
     { path: '/products/usage', label: 'Zastosowanie' },
     { path: '/products/categories', label: 'Kategorie' },
     { path: '/products/form', label: 'Postać' },
-    { path: '/products/brand', label: 'Marka' }
+    { path: '/products/brand', label: 'Marka' },
+    { path: '/products/additional-info', label: 'Dodatkowe informacje' }
   ];
 
   const materialsSubItems = [

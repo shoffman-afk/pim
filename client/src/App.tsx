@@ -15,6 +15,7 @@ import ProductForm from './components/Products/Form';
 import ProductCategories from './components/Products/Categories';
 import ProductUsage from './components/Products/Usage';
 import Products from './components/Products/Products';
+import AdditionalInfo from './components/Products/AdditionalInfo';
 
 const ProtectedRoute = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated } = useAuth();
@@ -54,6 +55,7 @@ const AppContent = () => {
         <Route path="/products/form" component={ProductForm} />
         <Route path="/products/categories" component={ProductCategories} />
         <Route path="/products/usage" component={ProductUsage} />
+        <Route path="/products/additional-info" component={AdditionalInfo} />
         <Route path="/logs" component={ActivityLogs} />
       </Switch>
     </Layout>

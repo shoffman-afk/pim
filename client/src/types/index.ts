@@ -35,6 +35,91 @@ export interface Product {
   unitsPerLayer?: number;
   unitsPerPallet?: number;
   status: 'active' | 'inactive' | 'pending';
+  additionalInfo?: string;
+  // Product department fields
+  postac?: string;
+  marka?: string;
+  iloscDziennychPorcji?: string;
+  iloscNetto?: string;
+  wagaNetto?: number;
+  kategoriaZywnosci?: string;
+  zalecanyWiek?: string;
+  kraj?: string;
+  ean?: string;
+  cenaSugerowana?: number;
+  waluta?: string;
+  vat?: number;
+  bloz?: string;
+  gisLink?: string;
+  gisNumer?: string;
+  opakowanie?: string;
+  receptura?: string;
+  sposobUzycia?: string;
+  przechowywanie?: string;
+  producent?: string;
+  // General characteristics (3-state: undefined, false, true)
+  naturalny100?: boolean;
+  markowySurowiec?: boolean;
+  weganski?: boolean;
+  wegetarianski?: boolean;
+  bezCukru?: boolean;
+  bezSubstancjiSlodzacych?: boolean;
+  bezLaktozy?: boolean;
+  bezglutenowy?: boolean;
+  bezalkoholowy?: boolean;
+  bezzapachowy?: boolean;
+  wolneOdSoi?: boolean;
+  wolneOdAlergenow?: boolean;
+  nonGmo?: boolean;
+  wolneOdSorbinianuPotasu?: boolean;
+  cleanLabel?: boolean;
+  // Target demographics (3-state: undefined, false, true)
+  dlaMezczyzn?: boolean;
+  dlaKobiet?: boolean;
+  dlaKobietWCiazy?: boolean;
+  dlaSeniorow?: boolean;
+  dlaDzieci?: boolean;
+  dlaRodziny?: boolean;
+  dlaDiabetykow?: boolean;
+  dlaSportowcow?: boolean;
+  dlaWegan?: boolean;
+  dlaWegetarian?: boolean;
+  // Research studies
+  badania?: Array<{
+    id: string;
+    tytul: string;
+    data: string;
+    rodzaj: 'Składniki aktywne' | 'Mikrobiologia' | 'Metale cięzkie' | 'Osmolarność';
+    plik?: string;
+  }>;
+  // Product description
+  pelnatrescFrontu?: string;
+  szczegolneWlasciwosciTytul?: string;
+  trescOswiadczenia?: string;
+  zalecanadzienna?: string;
+  // Ingredients
+  skladniki?: Array<{
+    id: string;
+    title: string;
+    activeName: string;
+    ingredientsList: string;
+  }>;
+  // Tables
+  tables?: Array<{
+    id: string;
+    tableType: '3-column' | '4-column';
+    firstColumnHeader: 'Składniki aktywne' | 'Wartości odżywcze';
+    secondColumnHeader: string;
+    thirdColumnHeader: string;
+    fourthColumnHeader?: string;
+    rows: Array<{
+      id: string;
+      col1: string;
+      col2: string;
+      col3: string;
+      col4?: string;
+    }>;
+  }>;
   createdAt: string;
   updatedAt: string;
 }

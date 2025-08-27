@@ -641,6 +641,7 @@ const Products: React.FC = () => {
       sposobUzycia: '',
       przechowywanie: '',
       producent: '',
+      additionalInfo: '',
       // Reset Cechy Ogólne
       naturalny100: undefined,
       markowySurowiec: undefined,
@@ -2254,6 +2255,31 @@ const Products: React.FC = () => {
                 <option value="Aura Herbals">Aura Herbals</option>
               </select>
             </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-1">
+                Dodatkowe informacje prawne
+              </label>
+              <select
+                value={currentProduct?.additionalInfo || ''}
+                onChange={(e) => setCurrentProduct({ additionalInfo: e.target.value })}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                <option value="">Wybierz informację prawną</option>
+                <option value="Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.">Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.</option>
+                <option value="*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.">*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.</option>
+                <option value="Przechowywać w suchym miejscu w temperaturze pokojowej.">Przechowywać w suchym miejscu w temperaturze pokojowej.</option>
+                <option value="Nie przekraczać zalecanej dziennej porcji.">Nie przekraczać zalecanej dziennej porcji.</option>
+                <option value="Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.">Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.</option>
+                <option value="W przypadku przyjmowania leków skonsultuj się z lekarzem.">W przypadku przyjmowania leków skonsultuj się z lekarzem.</option>
+                <option value="Przechowywać w miejscu niedostępnym dla małych dzieci.">Przechowywać w miejscu niedostępnym dla małych dzieci.</option>
+                <option value="*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.">*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.</option>
+                <option value="Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.">Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.</option>
+                <option value="Nie stosować w przypadku alergii na którykolwiek ze składników.">Nie stosować w przypadku alergii na którykolwiek ze składników.</option>
+                <option value="Przed użyciem należy zapoznać się z ulotką.">Przed użyciem należy zapoznać się z ulotką.</option>
+                <option value="*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.">*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.</option>
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -2707,7 +2733,14 @@ const Products: React.FC = () => {
                 trescOswiadczenia: '',
                 zalecanadzienna: '',
                 // Reset Składniki
-                skladniki: []
+                skladniki: [],
+                // Reset Tabele  
+                tables: [],
+                // Reset Dodatkowe informacje
+                sposobUzycia: '',
+                przechowywanie: '',
+                producent: '',
+                additionalInfo: ''
               });
               setActiveTab('marketing');
             }}
@@ -3395,6 +3428,16 @@ const Products: React.FC = () => {
                       <p className="text-gray-900">{previewProduct.unitsPerPallet} szt.</p>
                     </div>
                   )}
+                </div>
+              </div>
+            )}
+
+            {/* Additional Legal Info */}
+            {previewProduct.additionalInfo && (
+              <div>
+                <h4 className="text-lg font-semibold text-gray-900 mb-3">Dodatkowe informacje prawne</h4>
+                <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4">
+                  <p className="text-gray-800">{previewProduct.additionalInfo}</p>
                 </div>
               </div>
             )}

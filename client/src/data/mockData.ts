@@ -1,5 +1,20 @@
 import { User, Permission } from '../types';
 
+export const additionalInfoOptions = [
+  'Nie stosować u dzieci, kobiet w ciąży i w trakcie laktacji.',
+  '*Korzystne działanie występuje w przypadku spożywania 3 g kreatyny dziennie.',
+  'Przechowywać w suchym miejscu w temperaturze pokojowej.',
+  'Nie przekraczać zalecanej dziennej porcji.',
+  'Suplement diety nie może być stosowany jako substytut zróżnicowanej diety.',
+  'W przypadku przyjmowania leków skonsultuj się z lekarzem.',
+  'Przechowywać w miejscu niedostępnym dla małych dzieci.',
+  '*Pozytywny wpływ występuje przy spożywaniu co najmniej 250 mg DHA dziennie.',
+  'Produkt może zawierać śladowe ilości glutenu, soi, jaj i orzechów.',
+  'Nie stosować w przypadku alergii na którykolwiek ze składników.',
+  'Przed użyciem należy zapoznać się z ulotką.',
+  '*Kwas foliowy przyczynia się do prawidłowego rozwoju tkanki matczynej w czasie ciąży.'
+];
+
 export const permissions: Permission[] = [
   { id: '1', name: 'dashboard_view', description: 'Dostęp do dashboardu' },
   { id: '2', name: 'users_manage', description: 'Zarządzanie użytkownikami' },
