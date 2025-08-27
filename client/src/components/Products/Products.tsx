@@ -1008,41 +1008,43 @@ const Products: React.FC = () => {
           </div>
         </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Podkategorie Produktu
-          </label>
-          <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3">
-            {availableSubcategories.map((subcategory) => (
-              <label key={subcategory} className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={currentProduct?.subcategories?.includes(subcategory) || false}
-                  onChange={(e) => handleSubcategoryChange(subcategory, e.target.checked, isEdit)}
-                  className="mr-2"
-                />
-                <span className="text-sm">{subcategory}</span>
-              </label>
-            ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Podkategorie Produktu
+            </label>
+            <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3">
+              {availableSubcategories.map((subcategory) => (
+                <label key={subcategory} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={currentProduct?.subcategories?.includes(subcategory) || false}
+                    onChange={(e) => handleSubcategoryChange(subcategory, e.target.checked, isEdit)}
+                    className="mr-2"
+                  />
+                  <span className="text-sm">{subcategory}</span>
+                </label>
+              ))}
+            </div>
           </div>
-        </div>
 
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
-            Zastosowanie
-          </label>
-          <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3">
-            {availableUsages.map((usage) => (
-              <label key={usage} className="flex items-center">
-                <input
-                  type="checkbox"
-                  checked={currentProduct?.usage?.includes(usage) || false}
-                  onChange={(e) => handleUsageChange(usage, e.target.checked, isEdit)}
-                  className="mr-2"
-                />
-                <span className="text-sm">{usage}</span>
-              </label>
-            ))}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 mb-2">
+              Zastosowanie
+            </label>
+            <div className="space-y-2 max-h-32 overflow-y-auto border border-gray-300 rounded-lg p-3">
+              {availableUsages.map((usage) => (
+                <label key={usage} className="flex items-center">
+                  <input
+                    type="checkbox"
+                    checked={currentProduct?.usage?.includes(usage) || false}
+                    onChange={(e) => handleUsageChange(usage, e.target.checked, isEdit)}
+                    className="mr-2"
+                  />
+                  <span className="text-sm">{usage}</span>
+                </label>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -1445,7 +1447,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ naturalny100: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1458,7 +1460,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ markowySurowiec: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1471,7 +1473,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ weganski: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1484,7 +1486,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ wegetarianski: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1497,7 +1499,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezCukru: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1510,7 +1512,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezSubstancjiSlodzacych: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1523,7 +1525,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezLaktozy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1536,7 +1538,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezglutenowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1549,7 +1551,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezalkoholowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1562,7 +1564,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ bezzapachowy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1575,7 +1577,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ wolneOdSoi: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1588,7 +1590,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ wolneOdAlergenow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1601,7 +1603,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ nonGmo: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1614,7 +1616,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ wolneOdSorbinianuPotasu: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1627,7 +1629,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ cleanLabel: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1646,7 +1648,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaMezczyzn: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1659,7 +1661,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaKobiet: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1672,7 +1674,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaKobietWCiazy: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1685,7 +1687,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaSeniorow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1698,7 +1700,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaDzieci: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1711,7 +1713,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaRodziny: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1724,7 +1726,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaDiabetykow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1737,7 +1739,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaSportowcow: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1750,7 +1752,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaWegan: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
@@ -1763,7 +1765,7 @@ const Products: React.FC = () => {
                 onChange={(e) => setCurrentProduct({ dlaWegetarian: e.target.value === '-' ? undefined : e.target.value === 'true' })}
                 className="ml-2 px-2 py-1 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
               >
-                <option value="-">-</option>
+                <option value="-">Wybierz opcję</option>
                 <option value="false">Nie</option>
                 <option value="true">Tak</option>
               </select>
