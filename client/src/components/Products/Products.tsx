@@ -2913,12 +2913,12 @@ const Products: React.FC = () => {
                   <div className="text-sm text-gray-700">
                     {previewProduct.skladniki
                       .map((ingredient, index) => {
-                        // Capitalize first letter of the first ingredient, keep others as they are
+                        // Capitalize first letter of the first ingredient, lowercase others
                         const name = ingredient.activeName;
                         if (index === 0) {
-                          return name.charAt(0).toUpperCase() + name.slice(1);
+                          return name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
                         }
-                        return name;
+                        return name.toLowerCase();
                       })
                       .join(', ')}.
                   </div>
