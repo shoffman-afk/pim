@@ -862,29 +862,15 @@ const Components: React.FC = () => {
         
         <div className="overflow-x-auto">
           <table className="w-full table-fixed">
-            <thead className="bg-gray-50">
+            <thead className="bg-gray-50 border-b border-gray-200">
               <tr>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '30%'}}>
-                  Tytuł
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '12%'}}>
-                  Kategorie
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '12%'}}>
-                  Standaryzacja
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '24%'}}>
-                  Użyte w
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '11%'}}>
-                  Data utworzenia
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '11%'}}>
-                  Ostatnia aktualizacja
-                </th>
-                <th className="py-3 px-6 text-left text-xs font-medium text-gray-500 uppercase tracking-wider" style={{width: '10%'}}>
-                  Akcje
-                </th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '30%'}}>Tytuł</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '12%'}}>Kategorie</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '12%'}}>Standaryzacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '24%'}}>Użyte w</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '11%'}}>Data utworzenia</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '11%'}}>Ostatnia aktualizacja</th>
+                <th className="text-left py-3 px-6 font-medium text-gray-700" style={{width: '10%'}}>Akcje</th>
               </tr>
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
